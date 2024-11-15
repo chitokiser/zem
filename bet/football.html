@@ -122,25 +122,41 @@
             </div>
           </div>
             <!--This is the dashboard -->
+            <div class="container-box">
+                <p>Charging game points</p>
+                <label for="Amount">Enter Amount:</label>
+                <input type="number" id="Amount" placeholder="Enter amount" required>
+                
+                <button id="chargeButton">Charge</button>
+                <p id="resultMessage"></p>
+            </div>
 
-    <h1>Meta5 Contract Data</h1>
-    <div class="data-display">
+            <div class="container-box">
+          
+                <button id="checkMypgButton">My game point Check</button>
+                <p id="mypgResult">Game point value is displayed</p>
+            </div>
+            <div class="container-box">
+                <button id="withdrawButton">Withdraw</button>
+  <p id="resultMessage">Game points are withdrawn as BET tokens</p>
+            </div>
+        <div class="container-box">
         <div>
-            <span class="label">PID:</span>
-            <span id="Pid">Loading...</span>
+        <span class="label">Total number of games:</span>
+        <span id="Pid">Loading...</span>
         </div>
         <div>
-            <span class="label">BID:</span>
-            <span id="Bid">Loading...</span>
+        <span class="label">Total number of bettors:</span>
+        <span id="Bid">Loading...</span>
         </div>
-    </div>
+        </div>
 
-
-    <h2>ms 데이터</h2>
+    <div class="container-box">
+    <h5>Soccer Games(Game Points Only)</h5>
     <div id="metaInfoContainer">
-        <!-- 여기에 동적으로 데이터가 추가됩니다 -->
+  
     </div>
-   
+</div>
     
 
 </main>
