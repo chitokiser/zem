@@ -78,60 +78,59 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const totalBets = await meta5Contract.getTotal(i);
 
                 const infoHtml = `
-    <div class="card mb-3" id="productCard${i}">
-        <div class="card-body">
-            <h5 class="card-title">${metaInfo.name}</h5>
-           <p class="card-text"><strong>경기시작(GMT기준):</strong> ${new Date(metaInfo.endtime * 1000).toLocaleString("en-US", { timeZone: "GMT" })}</p>
-            <p class="card-text"><strong>결과:</strong> 
-                ${metaInfo.result === 0 ? "진행 중" : 
-                  metaInfo.result === 1 ? "홈팀 승" : 
-                  metaInfo.result === 2 ? "무승부" : "원정팀 승"}
-            </p>
-            <p class="card-text"><strong>홈팀 점수:</strong> ${metaInfo.homescore}</p>
-            <p class="card-text"><strong>원정팀 점수:</strong> ${metaInfo.awayscore}</p>
-               <!-- Display Odds and Total Bets -->
-                        <p class="card-text"><strong>배당률:</strong> 홈팀(${odds[0]/10}), 무승부(${odds[2]/10}), 원정팀(${odds[1]/10})</p>
-                        <p class="card-text"><strong>누적 배팅금:</strong> 홈팀(${totalBets[0]/1E18} GP), 무승부(${totalBets[2]/1E18} GP), 원정팀(${totalBets[1]}GP)</p>
-            <!-- 배팅하기 버튼과 배팅 폼 -->
-            <button type="button" onclick="openBetForm(${i})">배팅하기</button>
-            <div id="betFormContainer${i}" style="display: none;">
-                <form id="betForm${i}">
-                    <label for="betMoney${i}">배팅 금액:</label>
-                    <input type="number" id="betMoney${i}" min="1" required>
-                    <label for="betCase${i}">배팅 옵션 (0: 홈팀승, 1: 원정팀승, 2: 무승부):</label>
-                    <select id="betCase${i}">
-                        <option value="0">홈팀</option>
-                        <option value="1">원정팀</option>
-                        <option value="2">무승부</option>
-                    </select>
-                    <button type="button" onclick="submitBetForm(${i})">배팅 완료</button>
-                    <button type="button" onclick="closeBetForm(${i})">취소</button>
-                </form>
-            </div>
+   <div class="card mb-3" id="productCard${i}">
+<div class="card-body">
+<h5 class="card-title">${metaInfo.name}</h5>
+<p class="card-text"><strong>Match Start (GMT):</strong> ${new Date(metaInfo.endtime * 1000).toLocaleString("en-US", { timeZone: "GMT" })}</p>
+<p class="card-text"><strong>Result:</strong>
+${metaInfo.result === 0 ? "In Progress" :
+metaInfo.result === 1 ? "Home Team Wins" :
+metaInfo.result === 2 ? "Draw" : "Away win"}
+</p>
+<p class="card-text"><strong>Home score:</strong> ${metaInfo.homescore}</p>
+<p class="card-text"><strong>Away score:</strong> ${metaInfo.awayscore}</p>
+<!-- Display Odds and Total Bets -->
+<p class="card-text"><strong>Odds:</strong> Home (${odds[0]/10}), Draw (${odds[2]/10}), Away (${odds[1]/10})</p>
+<p class="card-text"><strong>Accumulated bet:</strong> Home (${totalBets[0]/1E18} GP), Draw (${totalBets[2]/1E18} GP), Away Team (${totalBets[1]/1e18}GP)</p>
+<!-- Bet Button and Betting Form -->
+<button type="button" onclick="openBetForm(${i})">Bet</button>
+<div id="betFormContainer${i}" style="display: none;">
+<form id="betForm${i}">
+<label for="betMoney${i}">Bet Amount:</label>
+<input type="number" id="betMoney${i}" min="1" required>
+<label for="betCase${i}">Betting Options (0: Home Win, 1: Away Win, 2: Draw):</label>
+<select id="betCase${i}">
+<option value="0">Home Win</option>
+<option value="1">Away team wins</option>
+<option value="2">Draw</option>
+</select>
+<button type="button" onclick="submitBetForm(${i})">Betting completed</button>
+<button type="button" onclick="closeBetForm(${i})">Close betting window</button>
+</form>
+</div>
 
-             <button type="button" onclick="viewMyPayout(${i})">배팅금액 보기</button>
-                        <button type="button" onclick="withdrawPayout(${i})">배당금 인출하기</button>
-        </div>
+<button type="button" onclick="viewMyPayout(${i})">View betting amount</button>
+<button type="button" onclick="withdrawPayout(${i})">Withdraw dividends</button>
+</div>
 
-           <button type="button" onclick="openResultForm(${i})" style="background-color: red; color: white; padding: 5px 10px; font-size: 12px;">결과 입력</button>
-            <div id="resultFormContainer${i}" style="display: none;">
-                <form id="resultForm${i}">
-                    <label for="result${i}">경기 결과 (0: 홈팀승, 1: 원정팀승, 2: 무승부):</label>
-                    <select id="result${i}">
-                        <option value="1">경기결과 홈팀 승</option>
-                        <option value="2">경기결과 원정팀 승</option>
-                        <option value="0">경기결과 무승부</option>
-                    </select>
-                    <label for="homeScore${i}">홈팀 점수:</label>
-                    <input type="number" id="homeScore${i}" required>
-                    <label for="awayScore${i}">원정팀 점수:</label>
-                    <input type="number" id="awayScore${i}" required>
-                    <button type="button" onclick="submitResultForm(${i})">결과 제출</button>
-                    <button type="button" onclick="closeResultForm(${i})">취소</button>
-                </form>
-  </div>
-        </div>
-    </div>`;
+<div id="resultFormContainer${i}" style="display: none;">
+<form id="resultForm${i}">
+<label for="result${i}">Match result (0: Home team win, 1: Away team win, 2: Draw):</label>
+<select id="result${i}">
+<option value="1">Match result: Home team win</option>
+<option value="2">Match result: Away team win</option>
+<option value="0">Match result: Draw</option>
+</select>
+<label for="homeScore${i}">Home team score:</label>
+<input type="number" id="homeScore${i}" required>
+<label for="awayScore${i}">Away team score:</label>
+<input type="number" id="awayScore${i}" required>
+<button type="button" onclick="submitResultForm(${i})">Submit result</button>
+<button type="button" onclick="closeResultForm(${i})">Cancel</button>
+</form>
+</div>
+</div>
+</div>`;
 
                 // HTML을 하나씩 추가
                 infoContainer.innerHTML += infoHtml;

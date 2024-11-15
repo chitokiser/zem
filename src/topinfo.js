@@ -17,6 +17,7 @@
         betgp: [
           "function charge (uint _pay)public ",
           "function withdraw( )public",
+          "function g1() public view virtual returns(uint256)",
           "function g2(address user) public view virtual returns(uint256)"
          
         ],
@@ -39,8 +40,11 @@
           // ethers setup
           const provider = new ethers.providers.JsonRpcProvider('https://1rpc.io/opbnb');
           let cyadexContract = new ethers.Contract(cA.cyadexAddr, cB.cyadex, provider);
+          const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, provider);
           let dexBal = await cyadexContract.balance();
+          let gpbal = await betgpContract.g1();
           document.getElementById("Tvl").innerHTML = parseFloat(dexBal / 1e18).toFixed(4);
+          document.getElementById("Gpbal").innerHTML = parseFloat(gpbal / 1e18).toFixed(4);
         } catch (error) {
           console.error("Error fetching top data:", error);
           alert("Error fetching top data");
