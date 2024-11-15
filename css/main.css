@@ -1,0 +1,608 @@
+
+  ul.list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+  }
+  ul.list::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .tab-button {
+    display: block;
+    padding: 10px 20px 10px 20px;
+    float: left;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    color: grey;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .orange {
+    border-top: 2px solid orange;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid white;
+    border-left: 1px solid #ccc;
+    color: black;
+    margin-top: -2px;
+  }
+  .tab-content {
+    display: none;
+    padding: 10px;
+  }
+  .show {
+    display: block;
+  }
+  #eventData {
+    font-size: 24px; /* Increase font size */
+    /* Add any other styles as needed */
+}
+
+.threed {
+  text-shadow: 1px 1px 2px #ed6706, 0 0 1em #000, 0 0 0.2em #5a06f6;
+}
+
+.larger {
+  font-size: 2em;
+}
+
+.red {
+  color: red; 
+}
+
+.container-box {
+  position: relative;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.container-box::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #000;
+  transform: translateY(-50%);
+}
+.flashy-button {
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Win button style */
+.win-button {
+  background-color: #e1ebe2; /* Green */
+}
+
+.win-button:hover {
+  background-color: #45a049; /* Darker green */
+}
+
+/* Draw button style */
+.draw-button {
+  background-color: #c5bbd9; /* Purple */
+}
+
+.draw-button:hover {
+  background-color: #512da8; /* Darker purple */
+}
+
+/* Lose button style */
+.lose-button {
+  background-color: #d0aeab; /* Red */
+}
+
+.lose-button:hover {
+  background-color: #e53935; /* Darker red */
+}.lighting-text {
+  color: transparent;
+  background-image: linear-gradient(90deg, rgb(211, 212, 202), rgba(153, 235, 12, 0.903), transparent);
+  background-size: 200% 100%;
+  background-position: -100%;
+  animation: lightingAnimation 2s linear infinite alternate;
+}
+
+
+.container-box img {
+  width: 100%; /* Make the image fill the container horizontally */
+  height: auto; /* Automatically adjust the height based on the image's aspect ratio */
+  display: block; /* Make sure the image behaves as a block element */
+}
+
+.fluorescent-btn {
+  position: relative;
+  background-color: #bfd2aa; /* Fluorescent green color */
+  border-color: #a5a9a4; /* Border color matches the background color */
+  color: #000; /* Text color */
+  overflow: hidden;
+  padding: 10px 20px; /* Adjust padding as needed */
+}
+
+.fluorescent-btn::before {
+  content: "Good luck"; /* Text for the billboard */
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  white-space: nowrap;
+  animation: billboard 10s linear infinite; /* Adjust duration and animation type as needed */
+}
+
+@keyframes billboard {
+  0% {
+    transform: translate(-100%, -50%);
+  }
+  100% {
+    transform: translate(-100%, -50%) translateX(-100%); /* Move text to the left */
+  }
+}
+
+.fluorescent-btn:hover {
+  background-color: #0f9d58; /* Darker shade on hover */
+  border-color: #c9ecdb; /* Border color matches the background color */
+  color: #fff; /* Text color on hover */
+}
+
+.fluorescent-btn:hover::before {
+  display: none; /* Hide the text on hover */
+}
+
+
+    /* Define custom cursor styles */
+    .btn {
+        cursor: pointer; /* Default cursor */
+    }
+
+    .btn:hover {
+        cursor: pointer; /* Cursor changes to hand shape on hover */
+    }
+
+    .btn:active {
+        transform: translateY(1px); /* Button moves down slightly when clicked, giving a pressed feeling */
+    }
+
+        /* Define custom styles for the input group text */
+        .input-group-text {
+          cursor: pointer; /* Default cursor */
+          transition: background-color 0.3s; /* Smooth transition for color change */
+      }
+  
+      .input-group-text:hover {
+          background-color: #f0f0f0; /* Change background color on hover */
+      }
+  
+      .input-group-text:active {
+          transform: translateY(1px); /* Move the text down slightly when clicked */
+      }
+
+      .list-group-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 15vh; /* Ensure full height of the viewport */
+    }
+    #eventR1,
+    #eventS1,
+    #eventS2,
+    #eventV1,
+    #eventA1,
+    #eventT1
+    
+     {
+      font-size: 2em; /* Default font size */
+      color: rgb(238, 155, 11); /* Set font color to green */
+      transform: perspective(1000px) rotateY(10deg);
+  }
+  
+  /* Adjust font size for smaller screens */
+  @media screen and (max-width: 600px) {
+      #eventS2 {
+          font-size: 0.8em; /* Adjust font size for smaller screens */
+      }
+  }
+
+  .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full height of the viewport */
+  }
+
+
+  .scroll-box {
+    max-width: 100%;
+    height: 50vh; /* 높이를 뷰포트 높이의 50%로 설정 */
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.button-disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.button-enabled {
+    background-color: #28a745;
+    cursor: pointer;
+}
+
+.responsive-img {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 10px;
+}
+
+.purchase-form-container {
+  margin-top: 20px;
+}
+
+.purchase-form {
+  display: flex;
+}
+
+.small-text {
+  font-size:0.8em; /* 글자 크기를 80%로 설정 */
+}
+
+.image-spacing {
+  margin-right: 10px;
+  margin-bottom: 10px; /* 아래쪽 간격도 추가 가능 */
+}
+
+/* 농장 카드를 담는 컨테이너 스타일 */
+.farm-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 카드 스타일 */
+.stylish-card {
+  width: 300px;
+  border-radius: 15px;
+  background-color: #f8f9fa;
+  box-shadow: 0 0 15px rgba(255, 217, 0, 0.5); /* 네온 효과 */
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent; /* 카드 테두리 */
+}
+
+/* 카드 hover 효과 */
+.stylish-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 115, 0, 0.8); /* 네온 효과 강화 */
+}
+
+/* 카드 제목 스타일 */
+.stylish-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #343a40;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* 카드 내용 스타일 */
+.stylish-text {
+  font-size: 0.95rem;
+  color: #495057;
+  margin: 5px 0;
+}
+
+/* 카드 내용 사이의 경계선 */
+.stylish-text + .stylish-text {
+  border-top: 1px solid #dee2e6;
+  padding-top: 10px;
+}
+h5 {
+  font-size: 1.5em;
+  color: #2b6cb0;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+p:last-of-type {
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.highlight {
+  color: #2b6cb0;
+  font-weight: bold;
+}
+
+
+    /* 전체 컨테이너 스타일 */
+    #metaInfoContainer {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 각 경기 정보를 담을 카드 스타일 */
+  .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      background-color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+      padding: 20px;
+  }
+
+  .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+  }
+
+  .card-text {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #555;
+  }
+
+  .card-text strong {
+      color: #333;
+  }
+
+  /* 배팅하기 버튼 스타일 */
+  button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+      background-color: #0056b3;
+  }
+
+  /* 배팅 폼 스타일 */
+  #betFormContainer {
+      margin-top: 15px;
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+  }
+
+  form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  label {
+      font-size: 1rem;
+      margin-bottom: 5px;
+  }
+
+  input[type="number"],
+  select {
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      transition: border-color 0.3s ease;
+  }
+
+  input[type="number"]:focus,
+  select:focus {
+      border-color: #007bff;
+  }
+
+  /* 배팅 버튼 스타일 */
+  #betFormContainer button {
+      background-color: #28a745;
+      margin-top: 10px;
+  }
+
+  #betFormContainer button:hover {
+      background-color: #218838;
+  }
+
+  /* 취소 버튼 스타일 */
+  #betFormContainer button[type="button"] {
+      background-color: #dc3545;
+  }
+
+  #betFormContainer button[type="button"]:hover {
+      background-color: #c82333;
+  }
+</style>
+설명:
+카드 스타일 (.card): 각 경기 정보를 담고 있는 카드에 그림자 효과와 마우스를 올렸을 때의 hover 효과를 추가하여 시각적으로 강조합니다.
+배팅 버튼 스타일: 배팅하기 버튼은 푸른색 배경에 흰색 글씨로 되어 있고, 마우스를 올렸을 때 배경색이 변경되도록 설정했습니다.
+배팅 폼 스타일 (#betFormContainer): 배팅 폼은 배경색을 연회색으로 하고, 입력 필드는 시각적으로 깔끔하게 정리되었습니다. 입력 필드와 선택 박스에 포커스가 갔을 때 파란색 테두리로 강조됩니다.
+배팅 완료 및 취소 버튼 스타일: 배팅 완료 버튼은 녹색, 취소 버튼은 빨간색으로 구분되어 직관적으로 사용자가 선택할 수 있도록 배치했습니다.
+반응형 디자인: 이 CSS는 모바일 화면에서도 잘 보일 수 있도록 작성되었습니다.
+위 CSS를 사용하면, metaInfoContainer의 카드들이 깔끔하고 직관적으로 보일 것이며, 배팅 폼도 잘 정리되어 사용자 경험을 개선할 수 있습니다.
+
+
+
+
+
+
+나의 말:
+버튼색이 너무 파란 원색입니다. 세련되게 해주세요
+ChatGPT의 말:
+ChatGPT
+버튼 색상을 좀 더 세련되게 바꾸기 위해, 원색적인 파란색을 더 부드럽고 세련된 톤으로 조정할 수 있습니다. 예를 들어, 푸른색을 더 차분하고 현대적인 느낌으로, 또한 마우스를 올렸을 때 색상이 자연스럽게 변화하도록 만들어 보겠습니다.
+
+아래는 스타일을 변경한 버튼 색상과 함께 세련된 디자인을 적용한 CSS입니다.
+
+html
+코드 복사
+<style>
+  /* 전체 컨테이너 스타일 */
+  #metaInfoContainer {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 각 경기 정보를 담을 카드 스타일 */
+  .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      background-color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+      padding: 20px;
+  }
+
+  .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+  }
+
+  .card-text {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #555;
+  }
+
+  .card-text strong {
+      color: #333;
+  }
+
+  /* 배팅하기 버튼 스타일 */
+  button {
+      background-color: #6c757d; /* 세련된 회색톤 */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  button:hover {
+      background-color: #5a6268; /* 마우스를 올리면 더 어두운 회색 */
+      transform: translateY(-2px); /* 마우스를 올리면 살짝 올라가는 효과 */
+  }
+
+  button:active {
+      background-color: #495057; /* 버튼 클릭 시 더 어두운 색 */
+      transform: translateY(0); /* 클릭 후 버튼이 원래 위치로 돌아옵니다 */
+  }
+
+  /* 배팅 폼 스타일 */
+  #betFormContainer {
+      margin-top: 15px;
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+  }
+
+  form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  label {
+      font-size: 1rem;
+      margin-bottom: 5px;
+  }
+
+  input[type="number"],
+  select {
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      transition: border-color 0.3s ease;
+  }
+
+  input[type="number"]:focus,
+  select:focus {
+      border-color: #6c757d; /* 포커스 시 회색 테두리 */
+  }
+
+  /* 배팅 버튼 스타일 */
+  #betFormContainer button {
+      background-color: #28a745; /* 녹색 */
+      margin-top: 10px;
+  }
+
+  #betFormContainer button:hover {
+      background-color: #218838; /* 마우스를 올리면 더 어두운 녹색 */
+  }
+
+  /* 취소 버튼 스타일 */
+  #betFormContainer button[type="button"] {
+      background-color: #dc3545; /* 빨간색 */
+  }
+
+  #betFormContainer button[type="button"]:hover {
+      background-color: #c82333; /* 마우스를 올리면 더 어두운 빨간색 */
+  }
