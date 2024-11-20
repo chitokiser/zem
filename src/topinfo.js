@@ -1,7 +1,7 @@
 
 
       const cA = {
-        cyadexAddr: "0x3900609f4b3C635ae1cFC84F4f86eF7166c6139e",
+        cyadexAddr: "0x40A29c38cA258020c6e2EdbcE9BD99f006f6260e", //NEW BUTEX
         betgp: "0x35575D072f2974414Bd1679047aD2EaD11EA8CF7",  //gamepoint chage
         mutbankAddr:"0x7af12A131182b966b813369Eb45393657a5a1bd5", //butbank
         erc20: "0xFA7A4b67adCBe60B4EFed598FA1AC1f79becf748",
@@ -45,11 +45,14 @@
           let gpbal = await betgpContract.g1();
           document.getElementById("Tvl").innerHTML = parseFloat(dexBal / 1e18).toFixed(4);
           document.getElementById("Gpbal").innerHTML = parseFloat(gpbal / 1e18).toFixed(4);
-        } catch (error) {
-          console.error("Error fetching top data:", error);
-          alert("Error fetching top data");
+        } catch (e) {
+          // 에러 발생 시 아무 작업도 하지 않음
+          console.error(e); // 필요 시 콘솔에만 에러를 출력
         }
       };
+      
+      topData();
+      
       
       const addTokenBet = async () => {
         await window.ethereum.request({
@@ -85,7 +88,7 @@
      
 
 
- topData();
+
       
 
 

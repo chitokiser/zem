@@ -23,7 +23,7 @@
           "function getprice() public view returns (uint256)",
           "function gettime() external view returns (uint256)",
           "function withdraw() public ",
-          "function buycut(uint _num) public returns(bool)",
+          "function buybut(uint _num) public returns(bool) ",
           "function sellcut(uint num)public returns(bool)",
           "function getpay(address user) public view returns (uint256)",
           "function allowcation() public returns(bool) "
@@ -45,7 +45,7 @@
        let iprice = await cyabankContract.getprice();
        let iallow = await cyabankContract.allow();
        let iact = await cyabankContract.act();  //거래가능상태
-       document.getElementById("Cyabal").innerHTML = (cyabal/2e21).toFixed(4);
+       document.getElementById("Cyabal").innerHTML = (cyabal/1e18).toFixed(4);
        document.getElementById("Mutbal").innerHTML = (mutbal);
        document.getElementById("Mutcir").innerHTML = (mutcir);
        document.getElementById("Mprice").innerHTML = (iprice/1e18).toFixed(4);
@@ -97,7 +97,7 @@
       let min = parseInt((left/60)%60);
       let sec = left%60;
   
-      document.getElementById("epsLeftTime").innerHTML = left > 0 ? `${day}일${hour}시간${min}분${sec}초` : '';
+      document.getElementById("epsLeftTime").innerHTML = left > 0 ? `${day}day${hour}hour${min}min${sec}sec` : '';
     };
 
   let Allow = async () => {
@@ -133,31 +133,46 @@
 
   let Buymut = async () => {
     let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [{
+    try {
+      // 네트워크 추가 및 스위치
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
           chainId: "0xCC",
           rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
           chainName: "opBNB",
           nativeCurrency: {
-              name: "BNB",
-              symbol: "BNB",
-              decimals: 18
+            name: "BNB",
+            symbol: "BNB",
+            decimals: 18
           },
           blockExplorerUrls: ["https://opbnbscan.com"]
-      }]
-  });
-    await userProvider.send("eth_requestAccounts", []);
-    let signer = userProvider.getSigner();
-
-    let cyabankContract = new ethers.Contract(contractAddress.cyabankAddr, contractAbi.cyabank, signer);
-
-    try {
-      await cyabankContract.buycut(document.getElementById('buyAmount').value);
-    } catch(e) {
-      alert(e.data.message.replace('execution reverted: ',''))
+        }]
+      });
+  
+      // 사용자 계정 요청
+      await userProvider.send("eth_requestAccounts", []);
+      let signer = userProvider.getSigner();
+  
+      // 스마트 계약 객체 생성
+      let cyabankContract = new ethers.Contract(contractAddress.cyabankAddr, contractAbi.cyabank, signer);
+  
+      // 스마트 계약 메서드 호출
+      await cyabankContract.buybut(document.getElementById('buyAmount').value);
+    } catch (e) {
+      // 에러 처리
+      if (e?.data?.message) {
+        alert(e.data.message.replace('execution reverted: ', ''));
+      } else if (e?.message) {
+        alert(e.message);
+      } else {
+        alert("An unexpected error occurred. Please try again.");
+      }
+  
+      console.error("Error:", e); // 콘솔에 전체 에러 객체 출력
     }
   };
+  
 
   let Sellmut = async () => {
     let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
