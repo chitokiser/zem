@@ -48,10 +48,9 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li class="dropdown-item"><a class="dropdown-item" href="../defi/farm.html">Blockchain InterestFarm</a></li>
-                      </ul>
-                      <ul class="dropdown-menu">
                         <li class="dropdown-item"><a class="dropdown-item" href="../defi/betswap.html">BetSwap</a></li>
                       </ul>
+                     
                     </li>  
 
                     <li class="nav-item dropdown">
@@ -125,86 +124,98 @@
             </div>
           </div>
             <!--This is the dashboard -->
-  
-
-
-            <div class="container-box">
-              <div class="card">
+            <div class="container mt-4">
+              <!-- BetSwap Section -->
+              <div class="card mb-4">
                 <div class="card-header">
-                 <h5>BlockChain Farm</h5>
+                  <h5>BetSwap</h5>
                 </div>
                 <div class="card-body">
-          
-                  <p>Defi algorithm with fast profit realization</p>
-<p>Whenever you plant a seed, the gauge for selecting a flowerpot goes up</p>
-<p>When the gauge is 100% full, you can choose the flowerpot you want and plant seeds</p>
-<p>When someone, including me, plants seeds in my flowerpot, the profit is realized.</p>
-<p>You can choose your own flowerpot to realize profit</p>
-<p>The longer you hold out after planting seeds, the more profit you make</p>
-<li class="list-group-item">Seed price: <span id="Fprice">-</span>BET</li>
-<li class="list-group-item">Flowerpot number <span id="Farmtotal">-</span>ea</li>
-<li class="list-group-item">Accumulated seeding: <span id="Pl">-</span>ea</li>
-<li class="list-group-item">Seeding fee: <span id="Rate">-</span>BET</li>
-<li class="list-group-item">Contract balance: <span id="Cyabal">-</span>BET</li>
-                 
+                  <p>BUT Get a BET loan with collateral</p>
+                  <p>If you deposit BET, you can receive BET including principal + interest every week.</p>
+                  <p>You can receive a total of 52 times a week.</p>
+                  <ul class="list-group">
+                    <li class="list-group-item">ALI (Annual loan interest): <span id="Ali">-</span>%</li>
+                    <li class="list-group-item">APR (Annual Percentage Rate): <span id="Apr">-</span>%</li>
+                    <li class="list-group-item">APY (Annual Percentage Yield): <span id="Apy">-</span>%</li>
+                    <li class="list-group-item">Smart Contract BET Balance: <span id="Betbal">-</span> BET</li>
+                    <li class="list-group-item">Smart Contract BUT Balance: <span id="Butbal">-</span> BUT</li>
+                    <li class="list-group-item">Smart Contract BUT Market Cap: <span id="Total">-</span> BET</li>
+                  </ul>
+                </div>
+              </div>
+            
+              <!-- My Status Section -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5>My Status</h5>
+                </div>
+                <div class="card-body">
+                  <button class="btn btn-outline-success mb-3" type="submit" onclick="Mystatus()">Wallet Connection</button>
+                  <ul class="list-group">
+                    <li class="list-group-item">Deposit Principal: <span id="DepoA">-</span> BET</li>
+                    <li class="list-group-item">One-time Withdrawal Amount: <span id="Asset">-</span> BET</li>
+                    <li class="list-group-item">Number of Possible Withdrawals: <span id="Tiket">-</span> times</li>
+                    <li class="list-group-item">Time Left Until Withdrawal: <span id="Myt">-</span></li>
+                    <button class="btn btn-primary mt-3" type="submit" onclick="Withdraw()">Withdraw</button>
+                    <li class="list-group-item">Money Owed: <span id="Mdepo2">-</span> BET</li>
+                    <li class="list-group-item">Loan Amount: <span id="LoanA">-</span> BET</li>
+                    <li class="list-group-item">Mortgage: <span id="Mortgage">-</span> BUT</li>
+                    <li class="list-group-item">Time Left to Repay: <span id="Myt2">-</span></li>
+                    <button class="btn btn-danger mt-3" type="submit" onclick="Repay()">Repay</button>
+                  </ul>
+                </div>
+              </div>
+            
+              <!-- BET Staking Section -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5>BET Staking</h5>
+                </div>
+                <div class="card-body">
+                  <p>You can deposit within 10% of the contract BET balance.</p>
+                  <p>You can withdraw the amount including principal and interest in 52 installments every week.</p>
+                  <p>Check the APR & APY above and deposit.</p>
+                  <p>APR & APY is fixed at the time of deposit.</p>
+                  <div class="input-group mb-3">
+                    <input
+                      type="text"
+                      id="Seed"
+                      class="form-control"
+                      placeholder="Enter the BET amount to deposit"
+                      required
+                    />
+                    <button class="btn btn-success" onclick="Deposing()">Staking</button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- BET Loan Section -->
+              <div class="card">
+                <div class="card-header">
+                  <h5>BET Loan</h5>
+                </div>
+                <div class="card-body">
+                  <p>You can borrow BET using your BUT as collateral.</p>
+                  <p>The amount after deducting the interest will be deposited.</p>
+                  <p>Check the loan interest rate above.</p>
+                  <div class="input-group mb-3">
+                    <input
+                      type="text"
+                      id="Seed2"
+                      class="form-control"
+                      placeholder="Enter the BET amount to deposit"
+                      required
+                    />
+                    <button class="btn btn-warning" onclick="Loan()">Take a Loan</button>
+                  </div>
                 </div>
               </div>
             </div>
+            
+
           
-            <div class="container-box">
-              <div class="card">
-                <div class="card-header">
-                <h5>Seeding</h5>
-                </div>
-                <div class="card-body">
-                  <div>
-                    <div class="container-box">
-                  <button class="btn btn-outline-success" type="submit" onclick="MemberLogin()">My Status</button>
-                  
-                  <li class="list-group-item">Harvestable Amount: <span id="Farmgain">-</span>BET</li>
-                  
-                  <li class="list-group-item">Gauge required to seed the selected pot:
-                  <div class="progress">
-                  <div class="progress-bar progress-bar-success progress-bar-striped" id="LevelBar" role="progressbar"
-                  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></li>
-                  </div>
-                  </div>
-                  
-                  <div> <button class="btn btn-outline-danger" type="submit" onclick="Buyfarm()">Random pot seeding </button></div>
-                  <li class="list-group-item"><span id="event"></span></li>
-                  <div class="container-box">
-                  <input type="text" id="Mid" class="form-control" placeholder="Click on Selected Seeding after selecting the pot number" aria-label="CYA"
-                  aria-describedby="basic-addon2"> 
-                
-                  <div> <button class="btn btn-outline-success" type="submit" onclick="Choice()">Selected pot seeding </button></div>
-                  </div>
-                  <div class="container-box">
-                  <input type="text" id="Amount" class="form-control" placeholder="Enter the amount in 10BET units" aria-label="CYA" aria-describedby="basic-addon2">
-                  <div> <button class="btn btn-outline-success" type="submit" onclick="Charge()">Buy seeds </button></div>
-                  </div> 
-                  <div> <button class="btn btn-outline-danger" type="submit" onclick="Withdraw()">Harvest</button></div>
-                   </div>
-                   </div>
-                   </div>
-                  
-                  
-                   <div class="container-box">
-                   <div class="card">
-                   <div class="card-header">
-                   Port Status
-                   </div>
-                   <div class="card-body">
-                   <div id="farmCards" class="farm-cards-container"></div>
-                  
-                  
-                   <div class="card-group" id="farmCards">
-                   <!-- Farm cards are added here, but all 12 are displayed in one row. -->
-                   </div>
-                  
-                  
-                   </div>
-                   </div>
-                   </div>
+                   
 
  
            <!--Start footer -->
@@ -222,7 +233,7 @@
               <script type="text/javascript"></script>
              
               <script src="..\src\topinfo.js"></script>
-              <script src="..\src\farm.js"></script>
+              <script src="..\src\betswap.js"></script>
               </script>
 
     </body>
