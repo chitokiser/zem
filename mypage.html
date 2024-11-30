@@ -129,47 +129,85 @@
   
   
 
-
-            
-            <div class="container-box">
+            <div class="container mt-4">
+              <!-- My Page Section -->
               <div class="card">
                 <div class="card-header">
-                  My page
+                  <h5>My Page</h5>
                 </div>
                 <div class="card-body">
-                  <li class="list-group-item">After clicking [Link Wallet] on the top right of the menu, registering a referrer and signing up for membership will result in level 1.</li>
-     
-                  <button class="btn btn-outline-success" id="basic-addon2" type="submit" onclick="MemberLogin()">
-                    View my status
-                  </button>
-                  <li class="list-group-item">Level: <span id="Mylev"></span></li>
-                  <li class="list-group-item">Experience: <span id="Exp"></span>exp</li>
-                  <li class="list-group-item">Experience Points Required for Leveling Up: <span id="Expneeded"></span>exp</li>
-                  <li class="list-group-item">Point = <span id="Mypoint">-</span>p</li>
-                  <li class="list-group-item">Mymento = <span id="Mymento">-</span></li>
-                  <li class="list-group-item"> <button type="button" class="btn btn-outline-dark position-relative" cursor:
-                      pointer; onclick="Levelup()">
-                      Level up
-                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" id="Mylev2">-</span></button>
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-success progress-bar-striped" id="LevelBar" role="progressbar"
-                        aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                  <ul class="list-group mb-3">
+                    <li class="list-group-item">
+                      After clicking <strong>[Link Wallet]</strong> on the top right of the menu, registering a referrer and signing up for membership will result in level 1.
+                    </li>
+                  </ul>
+            
+                  <div class="mb-3">
+                    <button class="btn btn-outline-success w-100" onclick="MemberLogin()">
+                      View My Status
+                    </button>
+                  </div>
+            
+                  <ul class="list-group mb-3">
+                    <li class="list-group-item">
+                      Level: <span id="Mylev">-</span>
+                    </li>
+                    <li class="list-group-item">
+                      Experience: <span id="Exp">-</span> exp
+                    </li>
+                    <li class="list-group-item">
+                      Experience Points Required for Leveling Up: <span id="Expneeded">-</span> exp
+                    </li>
+                    <li class="list-group-item">
+                      Point: <span id="Mypoint">-</span> p
+                    </li>
+                    <li class="list-group-item">
+                      My Mentor: <span id="Mymento">-</span>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-dark position-relative" onclick="Levelup()">
+                          Level Up
+                          <span class="badge bg-dark position-absolute top-0 start-100 translate-middle" id="Mylev2">-</span>
+                        </button>
+                        <div class="progress w-75 ms-3">
+                          <div 
+                            class="progress-bar progress-bar-striped bg-success" 
+                            id="LevelBar" 
+                            role="progressbar" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100" 
+                            style="width: 0%;">
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                  <P></P>
-                </div>
-                <div><span style="color:red">1 point=1BET</span></div>
-                 <button class="btn btn-outline-success" type="submit" onclick="Bonuswithdraw()">Point withdrawal</button>
-                 <ul id="addressList"></ul>
-                 <button id="fetchAddresses">My Mentees</button>
-                 <button  type="submit" onclick="Buff()">If you have 500BUT and are at level 1, you will immediately become level 2. </button>
-                
+                    </li>
+                  </ul>
+            
+                  <p class="text-danger text-center mb-3"><strong>1 Point = 1 BET</strong></p>
+            
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-success w-50 me-2" onclick="Bonuswithdraw()">
+                      Point Withdrawal
+                    </button>
+                    <button class="btn btn-outline-primary w-50 ms-2" id="fetchAddresses" onclick="fetchMentees()">
+                      My Mentees
+                    </button>
+                  </div>
+            
+                  <div class="mt-3">
+                    <ul id="addressList" class="list-group"></ul>
+                  </div>
+            
+                  <div class="mt-4">
+                    <button class="btn btn-outline-warning w-100" onclick="Buff()">
+                      If you have 500 BUT and are at Level 1, you will immediately become Level 2.
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-     
-      
+            
          
 
  

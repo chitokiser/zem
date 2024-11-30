@@ -48,18 +48,19 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li class="dropdown-item"><a class="dropdown-item" href="../defi/farm.html">Blockchain InterestFarm</a></li>
-                      </ul>
-                      <ul class="dropdown-menu">
                         <li class="dropdown-item"><a class="dropdown-item" href="../defi/betswap.html">BetSwap</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="../trust/match.html">Matching</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="../trust/trust.html">Payment Management</a></li>
                       </ul>
+                     
                     </li>  
 
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                       BET
+                      Ailliance
                       </a>
                       <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a class="dropdown-item" href="..\bet\football.html">Real Soccer</a></li>
+                        <li class="dropdown-item"><a class="dropdown-item" href="../trust/match.html">Affiliate</a></li>
                       </ul>
                     </li>  
 
@@ -127,84 +128,99 @@
             <!--This is the dashboard -->
   
 
-
-            <div class="container-box">
-              <div class="card">
+            <div class="container my-4">
+              <!-- BlockChain Farm -->
+              <div class="card mb-4">
                 <div class="card-header">
-                 <h5>BlockChain Farm</h5>
+                  <h5>Blockchain Farm</h5>
                 </div>
                 <div class="card-body">
-          
-                  <p>Defi algorithm with fast profit realization</p>
-<p>Whenever you plant a seed, the gauge for selecting a flowerpot goes up</p>
-<p>When the gauge is 100% full, you can choose the flowerpot you want and plant seeds</p>
-<p>When someone, including me, plants seeds in my flowerpot, the profit is realized.</p>
-<p>You can choose your own flowerpot to realize profit</p>
-<p>The longer you hold out after planting seeds, the more profit you make</p>
-<li class="list-group-item">Seed price: <span id="Fprice">-</span>BET</li>
-<li class="list-group-item">Flowerpot number <span id="Farmtotal">-</span>ea</li>
-<li class="list-group-item">Accumulated seeding: <span id="Pl">-</span>ea</li>
-<li class="list-group-item">Seeding fee: <span id="Rate">-</span>BET</li>
-<li class="list-group-item">Contract balance: <span id="Cyabal">-</span>BET</li>
-                 
+                  <p>DeFi algorithm with fast profit realization</p>
+                  <p>Whenever you plant a seed, the gauge for selecting a flowerpot goes up.</p>
+                  <p>When the gauge is 100% full, you can choose the flowerpot you want and plant seeds.</p>
+                  <p>When someone, including me, plants seeds in my flowerpot, the profit is realized.</p>
+                  <p>You can choose your own flowerpot to realize profit.</p>
+                  <p>The longer you hold out after planting seeds, the more profit you make.</p>
+            
+                  <ul class="list-group mb-3">
+                    <li class="list-group-item">Seed Price: <span id="Fprice">-</span> BET</li>
+                    <li class="list-group-item">Flowerpot Number: <span id="Farmtotal">-</span> ea</li>
+                    <li class="list-group-item">Accumulated Seeding: <span id="Pl">-</span> ea</li>
+                    <li class="list-group-item">Seeding Fee: <span id="Rate">-</span> BET</li>
+                    <li class="list-group-item">Contract Balance: <span id="Cyabal">-</span> BET</li>
+                  </ul>
+                </div>
+              </div>
+            
+              <!-- Seeding Section -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5>Seeding</h5>
+                </div>
+                <div class="card-body">
+                  <div class="text-center mb-3">
+                    <button class="btn btn-outline-success" onclick="MemberLogin()">My Status</button>
+                  </div>
+            
+                  <ul class="list-group mb-3">
+                    <li class="list-group-item">Harvestable Amount: <span id="Farmgain">-</span> BET</li>
+                    <li class="list-group-item">
+                      Gauge Required to Seed the Selected Pot:
+                      <div class="progress mt-2">
+                        <div class="progress-bar progress-bar-striped bg-success" id="LevelBar" role="progressbar"
+                          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                      </div>
+                    </li>
+                  </ul>
+            
+                  <div class="text-center mb-3">
+                    <button class="btn btn-outline-danger" onclick="Buyfarm()">Random Pot Seeding</button>
+                  </div>
+            
+                  <ul class="list-group mb-3">
+                    <li class="list-group-item">
+                      <span id="event"></span>
+                    </li>
+                  </ul>
+            
+                  <!-- Seeding Form -->
+                  <div class="mb-3">
+                    <input type="text" id="Mid" class="form-control" placeholder="Click on Selected Seeding after selecting the pot number">
+                  </div>
+                  <div class="text-center mb-3">
+                    <button class="btn btn-outline-success" onclick="Choice()">Selected Pot Seeding</button>
+                  </div>
+            
+                  <!-- Amount Input and Buy Seeds -->
+                  <div class="mb-3">
+                    <input type="text" id="Amount" class="form-control" placeholder="Enter the amount in 10BET units">
+                  </div>
+                  <div class="text-center mb-3">
+                    <button class="btn btn-outline-success" onclick="Charge()">Buy Seeds</button>
+                  </div>
+            
+                  <!-- Harvest Button -->
+                  <div class="text-center">
+                    <button class="btn btn-outline-danger" onclick="Withdraw()">Harvest</button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Port Status -->
+              <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                  <h5>Port Status</h5>
+                </div>
+                <div class="card-body">
+                  <div id="farmCards" class="farm-cards-container mb-3"></div>
+            
+                  <div class="card-group" id="farmCards">
+                    <!-- Farm cards will be added dynamically here -->
+                  </div>
                 </div>
               </div>
             </div>
-          
-            <div class="container-box">
-              <div class="card">
-                <div class="card-header">
-                <h5>Seeding</h5>
-                </div>
-                <div class="card-body">
-                  <div>
-                    <div class="container-box">
-                  <button class="btn btn-outline-success" type="submit" onclick="MemberLogin()">My Status</button>
-                  
-                  <li class="list-group-item">Harvestable Amount: <span id="Farmgain">-</span>BET</li>
-                  
-                  <li class="list-group-item">Gauge required to seed the selected pot:
-                  <div class="progress">
-                  <div class="progress-bar progress-bar-success progress-bar-striped" id="LevelBar" role="progressbar"
-                  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></li>
-                  </div>
-                  </div>
-                  
-                  <div> <button class="btn btn-outline-danger" type="submit" onclick="Buyfarm()">Random pot seeding </button></div>
-                  <li class="list-group-item"><span id="event"></span></li>
-                  <div class="container-box">
-                  <input type="text" id="Mid" class="form-control" placeholder="Click on Selected Seeding after selecting the pot number" aria-label="CYA"
-                  aria-describedby="basic-addon2"> 
-                
-                  <div> <button class="btn btn-outline-success" type="submit" onclick="Choice()">Selected pot seeding </button></div>
-                  </div>
-                  <div class="container-box">
-                  <input type="text" id="Amount" class="form-control" placeholder="Enter the amount in 10BET units" aria-label="CYA" aria-describedby="basic-addon2">
-                  <div> <button class="btn btn-outline-success" type="submit" onclick="Charge()">Buy seeds </button></div>
-                  </div> 
-                  <div> <button class="btn btn-outline-danger" type="submit" onclick="Withdraw()">Harvest</button></div>
-                   </div>
-                   </div>
-                   </div>
-                  
-                  
-                   <div class="container-box">
-                   <div class="card">
-                   <div class="card-header">
-                   Port Status
-                   </div>
-                   <div class="card-body">
-                   <div id="farmCards" class="farm-cards-container"></div>
-                  
-                  
-                   <div class="card-group" id="farmCards">
-                   <!-- Farm cards are added here, but all 12 are displayed in one row. -->
-                   </div>
-                  
-                  
-                   </div>
-                   </div>
-                   </div>
+            
 
  
            <!--Start footer -->

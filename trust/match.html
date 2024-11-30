@@ -126,31 +126,142 @@
             </div>
           </div>
             <!--This is the dashboard -->
-
-            <div class="card">
-              <div class="card-header">
-               <h5>Blockchain Wedding</h5>
+            <div class="container mt-4">
+              <!-- Blockchain Wedding -->
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5>Blockchain Wedding</h5>
+                </div>
+                <div class="card-body">
+                  <p>Grant the bride the right to withdraw a certain amount of money each week.</p>
+                  <p>If the bride violates the marriage contract, the husband can cancel the right to withdraw money.</p>
+                  <ul class="list-group">
+                    <li class="list-group-item">Registered Women Members: <span id="Lid">-</span></li>
+                    <li class="list-group-item">Contract Balance: <span id="Betbal">-</span> BET</li>
+                  </ul>
+                </div>
               </div>
-              <div class="card-body">
-              <p>Grant the bride the right to withdraw a certain amount of money each week.</p>
-              <p>If the bride violates the marriage contract, the husband can cancel the right to withdraw money.</p>
-<li class="list-group-item">등록된 여성회원: <span id="Lid">-</span>명</li>
-<li class="list-group-item">계약잔고: <span id="Betbal">-</span>BET</li>
-
-               
+            
+              <!-- Male Registration -->
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5>Male Registration</h5>
+                </div>
+                <div class="card-body">
+                  <p>Male members will receive a deposit of 1000 BET</p>
+                  <div class="mb-3">
+                    <label for="ManSnsInput" class="form-label">SNS Address:</label>
+                    <input type="text" id="ManSnsInput" class="form-control" placeholder="Enter SNS address" />
+                    <button class="btn btn-outline-success mt-2" onclick="addManData()">Register</button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- My Status (Men) -->
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5>My Status (Men)</h5>
+                  <button class="btn btn-outline-primary float-end" data-bs-toggle="collapse" data-bs-target="#myStatusSection" aria-expanded="false" aria-controls="myStatusSection">
+                    Toggle Status
+                  </button>
+                </div>
+                <div class="card-body collapse" id="myStatusSection">
+                  <button class="btn btn-outline-success mb-3" onclick="Mystatus()">Wallet Connection (Men Only)</button>
+                  <ul class="list-group">
+                    <li class="list-group-item">SNS: <span id="Sns">-</span></li>
+                    <li class="list-group-item">Deposit: <span id="Depo">-</span></li>
+                    <li class="list-group-item">Time: <span id="Time">-</span></li>
+                    <li class="list-group-item">Price: <span id="Price">-</span></li>
+                    <li class="list-group-item">Owner: <span id="Owner">-</span></li>
+                    <li class="list-group-item">My Lady: <span id="Mylady">-</span></li>
+                    <li class="list-group-item">Number: <span id="Num">-</span></li>
+                  </ul>
+                  <div class="mt-3">
+                    <label for="priceInput" class="form-label">Withdrawal Amount:</label>
+                    <input type="number" id="priceInput" class="form-control" placeholder="Enter amount" />
+                    <button class="btn btn-outline-success mt-2" onclick="setPrice()">Submit</button>
+                  </div>
+                  <div class="mt-3">
+                    <label for="wifeNumber" class="form-label">Wife Number:</label>
+                    <input type="number" id="wifeNumber" class="form-control" placeholder="Enter wife number" />
+                    <button class="btn btn-outline-primary mt-2" onclick="handleAcceptWife()">Accept Wife</button>
+                  </div>
+                  <div class="mt-3">
+                    <label for="chargeAmount" class="form-label">Charge Amount:</label>
+                    <input type="number" id="chargeAmount" class="form-control" placeholder="Enter charge amount" />
+                    <button class="btn btn-outline-info mt-2" onclick="handleCharge()">Charge</button>
+                  </div>
+                  <div class="mt-3">
+                    <button class="btn btn-outline-danger" onclick="handleDivorce()">Divorce</button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Female Member List -->
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5>List of Female Members</h5>
+                </div>
+                <div class="card-body">
+                  <div id="LadyList"></div>
+                </div>
+              </div>
+            
+              <!-- Female Registration -->
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5>Women's Registration</h5>
+                </div>
+                <div class="card-body">
+                  <p>Only level 2 or higher can register</p>
+                  <div class="mb-3">
+                    <label for="LadySnsInput" class="form-label">SNS:</label>
+                    <input type="text" id="LadySnsInput" class="form-control" placeholder="Enter SNS address" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="LadyAddressInput" class="form-label">Women's Address:</label>
+                    <input type="text" id="LadyAddressInput" class="form-control" placeholder="Enter member address" />
+                  </div>
+                  <button class="btn btn-outline-success" onclick="addLadyData()">Register</button>
+                </div>
+              </div>
+            
+              <!-- My Status (Women) -->
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5>My Status (Women)</h5>
+                  <button class="btn btn-outline-primary float-end" data-bs-toggle="collapse" data-bs-target="#ladyStatusDetails" aria-expanded="false" aria-controls="ladyStatusDetails">
+                    Toggle Status
+                  </button>
+                </div>
+                <div class="card-body collapse" id="ladyStatusDetails">
+                  <ul class="list-group">
+                    <li class="list-group-item">SNS: <span id="LadySns">-</span></li>
+                    <li class="list-group-item">Time left until withdrawal: <span id="LadyTime">-</span></li>
+                    <li class="list-group-item">Owner Address: <span id="LadyOwner">-</span></li>
+                    <li class="list-group-item">Waiter: <span id="LadyWaiter">-</span></li>
+                    <li class="list-group-item">Myman: <span id="LadyMyman">-</span></li>
+                    <li class="list-group-item">Approved: <span id="LadyOk">-</span></li>
+                    <li class="list-group-item">Number: <span id="LadyNum">-</span></li>
+                  </ul>
+                  <div class="mt-3">
+                    <label for="approvalChoice" class="form-label">Approve/Reject Choice:</label>
+                    <select id="approvalChoice" class="form-select">
+                      <option value="1">Approve</option>
+                      <option value="2">Reject</option>
+                    </select>
+                    <button class="btn btn-outline-success mt-2" onclick="Approval()">Submit</button>
+                  </div>
+                  <div class="mt-3">
+                    <button class="btn btn-outline-warning" onclick="Withdraw()">Withdraw</button>
+                  </div>
+                </div>
               </div>
             </div>
+            
+ 
 
-            <div class="card">
-              <div class="card-header">
-               <h5>여자회원 리스트</h5>
-              </div>
-              <div class="card-body">
-                <div id="LadyList"></div>
-
-              </div>
-            </div>
-
+    
             
            <!--Start footer -->
            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">

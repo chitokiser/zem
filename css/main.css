@@ -1,3 +1,15 @@
+/* 기본적으로 My Status 섹션을 숨김 */
+.collapse {
+  display: none;
+}
+
+/* My Status 섹션을 펼쳤을 때 */
+.mystatusshow {
+  display: block;
+}
+
+
+
 .lady-list {
   display: flex;
   flex-wrap: wrap;
