@@ -58,7 +58,7 @@
         menListHtml += `
           <div class="men-item card mb-3" style="max-width: 600px; margin: 20px auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <div class="card-header" style="background-color: #f8f9fa; font-size: 1.2rem;">
-              <strong>ID #${i}</strong>
+              <strong>Money Manager ID #${i}</strong>
             </div>
             <div class="card-body" style="background-color: #ffffff; padding: 15px;">
               <p><strong>Name:</strong> ${name}</p>
