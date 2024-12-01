@@ -49,7 +49,7 @@
                   <ul class="list-group">
                     <li class="list-group-item">Number of stores: <span id="Mid">-</span></li>
                     <li class="list-group-item">Contract Balance: <span id="Betbal">-</span> BET</li>
-                    <li class="list-group-item">Jack pot: <span id="Jack">-</span>PV</li>
+                    <li class="list-group-item">Jack pot: <span id="Jack">-</span>BET</li>
                   </ul>
                 </div>
               </div>
@@ -72,7 +72,7 @@
                 <label for="phoneInput">Phone:</label>
                 <input type="text" id="phoneInput" placeholder="Enter Affiliate phone number" /><br><br>
             
-                <label for="addressInput">Additional Info:</label>
+                <label for="addressInput">Address:</label>
                 <input type="text" id="addressInput" placeholder="Enter Affiliate address info" /><br><br>
             
                 <label for="rateInput">Rate:</label>
@@ -89,9 +89,38 @@
                 
                 <!-- Member data will be dynamically loaded here -->
               </div>
-            
-       
-            
+ 
+              
+              <h5>Myanmar Affiliate Store</h5>
+              <style>
+                .map-container {
+                  position: relative;
+                  width: 100%; /* 부모 요소의 너비에 맞춤 */
+                  padding-top: 56.25%; /* 16:9 비율 유지 (height / width * 100%) */
+                }
+                .map-container iframe {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  border: 0;
+                }
+              </style>
+              
+              <div class="map-container">
+                <iframe 
+                  src="https://www.google.com/maps/d/embed?mid=1mFXNqJscXA5apNNmozDvIvfJ_3JnS5Y&ehbc=2E312F" 
+                  allowfullscreen>
+                </iframe>
+              </div>
+              
+         
+              
+              
+              
+
+
  <!--Start footer -->
   
  <div id="footer"></div>
@@ -123,8 +152,7 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
               <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
               <script type="text/javascript"></script>
-             
-              <script src="..\src\topinfo.js"></script>
+     
               <script src="..\src\affiliate.js"></script>
               </script>
 

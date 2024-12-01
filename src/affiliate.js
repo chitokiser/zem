@@ -1,7 +1,8 @@
- //0x69664D033214F9CA92b764361087C69dF4CF3fc1
+ //0x69664D033214F9CA92b764361087C69dF4CF3fc1,0x0E847436D632E614e28EbA9505593516975f3661
 
 const contractAddress = {
-    affiliateAddr: "0x0E847436D632E614e28EbA9505593516975f3661",
+    affiliateAddr: "0x17Dc0b4B6FCE90a04a5a4e2440eA1CfADBa3ebd3",
+    BetTokenAddr: "0xBF93D17Dbb666a552bf8De43C8002FE3a3638449"
   };
 
   const contractAbi = {
@@ -15,6 +16,9 @@ const contractAddress = {
       "function allis(uint num) public view returns(string memory name,string memory home,string memory phone,string memory add,uint rate,address owner,uint pay,uint totalpay)",
       "event reward (uint amount);"
     ],
+    BetToken :[
+      "function decimals() view returns (uint8)"
+    ]
   };
 
   const MtopDataSync = async () => {
@@ -36,7 +40,7 @@ const contractAddress = {
       document.getElementById("Betbal").innerText = (balance / 1e18).toFixed(2);
       
       const jack = await affiliateContract.jack();
-      document.getElementById("Jack").innerText = (jack/ 1e9).toFixed(2);
+      document.getElementById("Jack").innerText = (jack/ 1e18).toFixed(2);
 
       affiliateContract.on("reward", (amount, event) => {
         console.log("Reward event detected!");
@@ -86,11 +90,14 @@ const contractAddress = {
                 <button class="btn btn-info btn-sm mb-2 w-100" id="showFeaturesBtn${i}" onclick="toggleFeatures(${i})">See Features</button>
                 <div id="featureSection${i}" style="display: none;">
                   <label for="feeInput${i}" class="form-label">Enter Fee Amount:</label>
-                  <input type="number" id="feeInput${i}" class="form-control mb-2" placeholder="Enter fee in BNB">
+                  <input type="number" id="feeInput${i}" class="form-control mb-2" placeholder="Enter fee in BET">
                   <button class="btn btn-success btn-sm w-100 mb-2" onclick="charge(${i})">Buy</button>
                   <button class="btn btn-warning btn-sm w-100" onclick="Outpay(${i})">Withdrawal</button>
                 </div>
               </div>
+              <div id="transactionStatus${i}" class="mt-3">
+    <!-- 트랜잭션 영수증이 해당 아이디별로 표시될 영역 -->
+</div>
             </div>
           </div>
         `;
@@ -198,42 +205,67 @@ document.getElementById(`showFeaturesBtn${i}`).addEventListener("click", functio
   }
 });
 
-// The charge function that calls the buy function on the contract
 async function charge(id) {
   try {
     const feeInput = document.getElementById(`feeInput${id}`);
     const feeAmount = parseFloat(feeInput.value);
 
     if (isNaN(feeAmount) || feeAmount <= 0) {
-      alert("Please enter a valid fee amount.");
+      alert("유효한 금액을 입력하세요.");
       return;
     }
 
-    // Set up ethers.js provider
+    // ethers.js 제공자 설정 (메타마스크와 같은 Web3 제공자 사용)
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-    await provider.send("eth_requestAccounts", []);  // Request account access
+    await provider.send("eth_requestAccounts", []);  // 계정 접근 요청
     const signer = provider.getSigner();
 
-    // Contract instance
+    // Affiliate 계약 인스턴스를 생성
     const affiliateContract = new ethers.Contract(
-      contractAddress.affiliateAddr,
-      contractAbi.affiliate,
-      signer
+      contractAddress.affiliateAddr,  // 계약 주소 (실제 주소로 변경)
+      contractAbi.affiliate,         // 계약 ABI (실제 ABI로 변경)
+      signer                          // 트랜잭션 서명을 위한 signer
     );
 
-    // Call the buy function with the provided fee and affiliate id
-    const tx = await affiliateContract.buy(id,feeAmount);
-    
-    // Wait for the transaction to be mined
+    // buy 함수 호출, id와 feeAmount를 파라미터로 전달
+    const tx = await affiliateContract.buy(id, feeAmount);
+
+    // 트랜잭션이 처리될 때까지 기다림
     const receipt = await tx.wait();
-    
-    console.log("Transaction successful:", receipt);
-    alert("Purchase successful!");
+
+    // 트랜잭션 성공 시 콘솔에 영수증 정보 출력
+    console.log("트랜잭션 성공:", receipt);
+
+    // 해당 ID에 대한 영수증을 화면에 표시
+    displayReceipt(id, receipt, feeAmount);
+
+    alert("Purchase completed successfully!");
 
   } catch (e) {
-    alert(e.data.message.replace('execution reverted: ', ''));
+    const errorMessage = e.data ? e.data.message.replace('execution reverted: ', '') : e.message;
+    alert(`오류 발생: ${errorMessage}`);
+    console.error("트랜잭션 실패:", errorMessage, e);
   }
 }
+
+// 영수증을 해당 ID에 표시하는 함수
+function displayReceipt(id, receipt, feeAmount) {
+  const receiptElement = document.getElementById(`transactionStatus${id}`);
+
+  // 영수증 내용 표시
+  const receiptContent = `
+<h5>Transaction Receipt</h5>
+<p><strong>Transaction Hash:</strong> <a href="https://opbnbscan.com/tx/${receipt.transactionHash}" target="_blank">${receipt.transactionHash}</a></p>
+<p><strong>Block Number:</strong> ${receipt.blockNumber}</p>
+<p><strong>Block Hash:</strong> ${receipt.blockHash}</p>
+<p><strong>Status:</strong> ${receipt.status === 1 ? 'Success' : 'Failure'}</p>
+<p><strong>Amount Paid:</strong> ${feeAmount} BET</p>
+  `;
+
+  // 화면에 표시
+  receiptElement.innerHTML = receiptContent;
+}
+
 
 
 
