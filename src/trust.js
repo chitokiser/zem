@@ -56,10 +56,10 @@
   
         // Create a list item for each entry
         menListHtml += `
-          <div class="men-item card mb-3" style="max-width: 600px; margin: 20px auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <div class="card-header" style="background-color: #f8f9fa; font-size: 1.2rem;">
-              <strong>Money Manager ID #${i}</strong>
-            </div>
+         <div class="money-manager-item card mb-3" style="max-width: 600px; margin: 20px auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <div class="money-manager-header card-header" style="background-color: #f8f9fa; font-size: 1.2rem;">
+        <p><strong>Money Manager ID #${i}</strong></p>
+    </div>
             <div class="card-body" style="background-color: #ffffff; padding: 15px;">
               <p><strong>Name:</strong> ${name}</p>
               <p><strong>Deposit:</strong> ${(pay / 1e18).toFixed(2)} BET</p>

@@ -564,97 +564,107 @@ let Withdraw = async () => {
 
 
 let GetLadyStatus = async () => {
-    try {
-    
-        let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  try {
+  
+      let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
-        await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [{
-                chainId: "0xCC",
-                rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-                chainName: "opBNB",
-                nativeCurrency: {
-                    name: "BNB",
-                    symbol: "BNB",
-                    decimals: 18
-                },
-                blockExplorerUrls: ["https://opbnbscan.com"]
-            }]
-        });
+      await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [{
+              chainId: "0xCC",
+              rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+              chainName: "opBNB",
+              nativeCurrency: {
+                  name: "BNB",
+                  symbol: "BNB",
+                  decimals: 18
+              },
+              blockExplorerUrls: ["https://opbnbscan.com"]
+          }]
+      });
 
-        // 사용자 계정 요청
-        await userProvider.send("eth_requestAccounts", []);
+      // 사용자 계정 요청
+      await userProvider.send("eth_requestAccounts", []);
 
-        // 서명자 가져오기
-        let signer = userProvider.getSigner();
-        let matchContract2 = new ethers.Contract(contractAddress2.matchAddr2, contractAbi2.match2, signer);
+      // 서명자 가져오기
+      let signer = userProvider.getSigner();
+      let matchContract2 = new ethers.Contract(contractAddress2.matchAddr2, contractAbi2.match2, signer);
 
-        // getlid 호출하여 사용자의 lid 가져오기
-        let userAddress = await signer.getAddress();
-        let lid = await matchContract2.getlid(userAddress); // getlid 호출하여 lid 값 가져오기
+      // getlid 호출하여 사용자의 lid 가져오기
+      let userAddress = await signer.getAddress();
+      let lid = await matchContract2.getlid(userAddress); // getlid 호출하여 lid 값 가져오기
 
-        // ladies 함수 호출하여 여자 정보 가져오기
-        let lady = await matchContract2.ladies(lid); // getlid로 받은 lid 값을 ladies 함수에 전달
+      // ladies 함수 호출하여 여자 정보 가져오기
+      let lady = await matchContract2.ladies(lid); // getlid로 받은 lid 값을 ladies 함수에 전달
 
-        // 반환값 추출
-        let sns = lady[0];   // SNS
-        let time = parseInt(lady[1]); // Deposit (초 단위)
-        let owner = lady[2]; // Waiter address
-        let waiter = lady[3];  // Man address
-        let myman = lady[4];  // Owner address
-        let ok = lady[5];     
-        let num = lady[6];
+      // 반환값 추출
+      let sns = lady[0];   // SNS
+      let time = parseInt(lady[1]); // Deposit (초 단위)
+      let owner = lady[2]; // Waiter address
+      let waiter = lady[3];  // Man address
+      let myman = lady[4];  // Owner address
+      let ok = lady[5];     
+      let num = lady[6];
 
-        // 출금 가능 시간 계산
-        const now = Math.floor(Date.now() / 1000); // 현재 시간 (초 단위)
-        const withdrawalTime = time + 7 * 24 * 60 * 60; // 7 days를 더한 출금 가능 시간
-        const timeLeft = withdrawalTime - now; // 남은 시간 계산
+      // getMid 호출하여 myman 주소로 mid 가져오기
+      let mid = await matchContract2.getMid(myman); // myman 주소로 mid 값 가져오기
 
-        let timeLeftFormatted = "";
-        if (timeLeft > 0) {
-            // 남은 시간을 일, 시, 분, 초로 계산
-            const days = Math.floor(timeLeft / (24 * 60 * 60));
-            const hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
-            const minutes = Math.floor((timeLeft % (60 * 60)) / 60);
-            const seconds = timeLeft % 60;
-            timeLeftFormatted = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
-        } else {
-            timeLeftFormatted = "Withdrawal time is available!";
-        }
+      // men 함수 호출하여 men[3] 정보 가져오기
+      let menData = await matchContract2.men(mid); // mid 값으로 men 정보 가져오기
+      let menValue = menData[3]; // men[3]의 값 가져오기
 
-        // HTML에 표시
-        document.getElementById("LadySns").innerHTML = `SNS: ${sns}`;
-        document.getElementById("LadyTime").innerHTML = `Time left until withdrawal: ${timeLeftFormatted}`;  
-        document.getElementById("LadyOwner").innerHTML = `Owner Address: ${owner}`;
-        document.getElementById("LadyWaiter").innerHTML = `Waiter: ${waiter}`;
-        document.getElementById("LadyMyman").innerHTML = `Myman: ${myman}`;
-        document.getElementById("LadyOk").innerHTML = `Approved: ${ok ? "Yes" : "No"}`;
-        document.getElementById("LadyNum").innerHTML = `Number: ${num}`;
+      // 출금 가능 금액을 화면에 표시
+      document.getElementById("MenValue").innerHTML = `Withdrawable Amount: ${menValue/1e18}BET`;
 
-        // 실시간 남은 시간 업데이트
-        if (timeLeft > 0) {
-            setInterval(() => {
-                const now = Math.floor(Date.now() / 1000);
-                const newTimeLeft = withdrawalTime - now;
+      // 출금 가능 시간 계산
+      const now = Math.floor(Date.now() / 1000); // 현재 시간 (초 단위)
+      const withdrawalTime = time + 7 * 24 * 60 * 60; // 7 days를 더한 출금 가능 시간
+      const timeLeft = withdrawalTime - now; // 남은 시간 계산
 
-                if (newTimeLeft > 0) {
-                    const newDays = Math.floor(newTimeLeft / (24 * 60 * 60));
-                    const newHours = Math.floor((newTimeLeft % (24 * 60 * 60)) / (60 * 60));
-                    const newMinutes = Math.floor((newTimeLeft % (60 * 60)) / 60);
-                    const newSeconds = newTimeLeft % 60;
+      let timeLeftFormatted = "";
+      if (timeLeft > 0) {
+          // 남은 시간을 일, 시, 분, 초로 계산
+          const days = Math.floor(timeLeft / (24 * 60 * 60));
+          const hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
+          const minutes = Math.floor((timeLeft % (60 * 60)) / 60);
+          const seconds = timeLeft % 60;
+          timeLeftFormatted = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+      } else {
+          timeLeftFormatted = "Withdrawal time is available!";
+      }
 
-                    document.getElementById("LadyTime").innerHTML = 
-                        `Time left until withdrawal: ${newDays} days ${newHours} hours ${newMinutes} minutes ${newSeconds} seconds`;
-                } else {
-                    document.getElementById("LadyTime").innerHTML = "Withdrawal time is available!";
-                    clearInterval();
-                }
-            }, 1000);
-        }
+      // HTML에 표시
+      document.getElementById("LadySns").innerHTML = `SNS: ${sns}`;
+      document.getElementById("LadyTime").innerHTML = `Time left until withdrawal: ${timeLeftFormatted}`;  
+      document.getElementById("LadyOwner").innerHTML = `Owner Address: ${owner}`;
+      document.getElementById("LadyWaiter").innerHTML = `Waiter: ${waiter}`;
+      document.getElementById("LadyMyman").innerHTML = `Myman: ${myman}`;
+      document.getElementById("LadyOk").innerHTML = `Approved: ${ok ? "Yes" : "No"}`;
+      document.getElementById("LadyNum").innerHTML = `Number: ${num}`;
 
-    } catch (error) {
-        console.error("Error in GetLadyStatus:", error);
-        alert("Failed to retrieve lady's data.");
-    }
+      // 실시간 남은 시간 업데이트
+      if (timeLeft > 0) {
+          setInterval(() => {
+              const now = Math.floor(Date.now() / 1000);
+              const newTimeLeft = withdrawalTime - now;
+
+              if (newTimeLeft > 0) {
+                  const newDays = Math.floor(newTimeLeft / (24 * 60 * 60));
+                  const newHours = Math.floor((newTimeLeft % (24 * 60 * 60)) / (60 * 60));
+                  const newMinutes = Math.floor((newTimeLeft % (60 * 60)) / 60);
+                  const newSeconds = newTimeLeft % 60;
+
+                  document.getElementById("LadyTime").innerHTML = 
+                      `Time left until withdrawal: ${newDays} days ${newHours} hours ${newMinutes} minutes ${newSeconds} seconds`;
+              } else {
+                  document.getElementById("LadyTime").innerHTML = "Withdrawal time is available!";
+                  clearInterval();
+              }
+          }, 1000);
+      }
+
+  } catch (error) {
+      console.error("Error in GetLadyStatus:", error);
+      alert("Failed to retrieve lady's data.");
+  }
 };

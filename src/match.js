@@ -71,9 +71,10 @@
             <p>Proposal Waiter: ${waiter}</p>
             <p>Accept the proposal: ${ok}</p>
             <p>Number of times: ${num}</p>
+            <hr>
              <button class="sns-button" id="snsButton-${i}">View SNS</button>
              <button class="propose-button" id="proposeButton-${i}">Propose</button>
-          
+             <hr>
           `;
   
       
