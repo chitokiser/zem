@@ -51,10 +51,10 @@
   
       // Register event listener after contract initialization
       cyafarmContract.on('farmnum', (winnum) => {
-        console.log('슬롯번호:', winnum);
-        let eventS1Element = document.getElementById('event');
+        console.log('pot no.:', winnum);
+        let eventS1Element = document.getElementById('SeedingNum');
         if (eventS1Element) {
-          eventS1Element.innerText = `예치된 슬롯: ${winnum}`;
+          eventS1Element.innerText = `pot num: ${winnum}`;
         } else {
           console.error('Error: Element with ID "event" not found.');
         }
@@ -127,9 +127,11 @@
     }
   };
   
-  // 함수 실행
+// 5초마다 데이터 갱신
+setInterval(() => {
   topDataSync();
-  
+}, 5000);
+
 
   
          let MemberLogin = async () => {
@@ -156,7 +158,8 @@
           let mygain = await cyafarmContract.getpay(await signer.getAddress());
           let imytiket = await cyafarmContract.mytiket(await signer.getAddress());
       
-          document.getElementById("Farmgain").innerHTML = parseInt(mygain/1e18).toFixed(2); //순이익 총액
+          document.getElementById("Farmgain").innerHTML = (parseFloat(mygain) / 1e18).toFixed(2);
+
           document.getElementById("LevelBar").style.width = `${imytiket/10*100}%`; 
         };
         

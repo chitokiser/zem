@@ -289,7 +289,8 @@
     #eventV1,
     #eventA1,
     #eventT1,
-    #userState
+    #userState,
+    #SeedingNum
     
      {
       font-size: 2em; /* Default font size */
@@ -693,7 +694,29 @@ p:last-of-type {
     padding: 15px;
 }
 
+svg {
+  position: absolute; /* 부모 기준으로 위치 고정 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; /* 화면 전체 너비 */
+  height: auto; /* 화면 전체 높이 */
+  background-color: black; /* 검은색 배경 */
+  z-index: 10; /* 상단 배치 */
+}
 
+/* 텍스트 스타일 */
+text {
+  fill: url(#imagePattern); /* 패턴 채우기 */
+  font-family: "Protest Guerrilla", sans-serif;
+  font-size: 150px; /* 텍스트 크기 */
+  letter-spacing: 5px; /* 글자 간격 */
+  stroke: rgb(130, 217, 252); /* 테두리 색상 */
+  stroke-width: 2px; /* 테두리 두께 */
+  stroke-dasharray: 500; /* 애니메이션 준비 */
+  stroke-dashoffset: 500;
+  filter: url(#glowFilter); /* 글로우 효과 */
+}
 
 
 

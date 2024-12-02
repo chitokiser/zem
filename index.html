@@ -12,7 +12,12 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
-    
+    <link rel="stylesheet" href="/css/betdao.css">
+    <!-- Font for the SVG -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
+
     <title>BetDAO</title>
 </head>
 <body>
@@ -35,15 +40,36 @@
           .catch(error => console.error('Error loading the dashboard content:', error));
   </script>
     
-
-
+<hr>
+ <!-- SVG Section -->
+ <div class="container my-5">
+  <div class="text-center">
+      <svg viewBox="0 0 800 200">
+          <defs>
+              <pattern id="imagePattern" patternUnits="userSpaceOnUse" width="400" height="400">
+                  <image href="https://iili.io/20FHSCN.png" x="0" y="0" width="400" height="400" />
+              </pattern>
+              <filter id="glowFilter" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blurred" />
+                  <feOffset in="blurred" dx="0" dy="0" result="offsetBlurred" />
+                  <feFlood flood-color="cyan" result="glowColor" />
+                  <feComposite in="glowColor" in2="offsetBlurred" operator="in" />
+                  <feMerge>
+                      <feMergeNode />
+                      <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+              </filter>
+          </defs>
+          <text id="animatedText" x="50" y="150">  BET DAO </text>
+      </svg>
+  </div>
+</div>
  
-          
 
             <div class="container my-4">
               <!-- Welcome Section -->
               <div class="card mb-4">
-                <div class="card-header text-center bg-primary text-white">
+                <div class="card-header text-center bg-secondary text-white">
                   <h4>Welcome to BetDAO</h4>
                 </div>
                 <div class="card-body text-center">
@@ -214,6 +240,8 @@
           <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+   
+        <script src="..\src\betdao.js"></script>
        
 
        
