@@ -42,19 +42,31 @@ const contractAddress = {
       const jack = await affiliateContract.jack();
       document.getElementById("Jack").innerText = (jack/ 1e18).toFixed(2);
 
-      affiliateContract.on("reward", (amount, event) => {
+      affiliateContract.on("reward", async (amount, event) => {
         console.log("Reward event detected!");
         console.log("Amount received:", amount.toString());
     
-        // Convert amount to a readable format (assuming 1e18 for token decimals)
-        const rewardAmount = (amount / 1e18).toFixed(2);
+        // 현재 연결된 사용자의 주소를 가져오기
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const signer = provider.getSigner();
+        const userAddress = await signer.getAddress();
     
-        // Display the amount in the alert
-        alert(`Reward Amount: ${rewardAmount} BET`);
+        // 이벤트 발생자의 주소를 확인 (event 객체에서 sender 주소를 추출)
+        const senderAddress = event.args[0]; // assuming the sender is in the first argument
     
-        // Optionally, log the full event
-        console.log("Full event data:", event);
-      });
+        // 만약 이벤트 발생자가 현재 연결된 사용자와 동일하다면
+        if (userAddress.toLowerCase() === senderAddress.toLowerCase()) {
+            // Convert amount to a readable format (assuming 1e18 for token decimals)
+            const rewardAmount = (amount / 1e18).toFixed(2);
+    
+            // Display the amount in the alert
+            alert(`Reward Amount: ${rewardAmount} BET`);
+    
+            // Optionally, log the full event
+            console.log("Full event data:", event);
+        }
+    });
+    
  
 
 
