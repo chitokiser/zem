@@ -195,3 +195,4 @@ let getUserMypgValue = async () => {
 };
 
 document.getElementById("checkMypgButton").onclick = getUserMypgValue;
+

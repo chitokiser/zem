@@ -8,32 +8,31 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.88.1">
     <link rel="shortcut icon" href="../images/logo.png" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-        crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
-    
     <title>BetDAO</title>
 </head>
+
 <body>
     <!-- Placeholder for dynamic header -->
     <div id="menu-placeholder"></div>
 
     <script>
-      // Load header dynamically from dashboard.html
-      fetch('../dashboard.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('menu-placeholder').innerHTML = data;
-              
-              // After injecting content, dynamically load the topinfo.js script
-              const script = document.createElement('script');
-              script.src = '../src/topinfo.js';
-              script.type = 'text/javascript';
-              document.body.appendChild(script);  // Append the script to the body
-          })
-          .catch(error => console.error('Error loading the dashboard content:', error));
-  </script>
+        // Load header dynamically from dashboard.html
+        fetch('../dashboard.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('menu-placeholder').innerHTML = data;
+
+                // After injecting content, dynamically load the topinfo.js script
+                const script = document.createElement('script');
+                script.src = '../src/topinfo.js';
+                script.type = 'text/javascript';
+                document.body.appendChild(script);  // Append the script to the body
+            })
+            .catch(error => console.error('Error loading the dashboard content:', error));
+    </script>
+ 
 
             <div class="container mt-4">
               <!-- Blockchain Wedding -->
@@ -61,53 +60,67 @@
                   <div class="mb-3">
                     <label for="ManSnsInput" class="form-label">SNS Address:</label>
                     <input type="text" id="ManSnsInput" class="form-control" placeholder="Enter SNS address" />
-                    <button class="btn btn-outline-success mt-2" onclick="addManData()">Register</button>
+                    <button onclick="addManData()">Submit SNS Data</button>
                   </div>
                 </div>
               </div>
-            
+           
+           
               <!-- My Status (Men) -->
-              <div class="card mb-3">
-                <div class="card-header">
-                  <h5>My Status (Men)</h5>
-                  <button class="btn btn-outline-primary float-end" data-bs-toggle="collapse" data-bs-target="#myStatusSection" aria-expanded="false" aria-controls="myStatusSection">
-                    Toggle Status
-                  </button>
-                </div>
-                <div class="card-body collapse" id="myStatusSection">
-                  <button class="btn btn-outline-success mb-3" onclick="Mystatus()">Wallet Connection (Men Only)</button>
-                  <ul class="list-group">
-                    <li class="list-group-item">SNS: <span id="Sns">-</span></li>
-                    <li class="list-group-item">Deposit: <span id="Depo">-</span></li>
-                    <li class="list-group-item">Time: <span id="Time">-</span></li>
-                    <li class="list-group-item">Price: <span id="Price">-</span></li>
-                    <li class="list-group-item">Owner: <span id="Owner">-</span></li>
-                    <li class="list-group-item">My Lady: <span id="Mylady">-</span></li>
-                    <li class="list-group-item">Number: <span id="Num">-</span></li>
-                  </ul>
-                  <div class="mt-3">
-                    <label for="priceInput" class="form-label">Withdrawal Amount:</label>
-                    <input type="number" id="priceInput" class="form-control" placeholder="Enter amount" />
-                    <button class="btn btn-outline-success mt-2" onclick="setPrice()">Submit</button>
-                  </div>
-                  <div class="mt-3">
-                    <label for="wifeNumber" class="form-label">Wife Number:</label>
-                    <input type="number" id="wifeNumber" class="form-control" placeholder="Enter wife number" />
-                    <button class="btn btn-outline-primary mt-2" onclick="handleAcceptWife()">Accept Wife</button>
-                  </div>
-                  <div class="mt-3">
-                    <label for="chargeAmount" class="form-label">Charge Amount:</label>
-                    <input type="number" id="chargeAmount" class="form-control" placeholder="Enter charge amount" />
-                    <button class="btn btn-outline-info mt-2" onclick="handleCharge()">Charge</button>
-                  </div>
-                  <div class="mt-3">
-                    <button class="btn btn-outline-danger" onclick="handleDivorce()">Divorce</button>
-                  </div>
-                </div>
-              </div>
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5>My Status (Men)</h5>
+    <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#myStatusSection" aria-expanded="false" aria-controls="myStatusSection">
+      Toggle Status
+    </button>
+  </div>
+  <div class="card-body collapse" id="myStatusSection">
+    <button class="btn btn-outline-success mb-3" onclick="Mystatus()"> Wallet Connection</button>
+    
+    <ul class="list-group mb-3">
+      <li class="list-group-item"><span id="Sns">-</span></li>
+      <li class="list-group-item"><span id="Depo">-</span></li>
+      <li class="list-group-item"><span id="Time">-</span></li>
+      <li class="list-group-item"><span id="Price">-</span></li>
+      <li class="list-group-item"><span id="Owner">-</span></li>
+      <li class="list-group-item"><span id="Mylady">-</span></li>
+      <li class="list-group-item"><span id="Num">-</span></li>
+    </ul>
+
+    <div class="mb-3">
+      <label for="priceInput" class="form-label">Wife's Withdrawal Amount:</label>
+      <div class="input-group">
+        <input type="number" id="priceInput" class="form-control" placeholder="Enter amount" />
+        <button class="btn btn-outline-success" onclick="setPrice()">Submit</button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="wifeNumber" class="form-label">Wife Number:</label>
+      <div class="input-group">
+        <input type="number" id="wifeNumber" class="form-control" placeholder="Enter wife number" />
+        <button class="btn btn-outline-primary" onclick="handleAcceptWife()">Accept Wife</button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="chargeAmount" class="form-label">Charge Amount:</label>
+      <div class="input-group">
+        <input type="number" id="chargeAmount" class="form-control" placeholder="Enter charge amount" />
+        <button class="btn btn-outline-info" onclick="handleCharge()">Charge</button>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <button class="btn btn-outline-danger" onclick="handleDivorce()">Divorce</button>
+    </div>
+  </div>
+</div>
+
+        
             
               <!-- Female Member List -->
-              <div class="card mb-3">
+              <div class="card mb-2">
                 <div class="card-header">
                   <h5>List of Female Members</h5>
                 </div>
@@ -137,14 +150,16 @@
             
               <!-- My Status (Women) -->
               <div class="card mb-3">
-                <div class="card-header">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                   <h5>My Status (Women)</h5>
-                  <button class="btn btn-outline-primary float-end" data-bs-toggle="collapse" data-bs-target="#ladyStatusDetails" aria-expanded="false" aria-controls="ladyStatusDetails">
+                  <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#ladyStatusDetails" aria-expanded="false" aria-controls="ladyStatusDetails">
                     Toggle Status
                   </button>
                 </div>
+                
                 <div class="card-body collapse" id="ladyStatusDetails">
                   <ul class="list-group">
+                    <button class="btn btn-outline-success mb-3" onclick="GetLadyStatus()">Wallet Connection (Women Only)</button>
                     <li class="list-group-item">SNS: <span id="LadySns">-</span></li>
                     <li class="list-group-item">Time left until withdrawal: <span id="LadyTime">-</span></li>
                     <li class="list-group-item">Owner Address: <span id="LadyOwner">-</span></li>
@@ -170,39 +185,29 @@
             
  
 
+ 
     
-            
-<!--Start footer -->
-  
- <div id="footer"></div>
+            <!-- Start footer -->
+    <div id="footer"></div>
 
- <script>
-   // Load header dynamically from dashboard.html
-   fetch('../footer.html')
-       .then(response => response.text())
-       .then(data => {
-           document.getElementById('footer').innerHTML = data;
-           
-           // After injecting content, dynamically load the topinfo.js script
-           const script = document.createElement('script');
-      
-           document.body.appendChild(script);  // Append the script to the body
-       })
-       .catch(error => console.error('Error loading the dashboard content:', error));
-</script>
-<!-- End footer -->
-                   
-              <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-                crossorigin="anonymous"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
-              <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-              <script type="text/javascript"></script>
-             
-              <script src="..\src\topinfo.js"></script>
-              <script src="..\src\match.js"></script>
-              </script>
+    <script>
+        // Load footer dynamically from footer.html
+        fetch('../footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading the footer content:', error));
+    </script>
+    <!-- End footer -->
 
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+   
+    <script src="..\src\match.js"></script>
+    <script src="..\src\match2.js"></script>
+</body>
 
 </html>

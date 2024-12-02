@@ -36,8 +36,8 @@ interface Ibutbank {
       address public admin;
       mapping (address => uint)public staff;
       event result(uint num1,uint num2);
-      event reward(uint amount);
-      event loss(uint amount);
+     event reward(address indexed user, uint amount);
+     event loss(address indexed user, uint amount);
        
   
 
