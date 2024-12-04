@@ -14,7 +14,7 @@ const contractAddress = {
       "function jack() public view returns(uint)",
       "function g1() public view virtual returns(uint256)",
       "function allis(uint num) public view returns(string memory name,string memory home,string memory phone,string memory add,uint rate,address owner,uint pay,uint totalpay)",
-      "event reward (uint amount);"
+      "event reward (uint amount)"
     ],
     BetToken :[
       "function decimals() view returns (uint8)"

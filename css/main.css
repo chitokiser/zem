@@ -293,7 +293,7 @@
     #SeedingNum
     
      {
-      font-size: 2em; /* Default font size */
+      font-size: 1em; /* Default font size */
       color: rgb(238, 155, 11); /* Set font color to green */
       transform: perspective(1000px) rotateY(10deg);
   }
@@ -717,5 +717,36 @@ text {
   filter: url(#glowFilter); /* 글로우 효과 */
 }
 
+.input-letter {
+  width: 30px;      /* 입력란의 고정된 너비 */
+  text-align: center;  /* 입력된 글자를 가운데 정렬 */
+  margin-right: 5px;   /* 입력란 간의 간격을 조금 둡니다 */
+}
 
+.input-letter:last-child {
+  margin-right: 0; /* 마지막 입력란에는 오른쪽 간격을 없앰 */
+}
 
+.vertical-input-container {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 10px; /* 각 행 사이 간격 */
+}
+
+.d-flex {
+  display: flex;
+  gap: 5px; /* 각 입력 필드 사이 간격 */
+}
+
+.input-letter {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.input-letter:disabled {
+  background-color: lightgray; /* 비활성화된 필드 색상 */
+}

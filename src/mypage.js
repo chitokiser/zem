@@ -216,25 +216,23 @@ const fetchAddresses = async () => {
     const addressList = document.getElementById('addressList');
     addressList.innerHTML = ''; // 기존 리스트 초기화
 
-    // 주소가 정상적으로 반환되었는지 확인 후 목록 업데이트
-    if (addresses.length > 0) {
-      addresses.forEach(address => {
-        const listItem = document.createElement('li');
-        listItem.textContent = address;
-        addressList.appendChild(listItem);
-      });
-    } else {
-      // 주소가 없을 때 메시지 표시
-      const listItem = document.createElement('li');
-      listItem.textContent = "추천한 조합원이 없습니다.";
-      addressList.appendChild(listItem);
-    }
-  } catch (error) {
-    // 오류 발생 시 콘솔에 오류 메시지 출력 및 사용자에게 알림
-    console.error('주소를 가져오는 중 오류가 발생했습니다:', error);
-    alert('주소를 가져오는 중 오류가 발생했습니다. 다시 시도해 주세요.');
+  // Check if the address is returned normally and update the list
+if (addresses.length > 0) {
+  addresses.forEach(address => {
+  const listItem = document.createElement('li');
+  listItem.textContent = address;
+  addressList.appendChild(listItem);
+  });
+  } else {
+  // Display a message when there is no address
+  const listItem = document.createElement('li');
+  listItem.textContent = "There are no recommended members.";
+  addressList.appendChild(listItem);
   }
-};
+  } catch (e) {
+    alert(e.data.message.replace('execution reverted: ',''))
+  }
+  };
 
 // 버튼 클릭 시 주소 가져오기 함수 실행
 document.getElementById('fetchAddresses').addEventListener('click', fetchAddresses);

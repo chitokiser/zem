@@ -1,124 +1,120 @@
-
-
 // SPDX-License-Identifier: MIT  
 // ver1.0
 pragma solidity >=0.7.0 <0.9.0;
 
-
 interface Ibet {     
-  function balanceOf(address account) external view returns (uint256);
-  function allowance(address owner, address spender) external view returns (uint256);
-  function transfer(address recipient, uint256 amount) external returns (bool);
-  function approve(address spender, uint256 amount) external returns (bool);
-  function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
 interface Ibutbank {
     function depoup(address _user, uint _depo) external;
-    function depodown(address _user, uint _depo) external;
-    function getprice() external view returns (uint256);
     function getlevel(address user) external view returns (uint);
-    function g8(address user) external view returns(uint); //유저별 cut 현황
-    function g9(address user) external view returns (uint); // 각 depo현황
-    function getagent(address user) external view returns (address);
     function getmento(address user) external view returns (address);
-    function expup(address _user, uint _exp) external;
 }
 
+interface Igp {
+    function gpup(address _user, uint _gp) external;
+    function gpdown(address _user, uint _gp) external;
+    function g1() external view returns (uint256); // contract balance
+    function g2(address user) external view returns (uint256); // user balance
+}
 
+contract Dicefootball {
+    Ibet public bet;
+    Igp public gp;
+    Ibutbank public butbank;
+    address public admin;
+    mapping(address => uint) public staff;
 
+    event Result(address indexed user, uint home, uint away); // added user filter
+    event Reward(address user, uint amount);
+    event Loss(address user, uint amount);
 
+    constructor(address _bet, address _gp, address _butbank) {
+        bet = Ibet(_bet);
+        gp = Igp(_gp);
+        butbank = Ibutbank(_butbank);
+        admin = msg.sender;
+    }
 
- //누적수당 기록
-    contract Dicefootball {
-      Ibet bet;
-      Ibutbank butbank;
-      address public admin;
-      mapping (address => uint)public staff;
-      event result(uint num1,uint num2);
-     event reward(address indexed user, uint amount);
-     event loss(address indexed user, uint amount);
-       
-  
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Not an admin");
+        _;
+    }
 
-     constructor(address _bet,address _butbank) public { 
-      bet = Ibet(_bet);
-      butbank = Ibutbank(_butbank);
-      admin = msg.sender;
-    
-      }
- 
+    modifier onlyMember() {
+        require(butbank.getlevel(msg.sender) >= 1, "Not a member");
+        _;
+    }
 
-  function staffup(address _staff,uint8 num)public {  
-        require( admin == msg.sender,"no admin"); 
+    function staffUp(address _staff, uint8 num) public onlyAdmin {
         staff[_staff] = num;
-        }   
+    }
 
-
-
-   function play(uint8 _winnum, uint _bet) public {  
+function play(uint8 _winnum, uint _bet) public onlyMember {
     require(1 <= _winnum && _winnum <= 3, "Invalid choice");
-    uint pay = _bet*1e18;
-    require(g1() >= pay*6, "No BET in the contract");
-    require(g2(msg.sender) >= pay*6, "not enough Bet");
- 
+
+    uint pay = _bet * 1e18;
+    require(gp.g1() >= pay * 5, "No BET in the contract");
+    require(gp.g2(msg.sender) >= pay * 5, "Not enough gamepoints");
+
     uint home = ran1();
     uint away = ran2();
-    emit result(home, away);
+    emit Result(msg.sender, home, away); // emit with user address
 
-    // 승리한 경우
-    if ((home > away && _winnum == 1) || (home == away && _winnum == 2) || (home < away && _winnum == 3)) {
-        uint winnings;
-        if (_winnum == 1) {
-            winnings = pay * (home - away);
-        } else if (_winnum == 2) {
-            winnings = pay * 550 / 100;
-        } else {
-            winnings = pay * (away - home);
+    uint _loss = 0;
+    uint winnings = 0;
+
+    // Check the win/loss condition
+    if (_winnum == 1 && home > away) {
+        winnings = pay * (home - away); // 홈팀이 이긴 경우 점수 차이 * 배팅 금액
+    } else if (_winnum == 2 && home == away) {
+        winnings = pay * 350 / 100; // 350% for a draw
+    } else if (_winnum == 3 && away > home) {
+        winnings = pay * (away - home); // 어웨이팀이 이긴 경우 점수 차이 * 배팅 금액
+    } else {
+        // 패배 조건 계산
+        if (_winnum == 1 && (home == away || away > home)) {
+            _loss = (home == away) ? pay : pay * (away - home); // 무승부 시 전체 손실, 그렇지 않으면 점수 차이만큼 손실
+        } else if (_winnum == 2 && home != away) {
+            _loss = pay; // 무승부를 선택했지만 틀린 경우 전체 배팅 금액 손실
+        } else if (_winnum == 3 && (home == away || home > away)) {
+            _loss = (home == away) ? pay : pay * (home - away); // 무승부 시 전체 손실, 그렇지 않으면 점수 차이만큼 손실
         }
-        bet.transfer(msg.sender, winnings);
-        emit reward(winnings);
-    } 
-    // 패배한 경우
-    else {
-        uint _loss;
-        if (_winnum == 1) {
-            _loss = pay * (away - home);
-        } else if (_winnum == 3) {
-            _loss = pay * (home - away);
-        } else {
-            _loss = pay;
-        }
-        bet.approve(msg.sender,_loss); 
-        uint256 allowance = bet.allowance(msg.sender, address(this));
-        require(allowance >= _loss, "Check token allowance");
-        bet.transferFrom(msg.sender, address(this),_loss); 
-        emit loss(_loss);
+    }
+
+    // Update user state and emit events
+    if (winnings > 0) {
+        gp.gpup(msg.sender, winnings);
+        emit Reward(msg.sender, winnings);
+    } else {
+        gp.gpdown(msg.sender, _loss);
+        emit Loss(msg.sender, _loss);
+        address mento = butbank.getmento(msg.sender);
+        butbank.depoup(mento, pay * 10 / 100); // 멘토에게 배팅금액의 10% 지급
     }
 }
- 
 
-    
-function g1() public view virtual returns(uint256) {  
-    return bet.balanceOf(address(this));
+
+
+
+    function g1() public view returns (uint256) {
+        return bet.balanceOf(address(this));
+    }
+
+    function g2(address user) public view returns (uint) {
+        return bet.balanceOf(user);
+    }
+
+    function ran1() internal returns (uint) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, msg.sender))) % 6 + 1;
+    }
+
+    function ran2() internal returns (uint) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, "ran2"))) % 6 + 1;
+    }
+
+    // Fallback function to receive Ether
+    receive() external payable {}
 }
-
-function  g2(address user) public view returns(uint) { //cut 잔고 확인
-  return bet.balanceOf(user);
-  }  
-
-  
-  function ran1( ) internal returns(uint){
-   return uint(keccak256(abi.encodePacked(block.timestamp,msg.sender))) % 6+1; 
-   }
-
-  function ran2( ) internal returns(uint){
-   return uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, "ran2"))) % 6 + 1;
-  }
-
-
-  function deposit()external payable{
-  }
- 
-}
-  
