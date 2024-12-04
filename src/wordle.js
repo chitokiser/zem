@@ -75,7 +75,7 @@ const WtopDataSync = async () => {
                             <label>Enter 6 uppercase letters one by one:</label>
                             <div id="input-container-${i}" class="vertical-input-container"></div>
                             <button id="attempt-button-${i}" class="btn btn-primary">Submit Attempt</button>
-                              <button id="withdrawButton-${i}" class="btn btn-warning">Withdraw</button>
+                              <button id="withdrawButton-${i}" class="btn btn-warning">Owner Withdraw</button>
                             </div>
                         <p id="feedback-${i}" class="text-info mt-2"></p>
                     </div>
