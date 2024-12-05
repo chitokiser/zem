@@ -188,7 +188,8 @@ let getUserMypgValue = async () => {
 
     const mygpValue = await betgpContract.g2(userAddress);
 
-    document.getElementById("mypgResult").innerText = ` ${mygpValue.toString()/1e18}GP`;
+    document.getElementById("mypgResult").innerText = `${(mygpValue / 1e18).toFixed(2)} GP`;
+
   } catch (e) {
     document.getElementById("mypgResult").innerText = `Error: ${e.message.replace('execution reverted: ', '')}`;
   }

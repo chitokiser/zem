@@ -118,7 +118,7 @@ const handleAttemptButtonClick = async (gameId, contract) => {
 
         if (receipt.status === 1) {
             // Refresh the page once transaction is confirmed
-            location.reload();
+            
         } else {
             throw new Error("Transaction failed.");
         }
