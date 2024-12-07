@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <link rel="shortcut icon" href="../images/logo.png" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    
+    <title>BetDAO</title>
+</head>
+<body>
+    <!-- Placeholder for dynamic header -->
+    <div id="menu-placeholder"></div>
+
+    <script>
+      // Load header dynamically from dashboard.html
+      fetch('../dashboard.html')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('menu-placeholder').innerHTML = data;
+              
+              // After injecting content, dynamically load the topinfo.js script
+              const script = document.createElement('script');
+              script.src = '../src/topinfo.js';
+              script.type = 'text/javascript';
+              document.body.appendChild(script);  // Append the script to the body
+          })
+          .catch(error => console.error('Error loading the dashboard content:', error));
+  </script>
+  
+  
+ 
+
+
+            <div class="container-box">
+              <div class="card">
+                <div class="card-header">
+                  Goal-Based Profit Competition
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">MT5 $5000 demo account, achieve your target profit by trading automatically or manually </h5>
+                  <p>Reward criteria: $6000 (including initial capital $5000) or more profit realization, 100BET reward per $1000 profit</p>
+                  <p>There is no set period, and it continues until profit realization</p>
+                  <p>After opening a demo account with a deposit of $5000, register the account below and start trading</p>
+                  <p>If you trade first and then register the account, it will be considered fraudulent</p>
+                  <p>For more information, contact your mentor</p>
+                  <li class="list-group-item"> Contract balance: <span id="Ibal">-</span>BET</li>
+                </div>
+              </div>
+            </div>
+
+          
+            <div class="container-box">
+              <div class="card">
+              <div class="card-header">
+              Register MT5 Demo Account
+              </div>
+              <p>Register after opening a $5000 account on the MetaQuotes server</p>
+              <p>You must register before starting trading. Registration after trading is considered fraudulent</p>
+              <p>Enter your account number and invest password and click Register Account</p>
+              <p>Account registration fee 100BET</p>
+              <p>Only level 2 or higher members can register</p>
+              <div class="input-group mb-3">
+              <input type="text" id="Invest" class="form-control" placeholder="Enter your invest password correctly" aria-label="CYA"
+              aria-describedby="basic-addon2">
+              <input type="text" id="Account" class="form-control" placeholder="Please enter the correct demo account number" aria-label="CYA"
+              aria-describedby="basic-addon2">
+              
+              <span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Registration()">Register an account</span>
+              </div>
+              </div>
+              </div>
+
+
+              <div class="container-box">
+                <div class="card">
+          <div id="metaInfoContainer">
+          </div>
+          </div>
+        </div>
+
+              
+        
+                    
+  
+
+  
+  
+  
+     <!--Start footer -->
+  
+ <div id="footer"></div>
+
+ <script>
+   // Load header dynamically from dashboard.html
+   fetch('../footer.html')
+       .then(response => response.text())
+       .then(data => {
+           document.getElementById('footer').innerHTML = data;
+           
+           // After injecting content, dynamically load the topinfo.js script
+           const script = document.createElement('script');
+      
+           document.body.appendChild(script);  // Append the script to the body
+       })
+       .catch(error => console.error('Error loading the dashboard content:', error));
+</script>
+<!-- End footer -->
+           
+          </main>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+          <script type="text/javascript"></script>
+          <script src="..\src\mt5.js"></script>
+          
+      </body>
+  
+  </html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <link rel="shortcut icon" href="../images/logo.png" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/betdao.css">
+    <!-- Font for the SVG -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
+
+    <title>BetDAO</title>
+
+
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f8f9fa;
+      }
+
+      .card {
+          border-radius: 10px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+      }
+
+      .card-header {
+          background-color: #343a40;
+          color: white;
+      }
+
+      .btn-primary,
+      .btn-success,
+      .btn-danger {
+          margin-top: 10px;
+          width: 100%;
+      }
+
+      .svg-container {
+          margin: 20px 0;
+          text-align: center;
+      }
+
+      svg {
+          margin-top: 20px;
+      }
+
+      .footer {
+          background-color: #343a40;
+          color: white;
+          padding: 20px 0;
+          text-align: center;
+      }
+
+      textarea {
+          resize: none;
+      }
+  </style>
+</head>
+<body>
+  
+    <!-- Placeholder for dynamic header -->
+    <div id="menu-placeholder"></div>
+
+    <script>
+      // Load header dynamically from dashboard.html
+      fetch('dashboard.html')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('menu-placeholder').innerHTML = data;
+              
+              // After injecting content, dynamically load the topinfo.js script
+              const script = document.createElement('script');
+              script.src = '../src/topinfo.js';
+              script.type = 'text/javascript';
+              document.body.appendChild(script);  // Append the script to the body
+          })
+          .catch(error => console.error('Error loading the dashboard content:', error));
+  </script>
+    
+
+
+    
+             <!-- Welcome  Section -->
+            <div class="container my-4">
+            
+           
+                <div class="card-body text-center">
+                  <p><strong>BET (Belief Equity Token)</strong></p>
+                  <p>Decentralized P2E, DeFi, Alliance, Dex Service</p>
+                  <p><strong>1 BET token = 1 USD</strong></p>
+                  <p>The value of BET is guaranteed by <strong>opBNB coin</strong>.</p>
+                  <p>Anyone who holds BUT can participate in the decision-making of BetDAO.</p>
+                  <p><strong>100%</strong> of the platform's profits are distributed to BUT owners.</p>
+                  <p>Transparent and fair distribution is made according to platform contribution.</p>
+                </div>
+              </div>
+
+
+
+            
+              <!-- Services Section -->
+              <div class="card mb-4">
+                <div class="card-header text-center bg-secondary text-white">
+                  <h4>BetDAO Services</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row g-4">
+                    <!-- Service Card: MetaTrader5 -->
+                    <div class="col-md-6 col-lg-4">
+                      <div class="card h-100">
+                        <img src="/images/MT5.png" class="card-img-top" alt="MetaTrader5">
+                        <div class="card-body">
+                          <h5 class="card-title">MetaTrader5 Simulated Investment</h5>
+                          <p class="card-text">Open an MT5 demo account ($5000) and register on the blockchain. Earn token rewards upon profit realization.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">Deposit: $5000</li>
+                          <li class="list-group-item">Leverage: Free</li>
+                          <li class="list-group-item">Reward: 100 BET per $1000 profit</li>
+                        </ul>
+                        <div class="card-body text-center">
+                          <a href="../p2e/mt5.html" class="btn btn-primary w-100">Go</a>
+                        </div>
+                      </div>
+                    </div>
+            
+                    <!-- Service Card: Blockchain Soccer -->
+                    <div class="col-md-6 col-lg-4">
+                      <div class="card h-100">
+                        <img src="/images/bs.png" class="card-img-top" alt="Blockchain Soccer">
+                        <div class="card-body">
+                          <h5 class="card-title">Blockchain Soccer</h5>
+                          <p class="card-text">Blockchain-based trustless random number game.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">Bet on Wins, Draws, and Losses</li>
+                          <li class="list-group-item">Rewards proportional to score differences</li>
+                        </ul>
+                        <div class="card-body text-center">
+                          <a href="../p2e/dicefootball.html" class="btn btn-primary w-100">Go</a>
+                        </div>
+                      </div>
+                    </div>
+            
+                    <!-- Service Card: Blockchain Interest Farm -->
+                    <div class="col-md-6 col-lg-4">
+                      <div class="card h-100">
+                        <img src="/images/byf.png" class="card-img-top" alt="Blockchain Interest Farm">
+                        <div class="card-body">
+                          <h5 class="card-title">Blockchain Interest Farm</h5>
+                          <p class="card-text">Plant money tree seeds and harvest profits.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">Seed Price: 10 Game Points (GP)</li>
+                          <li class="list-group-item">Harvest by random number</li>
+                          <li class="list-group-item">Special reward for planting 10 seeds</li>
+                        </ul>
+                        <div class="card-body text-center">
+                          <a href="../defi/farm.html" class="btn btn-primary w-100">Go</a>
+                        </div>
+                      </div>
+                    </div>
+                       
+
+                     <!-- Service Card: Blockchain Payment Management-->
+                     <div class="col-md-6 col-lg-4">
+                      <div class="card h-100">
+                        <img src="..\images\payment.png" class="card-img-top" alt="Blockchain Interest Farm">
+                        <div class="card-body">
+                          <h5 class="card-title">Blockchain Payment Management</h5>
+                          <p class="card-text">Essential services for living in Southeast Asia for a month</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">Labor costs, real estate rent, car rental</li>
+                          <li class="list-group-item">Pay a set amount of money to a set target every week</li>
+                          <li class="list-group-item">Stop paying if you don't use it</li>
+                        </ul>
+                        <div class="card-body text-center">
+                          <a href="../trust/trust.html" class="btn btn-primary w-100">Go</a>
+                        </div>
+                      </div>
+                    </div>
+
+
+                          <!-- Service Card: Blockchain affiliated store-->
+                          <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                              <img src="..\images\affiliate\4.png" class="card-img-top" alt="Blockchain Interest Farm">
+                              <div class="card-body">
+                                <h5 class="card-title">Blockchain affiliated store</h5>
+                                <p class="card-text">Myanmar Affiliate Store</p>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Affiliate Cashback Leverage</li>
+                                <li class="list-group-item">Jackpots greater than the payout amount</li>
+                                <li class="list-group-item">Anyone can register as an affiliate</li>
+                              </ul>
+                              <div class="card-body text-center">
+                                <a href="../alliance/affiliate.html" class="btn btn-primary w-100">Go</a>
+                              </div>
+                            </div>
+                          </div>
+
+                           <!-- Service Card: Blockchain Wordle-->
+                           <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                              <img src="..\images\wordle.png" class="card-img-top" alt="Blockchain Interest Farm">
+                              <div class="card-body">
+                                <h5 class="card-title">Blockchain Wordle</h5>
+                                <p class="card-text">Guess the WORDLE in five tries.</p>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Each guess must be a valid six-letter word. Hit the enter button to submit.</li>
+                                <li class="list-group-item">Members can register their own quizzes</li>
+                                <li class="list-group-item">If you answer the question correctly, you can receive the accumulated amount.</li>
+                              </ul>
+                              <div class="card-body text-center">
+                                <a href="../p2e/wordle.html" class="btn btn-primary w-100">Go</a>
+                              </div>
+                            </div>
+                          </div>
+            
+                           <!-- Service Card: RelayLotto-->
+                           <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                              <img src="..\images\RelayLotto.png" class="card-img-top" alt="Blockchain Interest Farm">
+                              <div class="card-body">
+                                <h5 class="card-title">RelayLotto</h5>
+                                <p class="card-text">Enter 5 numbers from 1 to 45</p>
+                              </div>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item">If 5 numbers match in order, you get a reward</li>
+                                <li class="list-group-item">You get a reward in proportion to the jackpot</li>
+                                <li class="list-group-item">A two-way game where members register and members match.</li>
+                              </ul>
+                              <div class="card-body text-center">
+                                <a href="../p2e/RelayLotto.html" class="btn btn-primary w-100">Go</a>
+                              </div>
+                            </div>
+                          </div>
+                    <!-- Service Card: Matching -->
+                    <div class="col-md-6 col-lg-4">
+                      <div class="card h-100">
+                        <img src="/images/miyanma/1.png" class="card-img-top" alt="Matching">
+                        <div class="card-body">
+                          <h5 class="card-title">Matching</h5>
+                          <p class="card-text">Global Blockchain Wedding Service.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">First Marriage or Remarriage</li>
+                          <li class="list-group-item">Support Fund Trust</li>
+                          <li class="list-group-item">Blockchain Proposal</li>
+                        </ul>
+                        <div class="card-body text-center">
+                          <a href="../trust/match.html" class="btn btn-primary w-100">Go</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          
+
+  <!-- Notice Section -->
+  <div class="container my-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h4>BetDAO Proposal</h4>
+          </div>
+            <P>Contract balance:<span id="Ntvl"></span>Point</P>
+            <P>Qualification to propose: Owners of 50,000 BUT or more</P>
+            <P>Commenter Qualification: Owners of 5,000 BUT or more</P>
+            <P>If more than 100 comments are received, the commenter and proposer will receive a reward proportional to the contract balance.</P>
+            <button class="btn btn-secondary mt-2" onclick="togglePostForm()">Create a new Proposal(Consumes 10 points)</button>
+        </div>
+        <div class="card-body">
+            <div id="post-notice-form" style="display: none;">
+                <textarea class="form-control mb-2" id="post-content" rows="3" placeholder="Please write your proposal ..."></textarea>
+                <button class="btn btn-success" onclick="postNotice()">Submit a Proposal</button>
+            </div>
+            <div id="notices-container" class="accordion accordion-flush"></div>
+        </div>
+    </div>
+</div>
+ 
+  <!--Start footer -->
+  
+     <div id="footer"></div>
+
+     <script>
+       // Load header dynamically from dashboard.html
+       fetch('../footer.html')
+           .then(response => response.text())
+           .then(data => {
+               document.getElementById('footer').innerHTML = data;
+               
+               // After injecting content, dynamically load the topinfo.js script
+               const script = document.createElement('script');
+          
+               document.body.appendChild(script);  // Append the script to the body
+           })
+           .catch(error => console.error('Error loading the dashboard content:', error));
+   </script>
+<!-- End footer -->
+ <!-- SVG Section -->
+ <div class="container my-5">
+  <div class="text-center">
+      <svg viewBox="0 0 800 200">
+          <defs>
+              <pattern id="imagePattern" patternUnits="userSpaceOnUse" width="400" height="400">
+                  <image href="https://iili.io/20FHSCN.png" x="0" y="0" width="400" height="400" />
+              </pattern>
+              <filter id="glowFilter" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blurred" />
+                  <feOffset in="blurred" dx="0" dy="0" result="offsetBlurred" />
+                  <feFlood flood-color="cyan" result="glowColor" />
+                  <feComposite in="glowColor" in2="offsetBlurred" operator="in" />
+                  <feMerge>
+                      <feMergeNode />
+                      <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+              </filter>
+          </defs>
+          <text id="animatedText" x="50" y="150"> Welcom BetDAO </text>
+      </svg>
+  </div>
+</div>           
+  
+        </main>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="..\src\notice.js"></script>
+        <script src="..\src\betdao.js"></script>
+       
+
+       
+       
+        
+    </body>
+
+</html>

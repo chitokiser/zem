@@ -1,0 +1,807 @@
+  
+  
+  
+  /* 기본 레이아웃 스타일 */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#menu-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+#content-frame {
+    position: absolute;
+    top: 56px; /* 네비게이션 바 높이 */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 56px);
+    border: none;
+}
+
+
+
+
+/* 기본적으로 My Status 섹션을 숨김 */
+.collapse {
+  display: none;
+}
+
+/* My Status 섹션을 펼쳤을 때 */
+.mystatusshow {
+  display: block;
+}
+
+
+
+.lady-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* 개별 카드 스타일 */
+.lady-item {
+  width: 100%; /* 기본적으로 화면 너비에 맞게 */
+  max-width: 400px; /* 최대 너비 제한 */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #fff;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lady-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 이미지 스타일 (반응형) */
+.lady-item img {
+  width: 100%; /* 가로 너비를 부모 크기에 맞춤 */
+  height: auto; /* 높이는 비율 유지 */
+  object-fit: cover; /* 비율 유지하며 이미지 잘림 방지 */
+}
+
+/* 텍스트 스타일 */
+.lady-item p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.lady-item p strong {
+  font-size: 18px;
+  color: #333;
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+  .lady-item {
+    max-width: 100%; /* 작은 화면에서는 카드가 전체 너비로 확장 */
+  }
+}
+
+  /* 레이디 리스트 끝*/
+
+  ul.list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+  }
+  ul.list::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .tab-button {
+    display: block;
+    padding: 10px 20px 10px 20px;
+    float: left;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    color: grey;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .orange {
+    border-top: 2px solid orange;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid white;
+    border-left: 1px solid #ccc;
+    color: black;
+    margin-top: -2px;
+  }
+  .tab-content {
+    display: none;
+    padding: 10px;
+  }
+  .show {
+    display: block;
+  }
+  #eventData {
+    font-size: 24px; /* Increase font size */
+    /* Add any other styles as needed */
+}
+
+.threed {
+  text-shadow: 1px 1px 2px #ed6706, 0 0 1em #000, 0 0 0.2em #5a06f6;
+}
+
+.larger {
+  font-size: 2em;
+}
+
+.red {
+  color: red; 
+}
+
+.container-box {
+  position: relative;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.container-box::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #000;
+  transform: translateY(-50%);
+}
+.flashy-button {
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Win button style */
+.win-button {
+  background-color: #e1ebe2; /* Green */
+}
+
+.win-button:hover {
+  background-color: #45a049; /* Darker green */
+}
+
+/* Draw button style */
+.draw-button {
+  background-color: #c5bbd9; /* Purple */
+}
+
+.draw-button:hover {
+  background-color: #512da8; /* Darker purple */
+}
+
+/* Lose button style */
+.lose-button {
+  background-color: #d0aeab; /* Red */
+}
+
+.lose-button:hover {
+  background-color: #e53935; /* Darker red */
+}.lighting-text {
+  color: transparent;
+  background-image: linear-gradient(90deg, rgb(211, 212, 202), rgba(153, 235, 12, 0.903), transparent);
+  background-size: 200% 100%;
+  background-position: -100%;
+  animation: lightingAnimation 2s linear infinite alternate;
+}
+
+
+.container-box img {
+  width: 100%; /* Make the image fill the container horizontally */
+  height: auto; /* Automatically adjust the height based on the image's aspect ratio */
+  display: block; /* Make sure the image behaves as a block element */
+}
+
+.fluorescent-btn {
+  position: relative;
+  background-color: #bfd2aa; /* Fluorescent green color */
+  border-color: #a5a9a4; /* Border color matches the background color */
+  color: #000; /* Text color */
+  overflow: hidden;
+  padding: 10px 20px; /* Adjust padding as needed */
+}
+
+.fluorescent-btn::before {
+  content: "Good luck"; /* Text for the billboard */
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  white-space: nowrap;
+  animation: billboard 10s linear infinite; /* Adjust duration and animation type as needed */
+}
+
+@keyframes billboard {
+  0% {
+    transform: translate(-100%, -50%);
+  }
+  100% {
+    transform: translate(-100%, -50%) translateX(-100%); /* Move text to the left */
+  }
+}
+
+.fluorescent-btn:hover {
+  background-color: #0f9d58; /* Darker shade on hover */
+  border-color: #c9ecdb; /* Border color matches the background color */
+  color: #fff; /* Text color on hover */
+}
+
+.fluorescent-btn:hover::before {
+  display: none; /* Hide the text on hover */
+}
+
+
+    /* Define custom cursor styles */
+    .btn {
+        cursor: pointer; /* Default cursor */
+    }
+
+    .btn:hover {
+        cursor: pointer; /* Cursor changes to hand shape on hover */
+    }
+
+    .btn:active {
+        transform: translateY(1px); /* Button moves down slightly when clicked, giving a pressed feeling */
+    }
+
+        /* Define custom styles for the input group text */
+        .input-group-text {
+          cursor: pointer; /* Default cursor */
+          transition: background-color 0.3s; /* Smooth transition for color change */
+      }
+  
+      .input-group-text:hover {
+          background-color: #f0f0f0; /* Change background color on hover */
+      }
+  
+      .input-group-text:active {
+          transform: translateY(1px); /* Move the text down slightly when clicked */
+      }
+
+      .list-group-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 15vh; /* Ensure full height of the viewport */
+    }
+    #eventR1,
+    #eventS1,
+    #eventS2,
+    #eventV1,
+    #eventA1,
+    #eventT1,
+    #userState,
+    #SeedingNum
+    
+     {
+      font-size: 1em; /* Default font size */
+      color: rgb(238, 155, 11); /* Set font color to green */
+      transform: perspective(1000px) rotateY(10deg);
+  }
+  
+  /* Adjust font size for smaller screens */
+  @media screen and (max-width: 600px) {
+      #eventS2 {
+          font-size: 0.8em; /* Adjust font size for smaller screens */
+      }
+  }
+
+  .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full height of the viewport */
+  }
+
+
+  .scroll-box {
+    max-width: 100%;
+    height: 50vh; /* 높이를 뷰포트 높이의 50%로 설정 */
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.button-disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.button-enabled {
+    background-color: #28a745;
+    cursor: pointer;
+}
+
+.responsive-img {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 10px;
+}
+
+.purchase-form-container {
+  margin-top: 20px;
+}
+
+.purchase-form {
+  display: flex;
+}
+
+.small-text {
+  font-size:0.8em; /* 글자 크기를 80%로 설정 */
+}
+
+.image-spacing {
+  margin-right: 10px;
+  margin-bottom: 10px; /* 아래쪽 간격도 추가 가능 */
+}
+
+/* 농장 카드를 담는 컨테이너 스타일 */
+.farm-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* 카드 스타일 */
+.stylish-card {
+  width: 300px;
+  border-radius: 15px;
+  background-color: #f8f9fa;
+  box-shadow: 0 0 15px rgba(255, 217, 0, 0.5); /* 네온 효과 */
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent; /* 카드 테두리 */
+}
+
+/* 카드 hover 효과 */
+.stylish-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 115, 0, 0.8); /* 네온 효과 강화 */
+}
+
+/* 카드 제목 스타일 */
+.stylish-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #343a40;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* 카드 내용 스타일 */
+.stylish-text {
+  font-size: 0.95rem;
+  color: #495057;
+  margin: 5px 0;
+}
+
+/* 카드 내용 사이의 경계선 */
+.stylish-text + .stylish-text {
+  border-top: 1px solid #dee2e6;
+  padding-top: 10px;
+}
+h5 {
+  font-size: 1.5em;
+  color: #2b6cb0;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 1em;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+p:last-of-type {
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.highlight {
+  color: #2b6cb0;
+  font-weight: bold;
+}
+
+
+    /* 전체 컨테이너 스타일 */
+    #metaInfoContainer {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 각 경기 정보를 담을 카드 스타일 */
+  .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      background-color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+      padding: 20px;
+  }
+
+  .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+  }
+
+  .card-text {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #555;
+  }
+
+  .card-text strong {
+      color: #333;
+  }
+
+  /* 배팅하기 버튼 스타일 */
+  button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+      background-color: #0056b3;
+  }
+
+  /* 배팅 폼 스타일 */
+  #betFormContainer {
+      margin-top: 15px;
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+  }
+
+  form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  label {
+      font-size: 1rem;
+      margin-bottom: 5px;
+  }
+
+  input[type="number"],
+  select {
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      transition: border-color 0.3s ease;
+  }
+
+  input[type="number"]:focus,
+  select:focus {
+      border-color: #007bff;
+  }
+
+  /* 배팅 버튼 스타일 */
+  #betFormContainer button {
+      background-color: #28a745;
+      margin-top: 10px;
+  }
+
+  #betFormContainer button:hover {
+      background-color: #218838;
+  }
+
+  /* 취소 버튼 스타일 */
+  #betFormContainer button[type="button"] {
+      background-color: #dc3545;
+  }
+
+  #betFormContainer button[type="button"]:hover {
+      background-color: #c82333;
+  }
+
+  /* 전체 컨테이너 스타일 */
+  #metaInfoContainer {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 각 경기 정보를 담을 카드 스타일 */
+  .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      background-color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+      padding: 20px;
+  }
+
+  .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+  }
+
+  .card-text {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #555;
+  }
+
+  .card-text strong {
+      color: #333;
+  }
+
+  /* 배팅하기 버튼 스타일 */
+  button {
+      background-color: #6c757d; /* 세련된 회색톤 */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  button:hover {
+      background-color: #5a6268; /* 마우스를 올리면 더 어두운 회색 */
+      transform: translateY(-2px); /* 마우스를 올리면 살짝 올라가는 효과 */
+  }
+
+  button:active {
+      background-color: #495057; /* 버튼 클릭 시 더 어두운 색 */
+      transform: translateY(0); /* 클릭 후 버튼이 원래 위치로 돌아옵니다 */
+  }
+
+  /* 배팅 폼 스타일 */
+  #betFormContainer {
+      margin-top: 15px;
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+  }
+
+  form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  label {
+      font-size: 1rem;
+      margin-bottom: 5px;
+  }
+
+  input[type="number"],
+  select {
+      padding: 8px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      transition: border-color 0.3s ease;
+  }
+
+  input[type="number"]:focus,
+  select:focus {
+      border-color: #6c757d; /* 포커스 시 회색 테두리 */
+  }
+
+  /* 배팅 버튼 스타일 */
+  #betFormContainer button {
+      background-color: #28a745; /* 녹색 */
+      margin-top: 10px;
+  }
+
+  #betFormContainer button:hover {
+      background-color: #218838; /* 마우스를 올리면 더 어두운 녹색 */
+  }
+
+  /* 취소 버튼 스타일 */
+  #betFormContainer button[type="button"] {
+      background-color: #dc3545; /* 빨간색 */
+  }
+
+  #betFormContainer button[type="button"]:hover {
+      background-color: #c82333; /* 마우스를 올리면 더 어두운 빨간색 */
+  }
+
+  .money-manager-item {
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.money-manager-header {
+    background-color: #f8f9fa;
+    font-size: 1.2rem;
+}
+
+.money-manager-body {
+    background-color: #ffffff;
+    padding: 15px;
+}
+
+svg {
+  position: relative;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; /* 화면 전체 너비 */
+  height: auto; /* 화면 전체 높이 */
+  background-color: black; /* 검은색 배경 */
+}
+
+/* 텍스트 스타일 */
+text {
+  fill: url(#imagePattern); /* 패턴 채우기 */
+  font-family: "Protest Guerrilla", sans-serif;
+  font-size: 100px; /* 텍스트 크기 */
+  letter-spacing: 5px; /* 글자 간격 */
+  stroke: rgb(130, 217, 252); /* 테두리 색상 */
+  stroke-width: 2px; /* 테두리 두께 */
+  stroke-dasharray: 500; /* 애니메이션 준비 */
+  stroke-dashoffset: 500;
+  filter: url(#glowFilter); /* 글로우 효과 */
+}
+
+.input-letter {
+  width: 30px;      /* 입력란의 고정된 너비 */
+  text-align: center;  /* 입력된 글자를 가운데 정렬 */
+  margin-right: 5px;   /* 입력란 간의 간격을 조금 둡니다 */
+}
+
+.input-letter:last-child {
+  margin-right: 0; /* 마지막 입력란에는 오른쪽 간격을 없앰 */
+}
+
+.vertical-input-container {
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 10px; /* 각 행 사이 간격 */
+}
+
+.d-flex {
+  display: flex;
+  gap: 5px; /* 각 입력 필드 사이 간격 */
+}
+
+.input-letter {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.input-letter:disabled {
+  background-color: lightgray; /* 비활성화된 필드 색상 */
+}
+
+
+
+#notices-container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  width: 100%;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.btn {
+  font-size: 16px;
+}
+
+.input-group {
+  margin-top: 15px;
+}
+
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.form-control {
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+#post-notice-form {
+  display: none; /* 기본적으로 숨김 처리 */
+  margin-top: 20px;
+}
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
