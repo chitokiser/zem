@@ -750,6 +750,7 @@ text {
 .input-letter:disabled {
   background-color: lightgray; /* 비활성화된 필드 색상 */
 }
+<<<<<<< HEAD
 
 
 
@@ -805,3 +806,5 @@ text {
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+=======
+>>>>>>> 8c03aeb063fdfa03d051f5e5e0ddd0103149bae1
