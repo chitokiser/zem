@@ -36,10 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
             return {
                 info0: metaInfo[0], // 물건 이름
                 info1: metaInfo[1], // 물건 설명
-                info3: metaInfo[2], // 물건 재고
-                info4: metaInfo[3], // 수당비율
-                info5: metaInfo[4], // CUT제공개수
-                info6: metaInfo[5], // 가격
+                info2: metaInfo[2], // 물건 재고
+                info3: metaInfo[3], // 수당비율
+                info4: metaInfo[4], // BUT제공개수
+                info5: metaInfo[5], // 가격
             };
         } catch (error) {
             console.error("Error fetching meta info:", error);
@@ -69,10 +69,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <h5 class="card-title">Item ID ${i}</h5>
 <p class="card-text"><strong>Item Name:</strong> ${metaInfo.info0}</p>
 <p class="card-text"><strong>Item Details:</strong> ${metaInfo.info1}</p>
-<p class="card-text"><strong>Remaining Quantity:</strong> ${metaInfo.info3}</p>
-<p class="card-text"><strong>Compensation Rate:</strong> ${metaInfo.info4}%</p>
-<p class="card-text"><strong>CUT Number Provided:</strong> ${metaInfo.info5}BUT</p>
- <p class="card-text"><strong>Price:</strong> ${metaInfo.info6/1e18}BET</p>
+<p class="card-text"><strong>Remaining Quantity:</strong> ${metaInfo.info2}</p>
+<p class="card-text"><strong>Compensation Rate:</strong> ${metaInfo.info3}%</p>
+<p class="card-text"><strong>BUT Number Provided:</strong> ${metaInfo.info4}BUT</p>
+ <p class="card-text"><strong>Price:</strong> ${metaInfo.info5/1e18}BET</p>
  <button type="button" class="btn btn-primary btn-sm mr-2" onclick="openPurchaseForm(${i})">Purchase</button>
  <div class="purchase-form-container" id="purchaseFormContainer${i}" style="display: none;">
  <form class="purchase-form">
