@@ -49,7 +49,7 @@ contract mt5 {
     cbank = _butbank;
     admin = msg.sender;
     staff[msg.sender] = 5;
-    fee = 100*1e18; //100bet
+    fee = 30*1e18; //30bet
 }
 
 
@@ -125,7 +125,7 @@ function  withdrw(uint256 _mid)public {   //인출
     bet.transfer(msg.sender,pay);
 } 
     
-    function feeup(uint8 _fee) public {  //기본값 30e18
+    function feeup(uint256 _fee) public {  //기본값 30e18
       require(staff[msg.sender] >= 5,"no staff");
       fee = _fee*1e18;
     }

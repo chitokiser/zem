@@ -74,8 +74,8 @@ const WtopDataSync = async () => {
                         <div class="form-group">
                             <label>Enter 6 uppercase letters one by one:</label>
                             <div id="input-container-${i}" class="vertical-input-container"></div>
-                            <button id="attempt-button-${i}" class="btn btn-primary">Submit Attempt</button>
-                              <button id="withdrawButton-${i}" class="btn btn-warning">Owner Withdraw</button>
+                            <button id="attempt-button-${i}" class="btn btn-primary">정답제출</button>
+                              <button id="withdrawButton-${i}" class="btn btn-warning">등록자 인출</button>
                             </div>
                         <p id="feedback-${i}" class="text-info mt-2"></p>
                     </div>
@@ -118,7 +118,7 @@ const handleAttemptButtonClick = async (gameId, contract) => {
 
         if (receipt.status === 1) {
             // Refresh the page once transaction is confirmed
-            
+            window.location.reload(); // Reload the page
         } else {
             throw new Error("Transaction failed.");
         }

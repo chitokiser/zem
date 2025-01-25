@@ -12,10 +12,16 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
-    
-    <title>BetDAO</title>
+    <link rel="stylesheet" href="/css/betdao.css">
+    <!-- Font for the SVG -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap" rel="stylesheet">
+
+    <title>BETDAO</title>
 </head>
 <body>
+  
     <!-- Placeholder for dynamic header -->
     <div id="menu-placeholder"></div>
 
@@ -46,31 +52,31 @@
                 <div class="card-body">
                   <ul class="list-group mb-3">
                     <li class="list-group-item">
-                      After clicking <strong>[Link Wallet]</strong> on the top right of the menu, registering a referrer and signing up for membership will result in level 1.
+                      우측 상단 메뉴에서  <strong>[Connection Wallet > sing up]</strong>를 클릭 후, 추천인 주소를 입력 후 회원가입을 하시면 레벨1이 됩니다.
                     </li>
                   </ul>
             
                   <div class="mb-3">
                     <button class="btn btn-outline-success w-100" onclick="MemberLogin()">
-                      View My Status
+                      지갑연결
                     </button>
                   </div>
             
                   <ul class="list-group mb-3">
                     <li class="list-group-item">
-                      Level: <span id="Mylev">-</span>
+                      레벨: <span id="Mylev">-</span>
                     </li>
                     <li class="list-group-item">
-                      Experience: <span id="Exp">-</span> exp
+                      경험치: <span id="Exp">-</span> exp
                     </li>
                     <li class="list-group-item">
-                      Experience Points Required for Leveling Up: <span id="Expneeded">-</span> exp
+                      레벨업까지 필요한 경험치: <span id="Expneeded">-</span> exp
                     </li>
                     <li class="list-group-item">
-                      Point: <span id="Mypoint">-</span> p
+                      포인트 : <span id="Mypoint">-</span> p
                     </li>
                     <li class="list-group-item">
-                      My Mentor: <span id="Mymento">-</span>
+                      멘토: <span id="Mymento">-</span>
                     </li>
                     <li class="list-group-item">
                       <div class="d-flex justify-content-between align-items-center">
@@ -96,10 +102,10 @@
             
                   <div class="d-flex justify-content-between">
                     <button class="btn btn-outline-success w-50 me-2" onclick="Bonuswithdraw()">
-                      Point Withdrawal
+                      포인트 인출(BET 입금됨)
                     </button>
                     <button class="btn btn-outline-primary w-50 ms-2" id="fetchAddresses" onclick="fetchMentees()">
-                      My Mentees
+                      나를 추천한 조합원
                     </button>
                   </div>
             
@@ -109,7 +115,7 @@
             
                   <div class="mt-4">
                     <button class="btn btn-outline-warning w-100" onclick="Buff()">
-                      If you have 500 BUT and are at Level 1, you will immediately become Level 2.
+                     레벨2되기 (500BUT 이상 보유자)
                     </button>
                   </div>
                 </div>

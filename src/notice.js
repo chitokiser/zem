@@ -72,30 +72,30 @@ const truncateAddress = (address) => {
         noticeDiv.innerHTML = `
         <div class="row g-3 align-items-center">
           <div class="col-md-12">
-            <h5 class="card-title">Proposal ID: ${notice.id}</h5>
-            <p><strong>Author:</strong> ${truncateAddress(notice.author)}</p>
-            <p><strong>Content:</strong> ${notice.content}</p>
-            <p><strong>Timestamp:</strong> ${new Date(notice.timestamp * 1000).toLocaleString()}</p>
-            <p><strong>Votes:</strong> Agree (${notice.agreeVotes}), Disagree (${notice.disagreeVotes})</p>
+            <h5 class="card-title">제안 ID: ${notice.id}</h5>
+            <p><strong>작성자:</strong> ${truncateAddress(notice.author)}</p>
+            <p><strong>제안내용:</strong> ${notice.content}</p>
+            <p><strong>작성시간:</strong> ${new Date(notice.timestamp * 1000).toLocaleString()}</p>
+            <p><strong>투표내용:</strong> 찬성 (${notice.agreeVotes}), 반대 (${notice.disagreeVotes})</p>
             <div class="d-flex justify-content-between my-3">
-              <button class="btn btn-success w-25" onclick="vote(${notice.id}, 1)">Agree</button>
-              <button class="btn btn-danger w-25" onclick="vote(${notice.id}, 2)">Disagree</button>
+              <button class="btn btn-success w-25" onclick="vote(${notice.id}, 1)">찬성</button>
+              <button class="btn btn-danger w-25" onclick="vote(${notice.id}, 2)">반대</button>
             </div>
             <div class="d-flex justify-content-between my-3">
-              <button class="btn btn-warning w-50" onclick="claimNoticeReward(${notice.id})">Claim Proposal Reward</button>
+              <button class="btn btn-warning w-50" onclick="claimNoticeReward(${notice.id})">작성자 보상요구(댓글100개이상)</button>
             </div>
           </div>
           <div class="col-md-12">
-            <h6>Comments:</h6>
+            <h6>댓글내용:</h6>
             <ul class="list-group mb-3" id="comments-${notice.id}">
               <!-- Comments will be dynamically added here -->
             </ul>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" id="comment-input-${notice.id}" placeholder="Write a comment">
+              <input type="text" class="form-control" id="comment-input-${notice.id}" placeholder="여기에 댓글을 입력하세요">
               <button class="btn btn-primary" onclick="addComment(${notice.id})">Submit</button>
             </div>
             <div class="d-flex justify-content-between my-3">
-              <button class="btn btn-info w-50" onclick="claimCommentReward(${notice.id})">Claim Comment Reward</button>
+              <button class="btn btn-info w-50" onclick="claimCommentReward(${notice.id})">댓글보상(댓글100개이상)</button>
             </div>
           </div>
         </div>

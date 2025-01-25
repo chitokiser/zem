@@ -12,7 +12,7 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
-    
+    <link rel="stylesheet" href="/css/font.css">
     <title>BetDAO</title>
 </head>
 <body>
@@ -42,16 +42,16 @@
             <div class="container-box">
               <div class="card">
                 <div class="card-header">
-                  Goal-Based Profit Competition
+                 <h5>MT5 데모계좌</h5> 
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">MT5 $5000 demo account, achieve your target profit by trading automatically or manually </h5>
-                  <p>Reward criteria: $6000 (including initial capital $5000) or more profit realization, 100BET reward per $1000 profit</p>
-                  <p>There is no set period, and it continues until profit realization</p>
-                  <p>After opening a demo account with a deposit of $5000, register the account below and start trading</p>
-                  <p>If you trade first and then register the account, it will be considered fraudulent</p>
-                  <p>For more information, contact your mentor</p>
-                  <li class="list-group-item"> Contract balance: <span id="Ibal">-</span>BET</li>
+                  <h5 class="card-title">MT5 $5000 데모 계정, 자동 또는 수동으로 거래하여 목표 수익 달성</h5>
+                  <p>보상 기준: $6000(초기 자본 $5000 포함) 이상 수익 실현, $1000 수익당 100BET 보상</p>
+                  <p>기간은 정해져 있지 않으며, 수익 실현까지 계속됩니다</p>
+                  <p>$5000 데모 계정을 개설한 후, 아래 계정을 등록하고 거래를 시작하세요</p>
+                  <p>먼저 거래를 한 후 계정을 등록하면 보상이 되지 않습니다</p>
+                  <p>자세한 내용은 멘토에게 문의하세요</p>
+                  <li class="list-group-item"> 계약잔고: <span id="Ibal">-</span>BET</li>
                 </div>
               </div>
             </div>
@@ -59,18 +59,18 @@
           
             <div class="container-box">
               <div class="card">
-              <div class="card-header">
-              Register MT5 Demo Account
-              </div>
-              <p>Register after opening a $5000 account on the MetaQuotes server</p>
-              <p>You must register before starting trading. Registration after trading is considered fraudulent</p>
-              <p>Enter your account number and invest password and click Register Account</p>
-              <p>Account registration fee 100BET</p>
-              <p>Only level 2 or higher members can register</p>
+                <div class="card-header">
+                  MT5 데모 계정 등록하기
+                  </div>
+                  <p>MetaQuotes 서버에서 $5000 계정을 개설한 후 등록하세요.</p>
+                  <p>거래를 시작하기 전에 등록해야 합니다. 거래 후 등록하는 것은 부정행위로 간주됩니다.</p>
+                  <p>계좌 번호와 관람자 비밀번호를 입력하고 계정 등록을 클릭하세요.</p>
+                  <p><i class="fas fa-users"></i> 등록수수료: <span id="Fee" class="stat-value">-</span>BET</p>
+                  <p>레벨 2 이상 회원만 등록할 수 있습니다.</p>
               <div class="input-group mb-3">
-              <input type="text" id="Invest" class="form-control" placeholder="Enter your invest password correctly" aria-label="CYA"
+              <input type="text" id="Invest" class="form-control" placeholder="관람자 비밀번호를 정확하게 입력하세요." aria-label="CYA"
               aria-describedby="basic-addon2">
-              <input type="text" id="Account" class="form-control" placeholder="Please enter the correct demo account number" aria-label="CYA"
+              <input type="text" id="Account" class="form-control" placeholder="데모 계좌번호를 입력해주세요." aria-label="CYA"
               aria-describedby="basic-addon2">
               
               <span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Registration()">Register an account</span>

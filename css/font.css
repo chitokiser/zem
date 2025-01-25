@@ -1,0 +1,113 @@
+/* 📌 info-stats 섹션 스타일 */
+.info-stats {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-family: 'Poppins', Arial, sans-serif;
+    width: 100%;
+    max-width: 600px; /* 가로 최대 너비 */
+    margin: 0 auto;
+}
+
+/* 📌 info-stats 내부 텍스트 스타일 */
+.info-stats p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
+
+/* 📌 강조된 숫자 스타일 */
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+    font-family: 'Roboto Mono', monospace;
+    margin-left: auto; /* 숫자를 우측으로 정렬 */
+}
+
+/* 📌 아이콘 스타일 */
+.info-stats i {
+    color: #007bff;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+/* 마지막 항목은 하단 테두리 제거 */
+.info-stats p:last-child {
+    border-bottom: none;
+}
+
+/* 📌 반응형 디자인 */
+@media (max-width: 768px) {
+    .info-stats {
+        padding: 15px;
+    }
+    .info-stats p {
+        font-size: 14px;
+    }
+    .stat-value {
+        font-size: 16px;
+    }
+}
+
+
+/* 📌 list-group 스타일 (info-stats와 동일한 폰트 적용) */
+.list-group {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    font-family: 'Poppins', Arial, sans-serif;
+    width: 100%;
+    max-width: 600px; /* 가로 최대 너비 */
+    margin: 0 auto;
+}
+
+/* 📌 list-group 항목 스타일 */
+.list-group-item {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 텍스트 왼쪽 + 값 오른쪽 */
+    border-bottom: 1px solid #ddd;
+    padding: 12px 15px;
+    background: #ffffff;
+}
+
+/* 마지막 항목은 하단 테두리 제거 */
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* 📌 강조된 숫자 스타일 */
+.list-group-item span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* 📌 반응형 디자인 */
+@media (max-width: 768px) {
+    .list-group {
+        padding: 12px;
+    }
+    .list-group-item {
+        font-size: 14px;
+    }
+    .list-group-item span {
+        font-size: 16px;
+    }
+}

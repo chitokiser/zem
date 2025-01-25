@@ -1,5 +1,5 @@
 let metaddr = {  
-    metmarket: "0x9BDa346FEB5261baCCF47Ddb447b4628F87ad051" //bet mt5
+    metmarket: "0xFD09FfB6076F4d3D9E228Ca9e665Ef455Bd7F130" //bet mt5
 
   };
   
@@ -9,6 +9,7 @@ let metaddr = {
       "function registration(uint256 _metanum,string memory  _invest)public",
         "function exit(uint256 _mid)public",
         "function mid() public view returns (uint256)",
+        "function fee() public view returns (uint256)",
         "function audit(uint256 _mid,uint256 _cutreward)public",
        "function  withdrw(uint256 _mid)public",
        "function g1() public view virtual returns(uint256)",
@@ -26,9 +27,9 @@ let metaddr = {
     
   
     let ibal = await meta5Contract.g1();  //계약보유BET
-
+    let ifee = await meta5Contract.fee();  //계약보유BET
     document.getElementById("Ibal").innerHTML= (ibal/1e18).toFixed(2);  // cya잔고 
-
+    document.getElementById("Fee").innerHTML= (ifee/1e18).toFixed(2);  // cya잔고 
     }
   
   
@@ -84,13 +85,13 @@ let metaddr = {
                 purchasableStatus = 'NO';
                 break;
                 case 1:
-                    purchasableStatus = 'Reviewing';
+                    purchasableStatus = '보상신청';
                     break;
                 case 2:
-                    purchasableStatus = 'Withdraw the reward';
+                    purchasableStatus = '인출가능';
                     break;
                 case 3:
-                    purchasableStatus = 'withdrawal completed';
+                    purchasableStatus = '인출완료';
                     break;
                  
                 default:
@@ -102,16 +103,16 @@ let metaddr = {
               const infoHtml = `
               <div class="card mb-3">
               <div class="card-body">
-                  <h5 class="card-title">Account ID:${i}</h5>
-                  <p class="card-text"><strong>MT5 Account:</strong> ${metaInfo.info4}</p>
-                   <p class="card-text"><strong>Invest pass:</strong> ${metaInfo.info3}</p>
-                  <p class="card-text"><strong>Registration date:</strong> ${metaInfo.info0}</p>
-                  <p class="card-text"><strong>Starting amount:</strong> ${metaInfo.info5}USD</p>
-                  <p class="card-text"><strong>Compensation Request:</strong> ${isPurchasable}</p>
-                  <p class="card-text"><strong>Owner:</strong> ${metaInfo.info6}</p>
-                  <p class="card-text"><strong>Approved compensation amount:</strong> ${metaInfo.info1}</p>
-                  <button type="button" class="btn btn-primary btn-sm mr-2" onclick="purchase(this)" data-id="${i}">Compensation application</button>
-                  <button type="button" class="btn btn-dark btn-sm mr-2" onclick="Withdraw(this)" data-id="${i}">Withdraw rewards</button>
+                  <h5 class="card-title">ID:${i}</h5>
+                  <p class="card-text"><strong>MT5 계좌:</strong> ${metaInfo.info4}</p>
+                   <p class="card-text"><strong>관람자 비밀번호:</strong> ${metaInfo.info3}</p>
+                  <p class="card-text"><strong>등록날짜:</strong> ${metaInfo.info0}</p>
+                  <p class="card-text"><strong>최초보증금:</strong> ${metaInfo.info5}USD</p>
+                  <p class="card-text"><strong>보상요구:</strong> ${isPurchasable}</p>
+                  <p class="card-text"><strong>등록자:</strong> ${metaInfo.info6}</p>
+                  <p class="card-text"><strong>보상금액:</strong> ${metaInfo.info1/1e18}BET</p>
+                  <button type="button" class="btn btn-primary btn-sm mr-2" onclick="purchase(this)" data-id="${i}">보상신청</button>
+                  <button type="button" class="btn btn-dark btn-sm mr-2" onclick="Withdraw(this)" data-id="${i}">보상금액인출</button>
            
               </div>
           </div>`;
