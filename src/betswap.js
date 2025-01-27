@@ -16,6 +16,7 @@
       "function g10() public view returns(uint)",
       "function g11() public view returns(uint256)",
       "function tax( ) public view returns(uint256)",
+      "function getrate() public view returns(uint)",
       "function mydepo(address user ) public view returns(uint256,uint256,uint256,uint8)",
       "function myloan(address user ) public view returns(uint256,uint256,uint256,uint256)",
       
@@ -29,14 +30,15 @@
     const provider = new ethers.providers.JsonRpcProvider('https://opbnb-mainnet-rpc.bnbchain.org');
     const cyafarmContract = new ethers.Contract(contractAddress.cyafarmAddr,contractAbi.cyafarm,provider);
     const apr = await cyafarmContract.g10();
-    let ali = Number(apr) + 10;
+    const ali = await cyafarmContract.getrate();
+ 
     let n = 52; 
     let apy = (Math.pow(1 + ((apr-100) / 100) / n, n) - 1) * 100;
     const betbal = await cyafarmContract.g1();
     const butbal = await cyafarmContract.g3();
     const total = await cyafarmContract.g4();
-    document.getElementById("Ali").innerHTML = ali-100;
-    document.getElementById("Apr").innerHTML = apr-100;
+    document.getElementById("Ali").innerHTML = 200-ali;
+    document.getElementById("Apr").innerHTML = 200-apr;
     document.getElementById("Apy").innerHTML = apy.toFixed(2);
     document.getElementById("Betbal").innerHTML = parseFloat(betbal/1e18).toFixed(2);
     document.getElementById("Butbal").innerHTML = (butbal);

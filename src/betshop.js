@@ -1,8 +1,9 @@
+ //0x964B87d1656dD07437192DA33d1d561a7438ec6e 이전계약에 994850BUT 잠김 관리자 모드 매출 인출 문제 업그레이드
 document.addEventListener("DOMContentLoaded", function () {
     let metaddr = {
-        metmarket: "0x964B87d1656dD07437192DA33d1d561a7438ec6e" //betshop
+        metmarket: "0xF618cdFc5e19a3AEE0EAF03315fFFFB4F1Ab5876" //betshop
     };
-    
+
     let metabi = {
         metmarket: [
             "function buy(uint _pid,uint num,string memory name,string memory house,string memory phone) public",

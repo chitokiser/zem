@@ -43,19 +43,19 @@
               <!-- BetSwap Section -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>BetSwap</h5>
+                  <h5>Bet 예치&대출</h5>
                 </div>
                 <div class="card-body">
-                  <p>BUT Get a BET loan with collateral</p>
-                  <p>If you deposit BET, you can receive BET including principal + interest every week.</p>
-                  <p>You can receive a total of 52 times a week.</p>
-                  <ul class="list-group">
-                    <li class="list-group-item">ALI (Annual loan interest): <span id="Ali">-</span>%</li>
-                    <li class="list-group-item">APR (Annual Percentage Rate): <span id="Apr">-</span>%</li>
-                    <li class="list-group-item">APY (Annual Percentage Yield): <span id="Apy">-</span>%</li>
-                    <li class="list-group-item">Smart Contract BET Balance: <span id="Betbal">-</span> BET</li>
-                    <li class="list-group-item">Smart Contract BUT Balance: <span id="Butbal">-</span> BUT</li>
-                    <li class="list-group-item">Smart Contract BUT Market Cap: <span id="Total">-</span> BET</li>
+                  <p>BUT 담보로 BET을 대출을 받으세요</p>
+<p>BET을 예치하면 매주 원금 + 이자를 포함한 BET를 받을 수 있습니다.</p>
+<p>주당 총 52회 받을 수 있습니다.</p>
+<ul class="list-group">
+<li class="list-group-item">ALI(연간 대출 이자): <span id="Ali">-</span>%</li>
+<li class="list-group-item">APR(연간 예치 단리이자): <span id="Apr">-</span>%</li>
+<li class="list-group-item">APY(연간 예치 복리이자): <span id="Apy">-</span>%</li>
+<li class="list-group-item">스마트 계약 BET 잔액: <span id="Betbal">-</span> BET</li>
+<li class="list-group-item">스마트 계약 BUT 잔액: <span id="Butbal">-</span> BUT</li>
+<li class="list-group-item">스마트 계약 BUT 시가총액: <span id="Total">-</span> BET</li>
                   </ul>
                 </div>
               </div>
@@ -63,44 +63,44 @@
               <!-- My Status Section -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>My Status</h5>
+                  <h5>나의 상태</h5>
                 </div>
                 <div class="card-body">
-                  <button class="btn btn-outline-success mb-3" type="submit" onclick="Mystatus()">Wallet Connection</button>
+                  <button class="btn btn-outline-success mb-3" type="submit" onclick="Mystatus()">지갑 연결</button>
                   <ul class="list-group">
-                    <li class="list-group-item">Deposit Principal: <span id="DepoA">-</span> BET</li>
-                    <li class="list-group-item">One-time Withdrawal Amount: <span id="Asset">-</span> BET</li>
-                    <li class="list-group-item">Number of Possible Withdrawals: <span id="Tiket">-</span> times</li>
-                    <li class="list-group-item">Time Left Until Withdrawal: <span id="Myt">-</span></li>
-                    <button class="btn btn-primary mt-3" type="submit" onclick="Withdraw()">Withdraw</button>
-                    <li class="list-group-item">Money Owed: <span id="Mdepo2">-</span> BET</li>
-                    <li class="list-group-item">Loan Amount: <span id="LoanA">-</span> BET</li>
-                    <li class="list-group-item">Mortgage: <span id="Mortgage">-</span> BUT</li>
-                    <li class="list-group-item">Time Left to Repay: <span id="Myt2">-</span></li>
-                    <button class="btn btn-danger mt-3" type="submit" onclick="Repay()">Repay</button>
+                  <li class="list-group-item">입금 원금: <span id="DepoA">-</span> BET</li>
+                  <li class="list-group-item">일회 출금 가능금액: <span id="Asset">-</span> BET</li>
+                  <li class="list-group-item">출금 가능 횟수: <span id="Tiket">-</span>회</li>
+                  <li class="list-group-item">출금까지 남은 시간: <span id="Myt">-</span></li>
+                  <button class="btn btn-primary mt-3" type="submit" onclick="Withdraw()">인출</button>
+                  <li class="list-group-item">갚아야 할 돈: <span id="Mdepo2">-</span> BET</li>
+                  <li class="list-group-item">대출 실행 금액: <span id="LoanA">-</span> BET</li>
+                  <li class="list-group-item">담보: <span id="Mortgage">-</span> BUT</li>
+                  <li class="list-group-item">상환까지 남은 시간: <span id="Myt2">-</span></li>
+                  <button class="btn btn-danger mt-3" type="submit" onclick="Repay()">대출금 상환</button>
                   </ul>
-                </div>
+                  </div>
               </div>
             
               <!-- BET Staking Section -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>BET Staking</h5>
+                  <h5>BET 예치하기</h5>
                 </div>
                 <div class="card-body">
-                  <p>You can deposit within 10% of the contract BET balance.</p>
-                  <p>You can withdraw the amount including principal and interest in 52 installments every week.</p>
-                  <p>Check the APR & APY above and deposit.</p>
-                  <p>APR & APY is fixed at the time of deposit.</p>
+                <p>계약 BET 잔액의 10% 범위 내에서 입금할 수 있습니다.</p>
+                <p>원금과 이자를 포함한 금액을 매주 52회 분할로 출금할 수 있습니다.</p>
+                <p>위의 APR 및 APY를 확인하고 입금하세요.</p>
+                <p>APR 및 APY는 입금 시 고정됩니다.</p>
                   <div class="input-group mb-3">
                     <input
                       type="text"
                       id="Seed"
                       class="form-control"
-                      placeholder="Enter the BET amount to deposit"
+                      placeholder="예치할 BET금액을 입력하세요"
                       required
                     />
-                    <button class="btn btn-success" onclick="Deposing()">Staking</button>
+                    <button class="btn btn-success" onclick="Deposing()">예치하기</button>
                   </div>
                 </div>
               </div>
@@ -111,18 +111,18 @@
                   <h5>BET Loan</h5>
                 </div>
                 <div class="card-body">
-                  <p>You can borrow BET using your BUT as collateral.</p>
-                  <p>The amount after deducting the interest will be deposited.</p>
-                  <p>Check the loan interest rate above.</p>
+                  <p>BUT를 담보로 BET를 빌릴 수 있습니다.</p>
+                  <p>이자를 공제한 후의 금액이 입금됩니다.</p>
+                  <p>위의 대출 이자율을 확인하세요.</p>
                   <div class="input-group mb-3">
                     <input
                       type="text"
                       id="Seed2"
                       class="form-control"
-                      placeholder="Enter the BET amount to deposit"
+                      placeholder="대출로 제공할 BUT개수를 입력하세요"
                       required
                     />
-                    <button class="btn btn-warning" onclick="Loan()">Take a Loan</button>
+                    <button class="btn btn-warning" onclick="Loan()">대출하기</button>
                   </div>
                 </div>
               </div>

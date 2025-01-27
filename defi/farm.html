@@ -40,22 +40,20 @@
               <!-- BlockChain Farm -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>Blockchain Farm</h5>
+                  <h5>이자농장</h5>
                 </div>
                 <div class="card-body">
-                  <p>DeFi algorithm with fast profit realization</p>
-                  <p>Whenever you plant a seed, the gauge for selecting a flowerpot goes up.</p>
-                  <p>When the gauge is 100% full, you can choose the flowerpot you want and plant seeds.</p>
-                  <p>When someone, including me, plants seeds in my flowerpot, the profit is realized.</p>
-                  <p>You can choose your own flowerpot to realize profit.</p>
-                  <p>The longer you hold out after planting seeds, the more profit you make.</p>
-            
+                  <p>씨앗을 랜덤으로 심을 때마다 화분 선택 게이지가 올라갑니다.</p>
+                  <p>게이지가 100% 채워지면 원하는 화분을 선택하고 씨앗을 심을 수 있습니다.</p>
+                  <p>나를 포함한 누군가가 내 화분에 씨앗을 심으면 수익이 실현됩니다.</p>
+                  <p>자신만의 화분을 선택하여 수익을 실현할 수 있습니다.</p>
+                  <p>씨앗을 심은 후 더 많이 버틸수록 수익이 더 커집니다.</p>
                   <ul class="list-group mb-3">
-                    <li class="list-group-item">Seed Price: <span id="Fprice">-</span> BET</li>
-                    <li class="list-group-item">Flowerpot Number: <span id="Farmtotal">-</span> ea</li>
-                    <li class="list-group-item">Accumulated Seeding: <span id="Pl">-</span> ea</li>
-                    <li class="list-group-item">Seeding Fee: <span id="Rate">-</span> BET</li>
-                    <li class="list-group-item">Contract Balance: <span id="Cyabal">-</span> BET</li>
+                    <li class="list-group-item">씨앗가격: <span id="Fprice">-</span> BET</li>
+                    <li class="list-group-item">화분 총개수: <span id="Farmtotal">-</span> ea</li>
+                    <li class="list-group-item">누적수: <span id="Pl">-</span> ea</li>
+                    <li class="list-group-item">인출수수료: <span id="Rate">-</span></li>
+                    <li class="list-group-item">계약잔고: <span id="Cyabal">-</span> BET</li>
                   </ul>
                 </div>
               </div>
@@ -67,13 +65,13 @@
                 </div>
                 <div class="card-body">
                   <div class="text-center mb-3">
-                    <button class="btn btn-outline-success" onclick="MemberLogin()">My Status</button>
+                    <button class="btn btn-outline-success" onclick="MemberLogin()">나의 상태</button>
                   </div>
             
                   <ul class="list-group mb-3">
-                    <li class="list-group-item">Harvestable Amount: <span id="Farmgain">-</span> BET</li>
+                    <li class="list-group-item">수확가능 포인트: <span id="Farmgain">-</span> BET</li>
                     <li class="list-group-item">
-                      Gauge Required to Seed the Selected Pot:
+                      선택한 화분에 씨앗을 심는데 필요한 게이지:
                       <div class="progress mt-2">
                         <div class="progress-bar progress-bar-striped bg-success" id="LevelBar" role="progressbar"
                           aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
@@ -82,12 +80,12 @@
                   </ul>
             
                   <div class="text-center mb-3">
-                    <button class="btn btn-outline-danger" onclick="Buyfarm()">Random Pot Seeding</button>
+                    <button class="btn btn-outline-danger" onclick="Buyfarm()">무작위 화분에 파종</button>
                   </div>
             
                   <ul class="list-group mb-3">
                     <li class="list-group-item">
-                      <span id="SeedingNum"></span>
+                      <span id="eventFarmnum"></span>
                     </li>
                   </ul>
             
@@ -96,7 +94,7 @@
                     <input type="text" id="Mid" class="form-control" placeholder="Click on Selected Seeding after selecting the pot number">
                   </div>
                   <div class="text-center mb-3">
-                    <button class="btn btn-outline-success" onclick="Choice()">Selected Pot Seeding</button>
+                    <button class="btn btn-outline-success" onclick="Choice()">선택한 화분에 파종</button>
                   </div>
             
                   <!-- Amount Input and Buy Seeds -->
@@ -104,25 +102,20 @@
                     <input type="text" id="Amount" class="form-control" placeholder="Enter the amount in 10BET units">
                   </div>
                   <div class="text-center mb-3">
-                    <button class="btn btn-outline-success" onclick="Charge()">Buy Seeds</button>
+                    <button class="btn btn-outline-success" onclick="Charge()">씨앗구매하기</button>
                   </div>
             
                   <!-- Harvest Button -->
                   <div class="text-center">
-                    <button class="btn btn-outline-danger" onclick="Withdraw()">Harvest</button>
+                    <button class="btn btn-outline-danger" onclick="Withdraw()">수확하기</button>
                   </div>
                 </div>
               </div>
             
-              <!-- Port Status -->
-              <div class="card mb-4">
-                <div class="card-header bg-info text-white">
-                  <h5>Port Status</h5>
-                </div>
-                <div class="card-body">
-                  <div id="farmCards" class="farm-cards-container mb-3"></div>
-            
-                  <div class="card-group" id="farmCards">
+            <!-- 포트 데이터 컨테이너 -->
+        <h2>Farm Pot Information</h2>
+        <div id="portDataContainer"></div>
+
                     <!-- Farm cards will be added dynamically here -->
                   </div>
                 </div>

@@ -160,6 +160,7 @@ let metaddr = {
   
     let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
     await meta5Contract.exit(accountId); // 해당 ID를 요청함수에 전달
+    location.reload();  // ✅ 값 변경 후 자동 새로고침
   } catch(e) {
     alert(e.data.message.replace('execution reverted: ',''))
   }
@@ -192,39 +193,57 @@ let metaddr = {
     
       let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
       await meta5Contract.withdrw(accountId); // 해당 ID를 요청함수에 전달
+      location.reload();  // ✅ 값 변경 후 자동 새로고침
     } catch(e) {
       alert(e.data.message.replace('execution reverted: ',''))
     }
     };
   
-  let Registration = async () => {
-  let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-  await window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: [{
-        chainId: "0xCC",
-        rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-        chainName: "opBNB",
-        nativeCurrency: {
-            name: "BNB",
-            symbol: "BNB",
-            decimals: 18
-        },
-        blockExplorerUrls: ["https://opbnbscan.com"]
-    }]
-  });
-  await userProvider.send("eth_requestAccounts", []);
-  let signer = userProvider.getSigner();
-  
-  let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
-  const account = document.getElementById('Account').value;
-  const invest = document.getElementById('Invest').value;
-  try {
-    await meta5Contract.registration( account,invest);
-  } catch(e) {
-    let errorMessage = e.data && e.data.message ? e.data.message : e.message;
-    alert(errorMessage.replace('execution reverted: ', ''));
-  }
-  };
-  
+    let Registration = async () => {
+      let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+      
+      // 네트워크 추가 요청
+      await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+            chainId: "0xCC",
+            rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+            chainName: "opBNB",
+            nativeCurrency: {
+                name: "BNB",
+                symbol: "BNB",
+                decimals: 18
+            },
+            blockExplorerUrls: ["https://opbnbscan.com"]
+        }]
+      });
+    
+      // 지갑 연결
+      await userProvider.send("eth_requestAccounts", []);
+      let signer = userProvider.getSigner();
+    
+      // 스마트 컨트랙트 인스턴스 생성
+      let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
+    
+      // 입력값 가져오기
+      const account = document.getElementById('Account').value;
+      const invest = document.getElementById('Invest').value;
+    
+      try {
+        // 트랜잭션 전송
+        let tx = await meta5Contract.registration(account, invest);
+        console.log("트랜잭션 전송됨:", tx.hash);
+    
+        // 트랜잭션이 블록에 포함될 때까지 대기
+        await tx.wait();
+        console.log("트랜잭션 확정됨:", tx.hash);
+    
+        alert("등록이 완료되었습니다.");
+        location.reload();  // ✅ 트랜잭션 확정 후 새로고침
+      } catch(e) {
+        let errorMessage = e.data?.message.replace('execution reverted: ', '') || e.message;
+        alert("오류 발생: " + errorMessage);
+      }
+    };
+    
   

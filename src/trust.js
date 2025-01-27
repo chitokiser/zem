@@ -72,35 +72,43 @@
   
               <!-- 기능 보기 버튼 -->
               <button id="showFeaturesBtn${i}" class="btn btn-outline-info" style="padding: 10px 20px; font-size: 1rem; background-color: #17a2b8; color: white; border-radius: 5px; border: none; transition: background-color 0.3s;">
-             See Money Manager features
+             기능보기
               </button>
   
               <!-- 숨겨진 기능들 -->
               <div id="featureSection${i}" style="display: none; margin-top: 20px;">
                 <div class="mb-3">
-                  <label for="chargeInput${i}" class="form-label">Deposit Recharge:</label>
-                  <input type="number" id="chargeInput${i}" class="form-control" placeholder="Enter amount" style="max-width: 200px;" />
+                  <label for="chargeInput${i}" class="form-label">보증금 충전:</label>
+                  <input type="number" id="chargeInput${i}" class="form-control" placeholder="입금액 입력" style="max-width: 200px;" />
                 </div>
   
                 <button class="btn btn-outline-success" onclick="Charge(${i})" style="padding: 10px 20px; font-size: 1rem; background-color: #28a745; color: white; border-radius: 5px; border: none; transition: background-color 0.3s;">
-                  Charge
+                  충전하기
                 </button>
                 
                 <hr>
   
                 <div class="mb-3">
-                  <label for="spenderInput${i}" class="form-label">Spender Address:</label>
-                  <input type="text" id="spenderInput${i}" class="form-control" placeholder="Enter spender address" />
+                  <label for="spenderInput${i}" class="form-label">지출예정자 어카운트:</label>
+                  <input type="text" id="spenderInput${i}" class="form-control" placeholder="지출 예정자 어카운트를 입력하세요" />
                 </div>
   
                 <div class="mb-3">
-                  <label for="spenderAmountInput${i}" class="form-label">Amount to Designate:</label>
-                  <input type="number" id="spenderAmountInput${i}" class="form-control" placeholder="Enter amount" />
+                  <label for="spenderAmountInput${i}" class="form-label">1회 지출가능금액:</label>
+                  <input type="number" id="spenderAmountInput${i}" class="form-control" placeholder="금액을 입력하세요" />
                 </div>
   
                 <button class="btn btn-outline-warning" onclick="designateSpender(${i})" style="padding: 10px 20px; font-size: 1rem; background-color: #ffc107; color: white; border-radius: 5px; border: none; transition: background-color 0.3s;">
-                  Designate Spender
+                  1회 지출가능 금액 
                 </button>
+                <div>
+                 <label>제거할 지출자 어카운트:</label>
+                   <input type="text" id="removeSpenderInput${i}" class="form-control" placeholder="제거할 지출자 어카운트" />
+                <button class="btn btn-outline-danger" onclick="removeSpender(${i})" 
+        style="padding: 10px 20px; font-size: 1rem; background-color: #dc3545; color: white; border-radius: 5px; border: none; transition: background-color 0.3s;">
+        지출자 제거
+    </button>
+    </div>
               </div>
             </div>
           </div>
@@ -118,10 +126,10 @@
           // 펼치기/접기 동작
           if (featureSection.style.display === "none") {
             featureSection.style.display = "block";
-            this.innerText = "Hide feature"; // 버튼 텍스트 변경
+            this.innerText = "기능 숨기기"; // 버튼 텍스트 변경
           } else {
             featureSection.style.display = "none";
-            this.innerText = "See Money Manager features"; // 버튼 텍스트 변경
+            this.innerText = "기능보기"; // 버튼 텍스트 변경
           }
         });
       }
@@ -299,14 +307,14 @@ let getPayInfo = async (mid) => {
         const seconds = remainingTimeInSeconds % 60; // 초 계산
   
         // UI 업데이트
-        document.getElementById("payAmount").innerText = `MyPay: ${(pay / 1e18).toFixed(2)} BET`; // BET 단위
-        document.getElementById("payTime").innerText = `Time remaining: ${days}day ${hours}h ${minutes}m ${seconds}s`;
+        document.getElementById("payAmount").innerText = `인출가능금액: ${(pay / 1e18).toFixed(2)} BET`; // BET 단위
+        document.getElementById("payTime").innerText = `인출까지 남은 시간: ${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
       } else {
         document.getElementById("payTime").innerText = "Withdrawal period has passed.";
       }
-    } catch (error) {
-      console.error("Error getting pay info:", error);
-      document.getElementById("payTime").innerText = "Error fetching data. Please try again later.";
+    } catch(e) {
+      let errorMessage = e.data?.message.replace('execution reverted: ', '') || e.message;
+      alert("오류 발생: " + errorMessage);
     }
   };
   
@@ -350,3 +358,25 @@ let withdrawFunds = async () => {
     }
   };
   
+
+  const removeSpender = async (i) => {
+    try {
+        const spenderAddress = document.getElementById(`removeSpenderInput${i}`).value.trim();
+        if (!ethers.utils.isAddress(spenderAddress)) {
+            alert("❌ 올바른 이더리움 주소를 입력하세요.");
+            return;
+        }
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const trustContract = new ethers.Contract(contractAddress.trustAddr, contractAbi.trust, signer);
+
+        const tx = await trustContract.removeSpender(spenderAddress);
+        await tx.wait();
+        alert("✅ 지출자 제거 성공!");
+        document.getElementById(`removeSpenderInput${i}`).value = "";
+    } catch (e) {
+        alert(e.data?.message.replace('execution reverted: ', '') || e.message);
+    }
+};

@@ -37,15 +37,16 @@
         <!-- Blockchain Payment Management Card -->
         <div class="card mb-3 shadow-sm rounded">
             <div class="card-header" style="background-color: #f8f9fa;">
-                <h5>Blockchain Payment Management</h5>
+                <h5>자금관리</h5>
             </div>
             <div class="card-body">
-                <p>Labor costs, real estate rent, car rental</p>
-                <p>Pay a set amount of money to a set target every week</p>
-                <p>Stop paying if you don't use it</p>
+                <p>인건비, 부동산 임대료, 렌터카등</p>
+<p>매주 정해진 금액을 정해진 사람에게 지불</p>
+<p>동시에 여러명 지정 가능</p>
+<p>지불 중단 가능</p>
                 <ul class="list-group">
-                    <li class="list-group-item">Registered Members: <span id="Mid">-</span></li>
-                    <li class="list-group-item">Contract Balance: <span id="Betbal">-</span> BET</li>
+                    <li class="list-group-item">등록 회원: <span id="Mid">-</span></li>
+                    <li class="list-group-item">계약 잔액: <span id="Betbal">-</span> BET</li>
                 </ul>
             </div>
         </div>
@@ -53,18 +54,18 @@
         <!-- Initial Deposit Card -->
         <div class="card mb-3 shadow-sm rounded">
             <div class="card-header" style="background-color: #f8f9fa;">
-                <h5>Initial deposit of payment amount</h5>
+                <h5>보증금 입금</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label for="nameInput" class="form-label">Name:</label>
+                    <label for="nameInput" class="form-label">자금주 닉네임:</label>
                     <input type="text" id="nameInput" class="form-control" placeholder="Enter name" />
                 </div>
                 <div class="mb-3">
-                    <label for="payInput" class="form-label">Deposit amount:</label>
-                    <input type="number" id="payInput" class="form-control" placeholder="1000 BET or more" />
+                    <label for="payInput" class="form-label">보증금액:</label>
+                    <input type="number" id="payInput" class="form-control" placeholder="1000 BET 이상 입력하세요" />
                 </div>
-                <button class="btn btn-outline-success" onclick="ManAdd()">Deposit</button>
+                <button class="btn btn-outline-success" onclick="ManAdd()">입금하기</button>
             </div>
         </div>
 
@@ -81,18 +82,18 @@
         <!-- Check Spendable Amount Card -->
         <div class="card mb-3 shadow-sm rounded" style="max-width: 600px; margin: 20px auto;">
             <div class="card-header" style="background-color: #f8f9fa;">
-                <h5>Check Spendable Amount and Time</h5>
+                <h5>지출 가능 금액 및 시간 확인</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label for="midInput" class="form-label">Enter Your Payer ID:</label>
-                    <input type="number" id="midInput" class="form-control" placeholder="Enter your payer id" />
+                    <label for="midInput" class="form-label">지불자 ID:</label>
+                    <input type="number" id="midInput" class="form-control" placeholder="지불자 ID를 입력하세요" />
                 </div>
 
                 <!-- Flexbox layout to align buttons -->
                 <div class="d-flex flex-column flex-sm-row justify-content-between">
-                    <button class="btn btn-outline-primary mb-3 mb-sm-0" onclick="getPayInfo(document.getElementById('midInput').value)">Check Info</button>
-                    <button class="btn btn-outline-danger" onclick="withdrawFunds()">Withdraw Funds</button>
+                    <button class="btn btn-outline-primary mb-3 mb-sm-0" onclick="getPayInfo(document.getElementById('midInput').value)">정보 보기</button>
+                    <button class="btn btn-outline-danger" onclick="withdrawFunds()">인출하기</button>
                 </div>
 
                 <div id="payInfo" class="mt-3">

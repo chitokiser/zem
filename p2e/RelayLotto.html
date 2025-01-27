@@ -39,19 +39,19 @@
     
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>Game Point Management</h5>
+            <h5>게임포인트 관리</h5>
             <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#gamePointContent" aria-expanded="true" aria-controls="gamePointContent">
-                Toggle
+                펼침목록
             </button>
         </div>
         <div id="gamePointContent" class="collapse show">
             <div class="card-body">
                 <!-- Charge Game Points -->
                 <div class="mb-4">
-                    <h6 class="fw-bold">Charge Game Points</h6>
-                    <label for="Amount" class="form-label">Enter Amount:</label>
-                    <input type="number" id="Amount" class="form-control mb-3" placeholder="Enter amount" required>
-                    <button id="chargeButton" class="btn btn-primary w-100">Charge</button>
+                    <h6 class="fw-bold">게임포인트 충전</h6>
+                    <label for="Amount" class="form-label">충전금액입력 1P=1BET</label>
+                    <input type="number" id="Amount" class="form-control mb-3" placeholder="충전금액을 입력하세요" required>
+                    <button id="chargeButton" class="btn btn-primary w-100">충전하기</button>
                     <p id="resultMessage" class="mt-3 text-center text-success"></p>
                 </div>
 
@@ -59,18 +59,18 @@
 
                 <!-- Check Game Points -->
                 <div class="mb-4">
-                    <h6 class="fw-bold">Check My Game Points</h6>
-                    <button id="checkMypgButton" class="btn btn-secondary w-100">Check My Game Points</button>
-                    <p id="mypgResult" class="mt-3 text-center text-info">Game point value will be displayed here</p>
+                    <h6 class="fw-bold">나의 게임포인트 보기</h6>
+                    <button id="checkMypgButton" class="btn btn-secondary w-100">게임포인트 확인</button>
+                    <p id="mypgResult" class="mt-3 text-center text-info">여기에 게임포인트가 표시됩니다</p>
                 </div>
 
                 <hr class="my-4">
 
                 <!-- Withdraw Game Points -->
                 <div>
-                    <h6 class="fw-bold">Withdraw Game Points</h6>
-                    <button id="withdrawButton" class="btn btn-warning w-100">Withdraw Game Points</button>
-                    <p id="withdrawResultMessage" class="mt-3 text-center text-danger">Game points will be converted to BET tokens</p>
+                    <h6 class="fw-bold">게임포인트 인출</h6>
+                    <button id="withdrawButton" class="btn btn-warning w-100">게임포인트 인출하기</button>
+                    <p id="withdrawResultMessage" class="mt-3 text-center text-danger">게임포인트를 인출하면 BET토큰으로 교환됩니다</p>
                 </div>
             </div>
         </div>
@@ -78,21 +78,26 @@
 </div>
 
 
+
+
         <div class="container mt-4">
             <div class="card mb-3 shadow-sm rounded">
                 <div class="card-header" style="background-color: #f8f9fa;">
-                    <h5>Blockchain Wordle(only game point)</h5>
+                    <h5>릴레이 로또(only game point)</h5>
                 </div>
                 <div class="card-body">
-                    <p>The game list is only displayed when MetaMask is connected.</p>
-<p>This is a game where you have to guess 5 numbers within 10 attempts.</p>
-<p>The correct answer is fixed as a number from 1 to 45.</p>
-<p>You will receive a reward in proportion to the number of attempts and the jackpot amount.</p>
-<p>The owner who registered the game can withdraw the amount excluding the initial registration fee.</p>
-<p>RelayLotto registration fee: <span id="Wprice">Loading...</span>GP</p>
+                    <p>자신의 게임 기록은 지갑이 연결된 경우에만 표시됩니다.</p>
+                    <p>노란색표시는 포함되지만 자리가 맞지 않은 경우</p>
+                    <p>녹색표시는 자리도 맞고 숫자도 일치하는 경우</p>
+                    <p>회색은 둘다 맞지 않는 경우</p>
+                    <p>이 게임은 10번의 시도 안에 5개의 숫자를 맞춰야 합니다.</p>
+                    <p>정답은 1~45 사이의 숫자로 고정됩니다.</p>
+                    <p>시도 횟수와 잭팟 금액에 비례하여 보상을 받게 됩니다.</p>
+                    <p>게임을 등록한 소유자는 초기 등록 수수료를 제외한 금액을 인출할 수 있습니다</p>
+                    <p>RelayLotto 등록 수수료: <span id="Wprice">로딩 중...</span>GP</p>
 <div>
     <div>
-        <label>Enter 5 numbers (1 per field):</label>
+        <label>숫자 5개를 입력하세요(한칸에 1개):</label>
         <div id="game-input-container" style="display: flex; gap: 10px;">
             <input type="number" id="num1" class="game-input" placeholder="1" min="1" max="45" />
             <input type="number" id="num2" class="game-input" placeholder="2" min="1" max="45" />
@@ -116,7 +121,7 @@
             <div id="gameList" class="container my-4">
             </div>
             </div>
-
+        </div>
          <!-- Start footer -->
     <div id="footer"></div>
 

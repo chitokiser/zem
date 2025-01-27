@@ -1,131 +1,110 @@
- 
- let contractAddress = {
-    cyafarmAddr: "0xC83E8A5701728C8F9bf5b30AB5FcdE65517A71Ce", //betfarm  
-  }; 
-   let contractAbi = {
-  
-    cyafarm: [
+let contractAddress = {
+  cyafarmAddr: "0x8E78B8cFC0Bc3698E7000d5C7031e9531BF56F9e", // betfarm
+}; 
+
+let contractAbi = {
+  cyafarm: [
       "function seeding() public",
       "function choice(uint8 winnum) public",
-      "function charge(uint256 _mypay)public",
-      "function withdraw( )public",
-      "function pllength( ) public view returns(uint)",
+      "function charge(uint256 _mypay) public",
+      "function withdraw() public",
+      "function pllength() public view returns(uint)",
       "function getpl(uint num) public view returns(uint)",
       "function port(uint num) public view returns(uint,uint,uint,address)",
-      "function getpay(address user) public view returns(uint)",
-      "function mentopay(address user) public view returns(uint)",
+      "function mypay(address user) public view returns(uint)",
       "function getvalue(uint num) public view returns(uint)",
-      "function getmyfarm(uint num) public view returns(uint) ",
-      "function getmygain() public view returns(uint) ",
-      "function tax( ) public view returns(uint)", 
+      "function getmyfarm(uint num) public view returns(uint)",
+      "function getmygain() public view returns(uint)",
+      "function tax() public view returns(uint)", 
       "function mytiket(address user) public view returns(uint)", 
-      "function rate( ) public view returns(uint)",
-      "function remain( ) public view returns(uint256)",
-      "function price( ) public view returns(uint256)",
+      "function rate() public view returns(uint)",
+      "function remain() public view returns(uint256)",
+      "function price() public view returns(uint256)",
       "function g1() public view virtual returns(uint256)",
       "event farmnum(uint winnum)"
-    ]
-  
-  };
-  
-  
-  const topDataSync = async () => {
-    try {
-      // ethers setup
-      const provider = new ethers.providers.JsonRpcProvider('https://opbnb-mainnet-rpc.bnbchain.org');
-      const cyafarmContract = new ethers.Contract(contractAddress.cyafarmAddr, contractAbi.cyafarm, provider);
-  
-      
+  ]
+};
+
+const provider = new ethers.providers.JsonRpcProvider('https://opbnb-mainnet-rpc.bnbchain.org');
+const cyafarmContract = new ethers.Contract(contractAddress.cyafarmAddr, contractAbi.cyafarm, provider);
+
+// ✅ 실시간 데이터 동기화 함수
+const topDataSync = async () => {
+  try {
       const fprice = await cyafarmContract.price();
       const fsum = await cyafarmContract.remain();
       const irate = await cyafarmContract.rate();
       const ipl = await cyafarmContract.pllength();
-      const ibal = await cyafarmContract.g1();
-  
-      // 데이터를 HTML에 표시
-      document.getElementById("Fprice").innerHTML = (fprice / 1e18);
-      document.getElementById("Farmtotal").innerHTML = (fsum);
-      document.getElementById("Rate").innerHTML = (irate / 1e18);
-      document.getElementById("Pl").innerHTML = (ipl);
-      document.getElementById("Cyabal").innerHTML = (ibal / 1e18);
-  
-      // Register event listener after contract initialization
-      cyafarmContract.on('farmnum', (winnum) => {
-        console.log('pot no.:', winnum);
-        let eventS1Element = document.getElementById('SeedingNum');
-        if (eventS1Element) {
-          eventS1Element.innerText = `pot num: ${winnum}`;
-        } else {
-          console.error('Error: Element with ID "event" not found.');
-        }
-      });
-  
-      // NFT 관련 정보를 업데이트
-      const nftIds = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-        31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-        41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-        51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-        61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
-        71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-        81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-        91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
-  
-      const updateFarmCard = async (nftId) => {
-        const depoInfo = await cyafarmContract.port(nftId);
-        const valueInfo = await cyafarmContract.getvalue(nftId);
-        const ownerInfo = depoInfo[3]; // 소유자 정보 추가 
-  
-        // 카드 구성 요소 생성
-        const card = document.createElement("div");
-        card.className = "card stylish-card";
-  
-        const cardBody = document.createElement("div");
-        cardBody.className = "card-body";
-  
-        const cardTitle = document.createElement("h6");
-        cardTitle.className = "card-title stylish-title";
-        cardTitle.textContent = `Pot ${nftId}`;
-  
-        const depoText = document.createElement("p");
-        depoText.className = "card-text stylish-text";
-        depoText.textContent = `Seed price : ${depoInfo[0] / 1e18} BET`;
-  
-        const deponText = document.createElement("p");
-        deponText.className = "card-text stylish-text";
-        deponText.textContent = `Seeding NO : ${depoInfo[1]} th`;
-  
-        const valueText = document.createElement("p");
-        valueText.className = "card-text stylish-text";
-        valueText.textContent = `Value : ${valueInfo / 1e18} CYA`;
-  
-        const ownerText = document.createElement("p");
-        ownerText.className = "card-text stylish-text";
-        ownerText.textContent = `Owner : ${ownerInfo}`;
-  
-        // 카드 내용 구성
-        cardBody.appendChild(cardTitle);
-        cardBody.appendChild(depoText);
-        cardBody.appendChild(deponText);
-        cardBody.appendChild(valueText);
-        cardBody.appendChild(ownerText);
-        card.appendChild(cardBody);
-  
-    
-        const farmCards = document.getElementById("farmCards");
-        farmCards.appendChild(card);
-      };
-  
-      // NFT 정보를 갱신
-      for (const nftId of nftIds) {
-        await updateFarmCard(nftId);
+     const ibal = await cyafarmContract.g1();
+
+      document.getElementById("Fprice").innerHTML = (fprice / 1e18).toFixed(4);
+      document.getElementById("Farmtotal").innerHTML = fsum;
+      document.getElementById("Rate").innerHTML = (100 - irate) + "%";
+      document.getElementById("Pl").innerHTML = ipl;
+      document.getElementById("Cyabal").innerHTML = (ibal / 1e18).toFixed(4);
+  } catch (error) {
+      console.error("Error fetching contract data:", error);
+  }
+};
+
+// ✅ `farmnum` 이벤트 리스너 추가
+cyafarmContract.on("farmnum", (winnum) => {
+  console.log("🏆 Winning Farm Number:", winnum);
+
+  // HTML 업데이트
+  let eventElement = document.getElementById("eventFarmnum");
+  if (eventElement) {
+      eventElement.innerText = `🏆시딩성공 화분번호: ${winnum}`;
+  }
+});
+
+// ✅ **자동 데이터 갱신 (setTimeout 방식)**
+async function startDataSync() {
+  await topDataSync();
+  setTimeout(startDataSync, 5000);
+}
+
+// ✅ 초기 실행
+startDataSync();
+
+
+// ✅ port 데이터를 화면에 표시
+async function displayPortData() {
+  try {
+      let container = document.getElementById("portDataContainer");
+      if (!container) {
+          console.error("HTML 요소 'portDataContainer'를 찾을 수 없습니다.");
+          return;
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+      container.innerHTML = "";
+
+      for (let num = 1; num <= 100; num++) {
+          let [value1, value2, value3, owner] = await cyafarmContract.port(num);
+          let [currentValue] = await Promise.all([
+      
+            cyafarmContract.getvalue(num)
+        ]);
+          let card = document.createElement("div");
+          card.className = "card stylish-card";
+          card.innerHTML = `
+                 <div class="card-body">
+                    <h6 class="card-title stylish-title">🌱 Pot ${num}</h6>
+                    <p class="card-text stylish-text">💰 원금: ${(value1 / 1e18).toFixed(2)} BET</p>
+                    <p class="card-text stylish-text">📈 현재 가치: ${(currentValue / 1e18).toFixed(2)} BET</p>
+                    <p class="card-text stylish-text">📊 시딩 순번: ${value2}</p>
+                    <p class="card-text stylish-text">👤 화분주인: ${owner}</p>
+                </div>
+          `;
+
+          container.appendChild(card);
+      }
+  } catch (error) {
+      console.error("Error fetching port data:", error);
+  }
+}
+window.onload = displayPortData;
+
+    
   
 // 5초마다 데이터 갱신
 setInterval(() => {
@@ -155,7 +134,7 @@ setInterval(() => {
           let signer = userProvider.getSigner();
           let cyafarmContract = new ethers.Contract(contractAddress.cyafarmAddr, contractAbi.cyafarm, signer);
         
-          let mygain = await cyafarmContract.getpay(await signer.getAddress());
+          let mygain = await cyafarmContract.mypay(await signer.getAddress());
           let imytiket = await cyafarmContract.mytiket(await signer.getAddress());
       
           document.getElementById("Farmgain").innerHTML = (parseFloat(mygain) / 1e18).toFixed(2);

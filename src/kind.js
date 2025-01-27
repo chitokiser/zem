@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     let signer;
     let kinda5Contract;
 
-    // 지갑 연결 함수
     async function connectWallet() {
         if (window.ethereum) {
             try {
@@ -67,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             for (let i = 0; i < maxPid; i++) {
                 let [name, value1, value2, value3, isActive, addr1, addr2, addr3] = await kinda5Contract.metainfo(i);
 
-                // 주소 앞 6자리만 표시
                 const shortAddress = (addr) => addr.slice(0, 6) + "...";
 
                 let card = document.createElement("div");
@@ -86,32 +84,30 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <p><strong>출자자:</strong> ${shortAddress(addr1)}</p>
                         <p><strong>등록자:</strong> ${shortAddress(addr2)}</p>
                         <p><strong>오너:</strong> ${shortAddress(addr3)}</p>
-                        <button class="btn btn-outline-success w-100" data-id="${i}">구매하기</button>
+                        <button class="btn btn-outline-success w-100 buy-btn" data-id="${i}">구매하기</button>
                     </div>
                 `;
 
                 container.appendChild(card);
             }
-
-            // 구매 버튼 이벤트 리스너 추가
-            document.querySelectorAll(".buy-btn").forEach(button => {
-                button.addEventListener("click", async function () {
-                    let pid = this.getAttribute("data-id");
-                    await buyItem(pid, 1); // num 값 1로 고정
-                });
-            });
-
         } catch (error) {
             console.error("loadMetaInfo 오류 발생:", error);
         }
     };
 
-    // 구매 함수
+    document.getElementById("MetaInfoContainer").addEventListener("click", async function(event) {
+        if (event.target.classList.contains("buy-btn")) {
+            let pid = event.target.getAttribute("data-id");
+            await buyItem(pid, 1);
+        }
+    });
+
     async function buyItem(pid, num) {
         if (!signer) {
             await connectWallet();
+            signer = provider.getSigner();
+            kinda5Contract = new ethers.Contract(kindaddr.kindmarket, kindabi.kindmarket, signer);
         }
-
         try {
             let tx = await kinda5Contract.buy(pid, num);
             await tx.wait();
@@ -121,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // 실행
     await connectWallet();
     await topSync();
     await loadMetaInfo();
