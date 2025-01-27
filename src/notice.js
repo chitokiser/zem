@@ -58,7 +58,7 @@ const truncateAddress = (address) => {
     try {
       const noticeCount = await contract.noticeCount();
   
-      for (let i = 1; i <= noticeCount; i++) {
+      for (let i = 4; i <= noticeCount; i++) {
         const notice = await contract.notices(i);
   
         const noticeDiv = document.createElement("div");
