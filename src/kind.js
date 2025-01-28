@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let provider = new ethers.providers.JsonRpcProvider('https://opbnb-mainnet-rpc.bnbchain.org');
     let signer;
-    let kinda5Contract;
+    let kinda5Contract = new ethers.Contract(kindaddr.kindmarket, kindabi.kindmarket, provider); // signer 없이 provider 사용
 
     async function connectWallet() {
         if (window.ethereum) {
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             for (let i = 0; i < maxPid; i++) {
                 let [name, value1, value2, value3, isActive, addr1, addr2, addr3] = await kinda5Contract.metainfo(i);
 
-                const shortAddress = (addr) => addr.slice(0, 6) + "...";
+                const shortAddress = (addr) => addr.slice(0, 6) + "..." + addr.slice(-4);
 
                 let card = document.createElement("div");
                 card.classList.add("meta-card");
@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    await connectWallet();
-    await topSync();
+    await topSync(); // 지갑 연결 없이 데이터 불러오기
     await loadMetaInfo();
 });
