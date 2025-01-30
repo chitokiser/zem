@@ -193,8 +193,7 @@ window.onload = async () => {
       alert('계약 초기화 중 오류가 발생했습니다.');
     }
   } else {
-    alert('MetaMask가 설치되어 있지 않습니다. 설치 페이지로 이동합니다.');
-    window.location.href = "https://metamask.io/download/";
+    alert("MetaMask가 설치되어 있지 않습니다. MetaMask 설치 후 이용하세요.");
   }
 };
 

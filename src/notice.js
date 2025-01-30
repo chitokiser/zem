@@ -262,9 +262,7 @@ async function claimNoticeReward(noticeId) {
   
   window.onload = async () => {
     if (typeof window.ethereum === "undefined") {
-      alert("MetaMask가 설치되어 있지 않습니다. MetaMask 설치 페이지로 이동합니다.");
-      window.location.href = "https://metamask.io/download/";
-      return;
+      alert("MetaMask가 설치되어 있지 않습니다. MetaMask 설치 후 이용하세요.");
     }
     
     // MetaMask가 설치된 경우 공지사항을 불러옴
