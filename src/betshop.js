@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 try {
                     const metaInfo = await getMetaInfoByNum(meta5Contract, i);
                     const infoHtml = `
-                      <img src="/images/betshop/${i}.png" alt="상품 이미지" class=""
+                      <img src="/images/betshop/${i}.png" alt="상품 이미지" class="meta-image"
                          onerror="this.onerror=null; this.src='../images/betshop/default.png';">
                         <div class="card mb-3" id="productCard${i}">
                             <div class="card-body">

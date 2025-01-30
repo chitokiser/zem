@@ -180,7 +180,6 @@ let Buff = async () => {
 
 };
 
-
 window.onload = async () => {
   if (window.ethereum) {
     try {
@@ -194,9 +193,11 @@ window.onload = async () => {
       alert('계약 초기화 중 오류가 발생했습니다.');
     }
   } else {
-    alert('Ethereum 공급자가 없습니다. MetaMask를 설치해주세요.');
+    alert('MetaMask가 설치되어 있지 않습니다. 설치 페이지로 이동합니다.');
+    window.location.href = "https://metamask.io/download/";
   }
 };
+
 
 
 // 주소 배열을 가져와서 HTML에 표시하는 함수
