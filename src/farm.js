@@ -47,14 +47,14 @@ const topDataSync = async () => {
   }
 };
 
-// ✅ `farmnum` 이벤트 리스너 추가
+//  `farmnum` 이벤트 리스너 추가
 cyafarmContract.on("farmnum", (winnum) => {
   console.log("🏆 Winning Farm Number:", winnum);
 
   // HTML 업데이트
   let eventElement = document.getElementById("eventFarmnum");
   if (eventElement) {
-      eventElement.innerText = `🏆시딩성공 화분번호: ${winnum}`;
+      eventElement.innerText = `🏆파종성공 화분번호: ${winnum}`;
   }
 });
 
@@ -91,7 +91,7 @@ async function displayPortData() {
                     <h6 class="card-title stylish-title">🌱 Pot ${num}</h6>
                     <p class="card-text stylish-text">💰 원금: ${(value1 / 1e18).toFixed(2)} BET</p>
                     <p class="card-text stylish-text">📈 현재 가치: ${(currentValue / 1e18).toFixed(2)} BET</p>
-                    <p class="card-text stylish-text">📊 시딩 순번: ${value2}</p>
+                    <p class="card-text stylish-text">📊 파종 순번: ${value2}</p>
                     <p class="card-text stylish-text">👤 화분주인: ${owner}</p>
                 </div>
           `;

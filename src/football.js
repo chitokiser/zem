@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     
     const metaddr = {
-        metmarket: "0xec2d1835f77Fc92FDBA3EcA531c1482C970D1B07" //football
+        metmarket: "0xec2d1835f77Fc92FDBA3EcA531c1482C970D1B07" //football 프리미어리그
     };
 
     const metabi = {

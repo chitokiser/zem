@@ -21,7 +21,7 @@ let fetchUserState = async () => {
         console.log("Connected user address:", userAddress);
 
         const provider = new ethers.providers.JsonRpcProvider('https://opbnb-mainnet-rpc.bnbchain.org');
-        let soccerContract = new ethers.Contract(address2.soccerAddr, abi2.soccer, provider);
+        let soccerContract = new ethers.Contract(address2.soccerAddr, abi2.soccer, signer);
 
         // 초기 상태 표시
         document.getElementById("userState").innerText = `Your Reward: 0 BET | Your Loss: 0 BET`;
