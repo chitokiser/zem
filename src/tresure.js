@@ -55,7 +55,7 @@ async function loadQuizzes() {
                 <p><strong>ID:</strong> #${quiz[0]}</p>
                 <p><strong>Reward:</strong> ${quiz[1]} BUT</p>
                 <p><strong>Question:</strong> ${quiz[4]}</p>
-                <input type="text" id="answer-${quiz[0]}" placeholder="정답입력">
+                <input type="text" id="answer-${quiz[0]}" placeholder="여기에 정답을 입력하신 후 제출하세요">
                 <button onclick="submitAnswer(${quiz[0]})">제출하기</button>
             `;
             quizContainer.appendChild(quizCard);
