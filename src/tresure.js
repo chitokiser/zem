@@ -53,7 +53,7 @@ async function loadQuizzes() {
             quizCard.classList.add("quiz-card");
             quizCard.innerHTML = `
                 <p><strong>ID:</strong> #${quiz[0]}</p>
-                <p><strong>Reward:</strong> ${quiz[1]} BUT</p>
+                <p><strong>Reward:</strong> ${quiz[1]} Point</p>
                 <p><strong>Question:</strong> ${quiz[4]}</p>
                 <input type="text" id="answer-${quiz[0]}" placeholder="여기에 정답을 입력하신 후 제출하세요">
                 <button onclick="submitAnswer(${quiz[0]})">제출하기</button>
