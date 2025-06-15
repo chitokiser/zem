@@ -2,36 +2,86 @@
 <html lang="kr">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <link rel="shortcut icon" href="../images/logo.png" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/font.css">
-    <title>BetDAO</title>
-</head>
-<body>
-    <!-- Placeholder for dynamic header -->
-    <div id="menu-placeholder"></div>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BetDAO - 보물찾기</title>
+  <link rel="shortcut icon" href="../images/logo.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/font.css">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f9f9f9, #eef2f7);
+      font-family: 'Noto Sans KR', sans-serif;
+    }
 
-    <script>
-      // Load header dynamically from dashboard.html
-      fetch('../dashboard.html')
-          .then(response => response.text())
-          .then(data => {
-              document.getElementById('menu-placeholder').innerHTML = data;
-              
-              const script = document.createElement('script');
-              script.src = '../src/topinfo.js';
-              script.type = 'text/javascript';
-              document.body.appendChild(script);
-          })
-          .catch(error => console.error('Error loading the dashboard content:', error));
+    .card {
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header h5 {
+      font-weight: 600;
+    }
+
+    #treasure-result {
+      font-size: 1.4rem;
+      color: #28a745;
+      background-color: #e8fce8;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      animation: rewardPop 0.6s ease-out;
+    }
+
+    .list-group-item span {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .btn-primary,
+    .btn-success,
+    .btn-warning {
+      border-radius: 0.5rem;
+    }
+
+    .btn-outline-success {
+      font-weight: 500;
+    }
+
+    .info-stats li {
+      background-color: #f0f0f0;
+      font-size: 1.05rem;
+    }
+
+    @keyframes rewardPop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="menu-placeholder"></div>
+  <script>
+    fetch('../dashboard.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('menu-placeholder').innerHTML = data;
+        const script = document.createElement('script');
+        script.src = '../src/topinfo.js';
+        document.body.appendChild(script);
+      });
   </script>
 
   <audio id="reward-sound" src="/sounds/reward.mp3" preload="auto"></audio>
@@ -39,14 +89,14 @@
   <div class="container mt-4">
     <div class="card mb-4 border-primary">
       <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">💎 보물찾기 안내</h5>
+        <h5 class="mb-0">💫 보물찾기 안내</h5>
       </div>
       <div class="card-body">
-        <p>✅ 레벨 1 이상이면 누구나 참가할 수 있습니다.</p>
-        <p>🎁 찾은 보물을 교환하면 BUT을 받을 수 있습니다.</p>
-        <p>📦 보물박스를 열면 보상을 획득할 수 있습니다. (1 BUT 소진)</p>
-        <p>보석세트 1 ❤️ 루비, 💙 사파이어, 💚 에메랄드 각 50개당 <span id="Q4">-</span> BUT 보상</p>
-        <p>보석세트 2💛 토파즈, 🤍 다이아, 🪙 골드바 각 50개당 <span id="Q5">-</span> BUT 보상</p>
+        <p>✅ 레벨 1 이상이면 누구나 참가가능합니다.</p>
+        <p>🏱 찾은 보물을 교환하면 BUT을 받을 수 있습니다.</p>
+        <p>📦 보물박스를 열면 보상을 획득할 수 있습니다. (1 BUT 소지)</p>
+        <p>보석세트 1 ❤️ 루비, 🟦 사파이어, 🟢 에메러드 각 50개당 <span id="Q4">-</span> BUT 보상</p>
+        <p>보석세트 2🟡 토파즈, ⚪ 다이아, 🪙 골드바 각 50개당 <span id="Q5">-</span> BUT 보상</p>
         <ul class="list-group mt-3">
           <li class="list-group-item">🔐 계약 BUT 잔액: <span id="Q3">-</span> BUT</li>
         </ul>
@@ -58,9 +108,8 @@
         <h5 class="mb-0">📦 보물열기</h5>
       </div>
       <div class="card-body">
-        <p>찾은 보물의 코드를 입력 후 <strong>보물박스 열기</strong>를 클릭하세요.</p>
+        <p>찾은 보물의 코드를 입력후 <strong>보물박스 열기</strong>를 클릭하세요.</p>
         <div id="treasure-result" class="mt-3 fw-bold text-center"></div>
-
         <div class="input-group mb-3">
           <input type="number" id="qrIdInput" class="form-control" placeholder="보물 코드 입력">
           <button class="btn btn-primary" onclick="claimTreasure(document.getElementById('qrIdInput').value)">보물박스열기</button>
@@ -70,22 +119,35 @@
 
     <div class="card mb-4 border-warning">
       <div class="card-header bg-warning text-dark">
-        <h5 class="mb-0">🔎 내가 찾은 보물</h5>
+        <h5 class="mb-0">🔎 획득한 보석들</h5>
       </div>
       <div class="card-body">
-        <button class="btn btn-outline-success mb-3" type="button" onclick="Mystatus()">지갑 연결</button>
+        <button class="btn btn-outline-success mb-3" onclick="Mystatus()">지갑 연결</button>
         <ul class="list-group">
           <li class="list-group-item">❤️ 루비: <span id="Luby">-</span>개</li>
-          <li class="list-group-item">💙 사파이어: <span id="Sapp">-</span>개</li>
-          <li class="list-group-item">💚 에메랄드: <span id="Emer">-</span>개</li>
-          <li class="list-group-item">💛 토파즈: <span id="Topa">-</span>개</li>
-          <li class="list-group-item">🤍 다이아: <span id="Dia">-</span>개</li>
+          <li class="list-group-item">🟦 사파이어: <span id="Sapp">-</span>개</li>
+          <li class="list-group-item">🟢 에메러드: <span id="Emer">-</span>개</li>
+          <li class="list-group-item">🟡 토파즈: <span id="Topa">-</span>개</li>
+          <li class="list-group-item">⚪ 다이아: <span id="Dia">-</span>개</li>
           <li class="list-group-item">🪙 골드바: <span id="Gold">-</span>개</li>
         </ul>
         <div class="mt-3">
-          <button class="btn btn-primary me-2" type="button" onclick="Openbox1()">💼 보석세트1 교환</button>
-          <button class="btn btn-primary" type="button" onclick="Openbox2()">💼 보석세트2 교환</button>
+          <button class="btn btn-primary me-2" onclick="Openbox1()">💼 보석세트1 교환</button>
+          <button class="btn btn-primary" onclick="Openbox2()">💼 보석세트2 교환</button>
         </div>
+      </div>
+    </div>
+
+    <div class="card mb-4 border-info">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">🎒 내가 찾은 보물목록</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted">🔍 보유 중인 보물을 확인하세요.</p>
+        <button class="btn btn-outline-dark mb-3" onclick="getMyTreasureList()">보물 조회</button>
+        <ul id="myTreasureList" class="list-group">
+          <li class="list-group-item text-muted">조회 결과가 여기에 표시됩니다.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -93,20 +155,18 @@
   <div id="footer"></div>
   <script>
     fetch('../footer.html')
-      .then(response => response.text())
+      .then(res => res.text())
       .then(data => {
         document.getElementById('footer').innerHTML = data;
         const script = document.createElement('script');
         document.body.appendChild(script);
-      })
-      .catch(error => console.error('Error loading the dashboard content:', error));
+      });
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../src/treasure.js"></script>
 </body>
+
 </html>

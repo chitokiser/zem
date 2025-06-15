@@ -40,15 +40,43 @@ let topSync = async () => {
 // 실행
 topSync();
 
+async function getMyTreasureList() {
+    try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        const userAddress = await signer.getAddress();
+
+        const contract = new ethers.Contract(
+            tresureAddr.tresure,
+            tresureAbi.tresure,
+            provider
+        );
+
+        const treasureList = await contract.getMyTreasure(userAddress);
+        
+        console.log("보유한 보물 ID 목록:", treasureList);
+
+        // 📦 HTML에 표시
+        const listElem = document.getElementById("myTreasureList");
+        listElem.innerHTML = treasureList.length === 0 
+          ? "보유한 보물이 없습니다." 
+          : treasureList.map(id => `<li>🧩 보물 ID: ${id}</li>`).join("");
+
+    } catch (err) {
+        console.error("보물 조회 실패:", err);
+        alert("보물 조회 중 오류가 발생했습니다.");
+    }
+}
 
 
     function getJewelIcon(jewelType) {
       const map = {
         ruby: "❤️ 루비",
-        sapp: "💙 사파이어",
-        emer: "💚 에메랄드",
-        topa: "💛 토파즈",
-        dia: "🪤 다이아",
+        sapp: "🟦 사파이어",
+        emer: "🟢 에메랄드",
+        topa: "🟡 토파즈",
+        dia: "⚪다이아",
         gold: "🪙 골드바"
       };
       return map[jewelType.toLowerCase()] || `🔠 ${jewelType}`;
