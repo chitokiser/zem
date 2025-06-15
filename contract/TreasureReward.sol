@@ -27,7 +27,7 @@ contract TreasureReward {
     address public owner;
     Ibutbank public butbank;
     Ibut public but;
-    uint public butAmount;
+
     // treasure 등록 리스트 및 존재 확인용
     uint[] public treasure;
     mapping(uint => bool) public treasureList;
@@ -58,7 +58,6 @@ contract TreasureReward {
         owner = msg.sender;
         but = Ibut(_but);
         butbank = Ibutbank(_butbank);
-        butAmount = 3000;
     }
 
     modifier onlyOwner() {
@@ -73,85 +72,58 @@ contract TreasureReward {
         treasureList[qrId] = true;
     }
 
-    // ✅ 보물 but보상 (관리자만 가능)
-    function butedit(uint _but) external onlyOwner {
-      butAmount = _but;
+    // ✅ 보물 클레임 (사용자)
+    function claimTreasure(uint qrId) external {
+        require(treasureList[qrId], "Invalid treasure");
+        require(!claimedTreasure[msg.sender][qrId], "Already claimed");
+
+        uint level = butbank.getlevel(msg.sender);
+        require(level >= 1, "Not enough level");
+
+        (string memory jewelType, uint reward) = calculateReward(level);
+
+        // 보석 기록
+        if (keccak256(bytes(jewelType)) == keccak256("ruby")) {
+            myinfo[msg.sender].ruby += reward;
+        } else if (keccak256(bytes(jewelType)) == keccak256("sapp")) {
+            myinfo[msg.sender].sapp += reward;
+        } else if (keccak256(bytes(jewelType)) == keccak256("emer")) {
+            myinfo[msg.sender].emer += reward;
+        } else if (keccak256(bytes(jewelType)) == keccak256("topa")) {
+            myinfo[msg.sender].topa += reward;
+        } else if (keccak256(bytes(jewelType)) == keccak256("dia")) {
+            myinfo[msg.sender].dia += reward;
+        } else {
+            myinfo[msg.sender].gold += reward;
+        }
+
+        mytreasure[msg.sender].push(qrId);
+        claimedTreasure[msg.sender][qrId] = true;
+
+        butbank.expup(msg.sender, 1000 * level);
+
+
+        emit RewardClaimed(msg.sender, qrId, reward, jewelType);
     }
 
- function claimTreasure(uint qrId) external {
-    require(treasureList[qrId], "Invalid treasure");
-    require(!claimedTreasure[msg.sender][qrId], "Already claimed");
-    require(but.balanceOf(msg.sender) >= 1, "Requires 1 BUT token. ");
 
-    but.approve(msg.sender, 1);
-    uint256 allowance = but.allowance(msg.sender, address(this));
-    require(allowance >= 1, "Check the allowance");
-    but.transferFrom(msg.sender, address(this), 1); 
+   function openbox() public {
+          require(myinfo[msg.sender].ruby >= 10, "Need at least 10 ruby");
+    require(myinfo[msg.sender].sapp >= 10, "Need at least 10 sapphire");
+    require(myinfo[msg.sender].emer >= 10, "Need at least 10 emerald");
+    require(myinfo[msg.sender].topa >= 10, "Need at least 10 topaz");
+    require(myinfo[msg.sender].dia >= 10, "Need at least 10 diamond");
+    require(myinfo[msg.sender].gold >= 10, "Need at least 10 gold");
 
-    uint level = butbank.getlevel(msg.sender);
-    require(level >= 1, "Not enough level");
-
-    (string memory jewelType, uint reward) = calculateReward(level);
-
-    // 보석 기록 (단순화)
-    My storage user = myinfo[msg.sender];
-    bytes32 jewelHash = keccak256(bytes(jewelType));
-
-    if (jewelHash == keccak256("ruby")) {
-        user.ruby += reward;
-    } else if (jewelHash == keccak256("sapp")) {
-        user.sapp += reward;
-    } else if (jewelHash == keccak256("emer")) {
-        user.emer += reward;
-    } else if (jewelHash == keccak256("topa")) {
-        user.topa += reward;
-    } else if (jewelHash == keccak256("dia")) {
-        user.dia += reward;
-    } else {
-        user.gold += reward;
-    }
-
-    // 보물 등록 및 경험치 추가
-    mytreasure[msg.sender].push(qrId);
-    claimedTreasure[msg.sender][qrId] = true;
-    butbank.expup(msg.sender, 500 * level);
-
-    emit RewardClaimed(msg.sender, qrId, reward, jewelType);
-}
-
-
-
-
-   function openbox1() public {
-          require(myinfo[msg.sender].ruby >= 50, "Need at least 10 ruby");
-    require(myinfo[msg.sender].sapp >= 50, "Need at least 10 sapphire");
-    require(myinfo[msg.sender].emer >= 50, "Need at least 10 emerald");
-
-
-    myinfo[msg.sender].ruby -= 50;
-    myinfo[msg.sender].sapp -= 50;
-    myinfo[msg.sender].emer -= 50;
+    myinfo[msg.sender].ruby -= 10;
+    myinfo[msg.sender].sapp -= 10;
+    myinfo[msg.sender].emer -= 10;
+    myinfo[msg.sender].topa -= 10;
+    myinfo[msg.sender].dia -= 10;
+    myinfo[msg.sender].gold -= 10;
 
     uint level = butbank.getlevel(msg.sender);
-    uint rewardAmount = butAmount ;
-
-    require(but.balanceOf(address(this)) >= rewardAmount, "Not enough BUT tokens in contract");
-    but.transfer(msg.sender, rewardAmount);
-
-    emit open(msg.sender, rewardAmount, level);
-}
-function openbox2() public {
-  
-    require(myinfo[msg.sender].topa >= 50, "Need at least 10 topaz");
-    require(myinfo[msg.sender].dia >= 50, "Need at least 10 diamond");
-    require(myinfo[msg.sender].gold >= 50, "Need at least 10 gold");
-
-    myinfo[msg.sender].topa -= 50;
-    myinfo[msg.sender].dia -= 50;
-    myinfo[msg.sender].gold -= 50;
-
-    uint level = butbank.getlevel(msg.sender);
-    uint rewardAmount = butAmount * 2;
+    uint rewardAmount = 600 * level;
 
     require(but.balanceOf(address(this)) >= rewardAmount, "Not enough BUT tokens in contract");
 
@@ -187,9 +159,6 @@ function openbox2() public {
     function g3() public view returns(uint) { 
     return but.balanceOf(address(this));
 }  
-function g8(address user) public view returns(uint) {  
-    return but.balanceOf(user);
-} 
 
 
 }

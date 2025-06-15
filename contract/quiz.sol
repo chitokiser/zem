@@ -19,7 +19,7 @@ pragma solidity ^0.8.0;
     function  g9(address user) external view returns(uint);  //depo현황
   }
   
-contract tresure {
+contract tresure {  //퀴즈쪽
 
  
       Ibutbank butbank;

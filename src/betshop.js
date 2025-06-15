@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "function bid() public view virtual returns(uint256)",
             "function g1() public view virtual returns(uint256)",
             "function g4() public view virtual returns(uint256)",
-            "function metainfo(uint _num) public view returns (string memory,string memor,uint256,uint256,uint256,uint256)",
+            "function metainfo(uint _num) public view returns (string memory,string memory,uint256,uint256,uint256,uint256)",
             "function bs(uint _num) public view returns (uint256,uint256,address,string memory,string memory,string memory,uint256)",
         ],
     };

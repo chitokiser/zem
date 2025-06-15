@@ -9,7 +9,7 @@ interface IERC20 {
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
    }
 
-contract balanceOf(account);ut is IERC20 {
+contract But is IERC20 {
     string public constant name = "BetUtilityToken";
     string public constant symbol = "BUT";
     uint8 public constant decimals = 0;

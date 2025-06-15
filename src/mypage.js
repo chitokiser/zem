@@ -1,238 +1,140 @@
-let contractAddress = {
-  cutbank: "0x7af12A131182b966b813369Eb45393657a5a1bd5",  //new butbank
-  };
-  let contractAbi = {
-   
+const { ethers } = window;
 
-   
-    cutbank: [
-      "function g1() public view virtual returns(uint256)",
-      "function g6() public view virtual returns(uint256)",
-      "function g7() public view virtual returns(uint256)",
-      "function g8(address user) public view virtual returns(uint256)",
-      "function g9(address user) public view returns(uint)",
-      "function g10() public view virtual returns(uint256)",
-      "function allow() public view returns(uint256)",
-      "function sum() public view returns(uint256)",
-      "function allowt(address user) public view returns(uint256)",
-      "function g11() public view virtual returns(uint256)",
-      "function getprice() public view returns (uint256)",
-      "function gettime() external view returns (uint256)",
-      "function withdraw() public ",
-      "function buysut(uint _num) public returns(bool)",
-      "function sellsut(uint num)public returns(bool)",
-      "function getpay(address user) public view returns (uint256)",
-      "function allowcation() public returns(bool) ",
-      "function getlevel(address user) public view returns(uint) ",
-      "function getmento(address user) public view returns(address) ",
-      "function memberjoin(address _mento) public ",
-      "function myinfo(address user) public view returns(uint256,uint256,uint256,address,uint256)",
-      "function levelup() public",
-      "function buffing() public",
-      "function getmymenty(address user) public view returns (address[] memory)"
-
-    ],
-
-    expbuff: [
-      "function expbuffing() public",
-    ]
-,
-
-  };
-
-  let provider;
-  let contract;
-
-
-  let MemberLogin = async () => {
-    let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [{
-          chainId: "0xCC",
-          rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-          chainName: "opBNB",
-          nativeCurrency: {
-              name: "BNB",
-              symbol: "BNB",
-              decimals: 18
-          },
-          blockExplorerUrls: ["https://opbnbscan.com"]
-      }]
-  });
-    await userProvider.send("eth_requestAccounts", []);
-    let signer = userProvider.getSigner();
-    let cyamemContract = new ethers.Contract(contractAddress.cutbank, contractAbi.cutbank, signer);
-    let my = await cyamemContract.myinfo(await signer.getAddress());
-     let mybonus =  (await my[1]);
-     let mylev =  (await my[2]);
-     let mymento =  (await my[3]);
-     let myexp =  (await my[4]);
-   
-    
-    let levelexp = (2**mylev)*10000;
-
-    document.getElementById("Mymento").innerHTML = (mymento);
-    document.getElementById("Mylev").innerHTML = (mylev);
-    document.getElementById("Mylev2").innerHTML = (mylev);
-    document.getElementById("Exp").innerHTML =  (myexp);
-    document.getElementById("Expneeded").innerHTML = (levelexp);
-    document.getElementById("Mypoint").innerHTML =  (mybonus/1e18).toFixed(4);
-    document.getElementById("LevelBar").style.width = `${myexp/levelexp*100}%`; // CHECK:: 소수점으로 나오는 것 같아 *100 했습니다. 
-
-
-  };
-
-  let Levelup = async () => {
-   
-    let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [{
-          chainId: "0xCC",
-          rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-          chainName: "opBNB",
-          nativeCurrency: {
-              name: "BNB",
-              symbol: "BNB",
-              decimals: 18
-          },
-          blockExplorerUrls: ["https://opbnbscan.com"]
-      }]
-  });
-    await userProvider.send("eth_requestAccounts", []);
-    let signer = userProvider.getSigner();
-    let cyamemContract = new ethers.Contract(contractAddress.cutbank, contractAbi.cutbank, signer);
-    
-    try {
-      await cyamemContract.levelup(); 
-    } catch(e) {
-      alert(e.data.message.replace('execution reverted: ',''))
-    }
-  
+const contractAddress = {
+  cutbank: "0x7af12A131182b966b813369Eb45393657a5a1bd5",
 };
 
+const cutbankAbi = [
+  "function g1() view returns(uint256)",
+  "function g6() view returns(uint256)",
+  "function g7() view returns(uint256)",
+  "function g8(address) view returns(uint256)",
+  "function g9(address) view returns(uint)",
+  "function g10() view returns(uint256)",
+  "function allow() view returns(uint256)",
+  "function sum() view returns(uint256)",
+  "function allowt(address) view returns(uint256)",
+  "function g11() view returns(uint256)",
+  "function getprice() view returns(uint256)",
+  "function gettime() view returns(uint256)",
+  "function withdraw()",
+  "function buysut(uint) returns(bool)",
+  "function sellsut(uint) returns(bool)",
+  "function getpay(address) view returns(uint256)",
+  "function allowcation() returns(bool)",
+  "function getlevel(address) view returns(uint)",
+  "function getmento(address) view returns(address)",
+  "function memberjoin(address)",
+  "function myinfo(address) view returns(uint256,uint256,uint256,address,uint256)",
+  "function levelup()",
+  "function buffing()",
+  "function getmymenty(address) view returns(address[])"
+];
 
+let provider;
+let signer;
+let contract;
 
+const initialize = async () => {
+  if (!window.ethereum) {
+    alert("MetaMask가 설치되어 있지 않습니다.");
+    return;
+  }
 
-let Bonuswithdraw = async () => {
-   
-  let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  provider = new ethers.providers.Web3Provider(window.ethereum, "any");
   await window.ethereum.request({
     method: "wallet_addEthereumChain",
     params: [{
-        chainId: "0xCC",
-        rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-        chainName: "opBNB",
-        nativeCurrency: {
-            name: "BNB",
-            symbol: "BNB",
-            decimals: 18
-        },
-        blockExplorerUrls: ["https://opbnbscan.com"]
+      chainId: "0xCC",
+      rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+      chainName: "opBNB",
+      nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+      blockExplorerUrls: ["https://opbnbscan.com"]
     }]
-});
-  await userProvider.send("eth_requestAccounts", []);
-  let signer = userProvider.getSigner();
+  });
 
-  let cyamemContract = new ethers.Contract(contractAddress.cutbank, contractAbi.cutbank, signer);
-  
+  await provider.send("eth_requestAccounts", []);
+  signer = provider.getSigner();
+  const iface = new ethers.utils.Interface(cutbankAbi);
+  contract = new ethers.Contract(contractAddress.cutbank, iface, signer);
+  console.log("✅ Contract connected:", contractAddress.cutbank);
+};
+
+const MemberLogin = async () => {
+  await initialize();
+  const userAddress = await signer.getAddress();
+  const [_, mybonus, mylev, mymento, myexp] = await contract.myinfo(userAddress);
+  const levelexp = (2 ** mylev) * 10000;
+
+  document.getElementById("Mymento").innerText = mymento;
+  document.getElementById("Mylev").innerText = mylev;
+  document.getElementById("Mylev2").innerText = mylev;
+  document.getElementById("Exp").innerText = myexp;
+  document.getElementById("Expneeded").innerText = levelexp;
+  document.getElementById("Mypoint").innerText = (mybonus / 1e18).toFixed(4);
+  document.getElementById("LevelBar").style.width = `${(myexp / levelexp) * 100}%`;
+};
+
+const Levelup = async () => {
   try {
-    await cyamemContract. withdraw(); 
-    //await cyabankContract.buycut(document.getElementById('buyAmount').value);
-  } catch(e) {
-    alert(e.data.message.replace('execution reverted: ',''))
+    await initialize();
+    await contract.levelup();
+    alert("레벨업 성공!");
+  } catch (e) {
+    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
   }
-
 };
 
-
-
-
-let Buff = async () => {
-   
-  let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-  await window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: [{
-        chainId: "0xCC",
-        rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-        chainName: "opBNB",
-        nativeCurrency: {
-            name: "BNB",
-            symbol: "BNB",
-            decimals: 18
-        },
-        blockExplorerUrls: ["https://opbnbscan.com"]
-    }]
-});
-  await userProvider.send("eth_requestAccounts", []);
-  let signer = userProvider.getSigner();
-
-  let cyamemContract = new ethers.Contract(contractAddress.cutbank, contractAbi.cutbank, signer);
-  
+const Bonuswithdraw = async () => {
   try {
-    await cyamemContract. buffing(); 
-    //await cyabankContract.buycut(document.getElementById('buyAmount').value);
-  } catch(e) {
-    alert(e.data.message.replace('execution reverted: ',''))
-  }
-
-};
-
-window.onload = async () => {
-  if (window.ethereum) {
-    try {
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      contract = new ethers.Contract(contractAddress.cutbank, contractAbi.cutbank, signer);
-      console.log('계약이 초기화되었습니다.');
-    } catch (error) {
-      console.error('계약 초기화 중 오류:', error);
-      alert('계약 초기화 중 오류가 발생했습니다.');
-    }
-  } else {
-    alert("MetaMask가 설치되어 있지 않습니다. MetaMask 설치 후 이용하세요.");
+    await initialize();
+    await contract.withdraw();
+    alert("보너스 출금 완료");
+  } catch (e) {
+    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
   }
 };
 
+const Buff = async () => {
+  try {
+    await initialize();
+    await contract.buffing();
+    alert("버프 성공!");
+  } catch (e) {
+    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
+  }
+};
 
-
-// 주소 배열을 가져와서 HTML에 표시하는 함수
 const fetchAddresses = async () => {
   try {
-    // 사용자의 서명자 정보를 가져옴
-    const signer = provider.getSigner();
+    await initialize();
     const userAddress = await signer.getAddress();
-    
-    // getmymenty 함수 호출
-    console.log("Calling getmymenty with address:", userAddress);
     const addresses = await contract.getmymenty(userAddress);
-    
-    console.log("Addresses returned:", addresses);
+    const addressList = document.getElementById("addressList");
+    addressList.innerHTML = "";
 
-    // 주소 리스트를 HTML에 업데이트
-    const addressList = document.getElementById('addressList');
-    addressList.innerHTML = ''; // 기존 리스트 초기화
-
-  // Check if the address is returned normally and update the list
-if (addresses.length > 0) {
-  addresses.forEach(address => {
-  const listItem = document.createElement('li');
-  listItem.textContent = address;
-  addressList.appendChild(listItem);
-  });
-  } else {
-  // Display a message when there is no address
-  const listItem = document.createElement('li');
-  listItem.textContent = "There are no recommended members.";
-  addressList.appendChild(listItem);
-  }
+    if (addresses.length > 0) {
+      addresses.forEach(addr => {
+        const li = document.createElement("li");
+        li.textContent = addr;
+        addressList.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.textContent = "There are no recommended members.";
+      addressList.appendChild(li);
+    }
   } catch (e) {
-    alert(e.data.message.replace('execution reverted: ',''))
+    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
   }
-  };
+};
 
-// 버튼 클릭 시 주소 가져오기 함수 실행
-document.getElementById('fetchAddresses').addEventListener('click', fetchAddresses);
+window.addEventListener("load", async () => {
+  await initialize();
+});
+
+document.getElementById("fetchAddresses")?.addEventListener("click", fetchAddresses);
+
+window.onerror = function (message, source, lineno, colno, error) {
+  console.error("Global error:", message, error);
+};

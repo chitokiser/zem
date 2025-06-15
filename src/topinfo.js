@@ -109,9 +109,9 @@
     }]
 });
   await userProvider.send("eth_requestAccounts", []);
-  let signer = userProvider.getSigner();
+  let signer2 = userProvider.getSigner();
 
-  let meta5Contract = new ethers.Contract(cA.mutbankAddr,cB.mutbank,signer);
+  let meta5Contract = new ethers.Contract(cA.mutbankAddr,cB.mutbank,signer2);
 
   try {   
     await meta5Contract.memberjoin(document.getElementById('Maddress').value);
@@ -121,7 +121,7 @@
 };
 
 
-let userProvider, signer;
+let userProvider, signer2;
 
 // Function to initialize the provider and add the opBNB network if needed
 async function initializeProvider() {
@@ -141,7 +141,7 @@ async function initializeProvider() {
     }]
   });
   await userProvider.send("eth_requestAccounts", []);
-  signer = userProvider.getSigner();
+  signer2 = userProvider.getSigner();
 }
 
 
@@ -150,7 +150,7 @@ let Betcharge = async () => {
   try {
     await initializeProvider();
 
-    const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, signer);
+    const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, signer2);
     const amount = parseInt(document.getElementById('Amount').value);
 
     const transaction = await betgpContract.charge(amount);
@@ -168,7 +168,7 @@ let Betwithdraw = async () => {
   try {
     await initializeProvider();
 
-    const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, signer);
+    const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, signer2);
 
     const transaction = await betgpContract.withdraw();
     await transaction.wait();
@@ -183,8 +183,8 @@ let getUserMypgValue = async () => {
   try {
     await initializeProvider();
     
-    const userAddress = await signer.getAddress();
-    const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, signer);
+    const userAddress = await signer2.getAddress();
+    const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, signer2);
 
     const mygpValue = await betgpContract.g2(userAddress);
 

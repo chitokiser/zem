@@ -43,56 +43,61 @@
               <!-- BetSwap Section -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>퀴즈&보물찾기 이벤트</h5>
+                  <h5>보물찾기 안내</h5>
                 </div>
                 <div class="card-body">
-<p>레벨2이상이면 누구나 무료로 참가할 수 있습니다.</p>
-<p>BUT을 보상합니다</p>
-<p>아래 참여하기 버튼을 클립하면  참가권 100장을 받고 참가할 수 있습니다</p>
-<p>BUT을 교환하면 새로운 참가권이 추가됩니다 </p>
+<p>레벨1이상이면 누구나 참가할 수 있습니다.</p>
+<p>찾은 보물을 교환하면 BUT을 받을 수 있습니다 </p>
+<p>QR을 인식한 후 보물박스 열기를 클릭하면 보물을 획득 할 수 있습니다.</p>
+<p>보물박스 1회 오픈하는데 1BUT이 소진됩니다 </p>
+<p>루비,사파이어,에메랄드 각50개당 <span id="Q4">-</span>BUT</li> 보상합니다</p>
+<p>토파즈,다이아,골드바 각50개당 <span id="Q5">-</span>BUT</li> 보상합니다</p>
 <ul class="info-stats">
 <li class="list-group-item">계약BUT잔액: <span id="Q3">-</span>BUT</li>
-<li class="list-group-item">문제&보물 총수: <span id="Qid">-</span>개</li>
-<li class="list-group-item"><button onclick="Join()">참가권 받기</button></li>
+
                   </ul>
                 </div>
               </div>
-            
-              <!-- My Status Section -->
+<!-- open Section -->
+<div class="card mb-4">
+  <div class="card-header">
+    <h5>보물열기</h5>
+  </div>
+  <div class="card-body">
+    <p>찾은 보물의 코드를 입력 후 <strong>보물박스 열기를</strong>클릭하세요.</p>
+
+    <!-- 보물 ID 입력창 -->
+    <div class="input-group mb-3">
+      <input type="number" id="qrIdInput" class="form-control" placeholder="보물 코드 입력">
+      <button class="btn btn-primary" onclick="claimTreasure(document.getElementById('qrIdInput').value)">보물박스열기</button>
+    </div>
+
+                 <!-- My open Section -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>나의 상태</h5>
+                  <h5>내가 찾은 보물</h5>
                 </div>
                 <div class="card-body">
                   <button class="btn btn-outline-success mb-3" type="submit" onclick="Mystatus()">지갑 연결</button>
                   <ul class="list-group">
-                  <li class="list-group-item">정답수: <span id="Mtotal">-</span>개</li>
-                  <li class="list-group-item">BUT교환가능포인트: <span id="Mpoint">-</span>개</li>
-                  <li class="list-group-item">참가권: <span id="Mtiket">-</span>개</li>
-                  <li class="list-group-item">참가승인: <span id="Mok">-</span></li>
-                  <button class="btn btn-primary mt-3" type="submit" onclick="Withdraw()">BUT교환하기</button>
+                  <li class="list-group-item">루비: <span id="Luby">-</span>개</li>
+                  <li class="list-group-item">사파이어: <span id="Sapp">-</span>개</li>
+                  <li class="list-group-item">에메랄드: <span id="Emer">-</span>개</li>
+                  
+                   <button class="btn btn-primary mt-3" type="submit" onclick="Openbox1()">보물교환</button>
+                
+                  <li class="list-group-item">토파즈: <span id="Topa">-</span>개</li>
+                  <li class="list-group-item">다이아: <span id="Dia">-</span>개</li>
+                  <li class="list-group-item">골드바: <span id="Gold">-</span>개</li>
+                  <button class="btn btn-primary mt-3" type="submit" onclick="Openbox2()">보물교환</button>
                   </ul>
                   </div>
               </div>
-            
-              <!-- BET Staking Section -->
-              <div class="card mb-4">
-                <div class="card-header">
-                  <h5>퀴즈&보물찾기 리스트</h5>
-                </div>
-                <div class="card-body">
-                <p>정답을 인력하고 제출하기 버튼을 클릭하세요</p>
-                <p>문제 난이도에 따라 포인트 보상이 다릅니다</p>
-                <p>포인트 100개 이상부터 BUT과 1:1로 교환됩니다</p>
-                <p>정답 제출 1회당 1개의 참가권이 소진됩니다</p>
-                <p>정답이 영문인 경우 소문자를 입력하세요</p>
-                <p>정답이 한글인 경우 띄워쓰기 생략하세요</p>
-                <p id="event-log">Waiting for events...</p>
-                <div id="quiz-container"></div>
-                 
-                </div>
+           
             </div>
-            </div>
+         
+         
+      
             
 
           
@@ -125,7 +130,7 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
               <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
               <script type="text/javascript"></script>
-              <script src="..\src\tresure.js"></script>
+              <script src="..\src\treasure.js"></script>
           
 
     </body>
