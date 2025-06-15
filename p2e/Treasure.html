@@ -1,137 +1,112 @@
 <!DOCTYPE html>
 <html lang="kr">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="../images/logo.png" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/font.css">
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <title>BetDAO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <link rel="shortcut icon" href="../images/logo.png" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <title>BetDAO</title>
 </head>
-
 <body>
-<div id="menu-placeholder"></div>
-<script>
-  fetch('../dashboard.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('menu-placeholder').innerHTML = html;
-      const script = document.createElement('script');
-      script.src = '../src/topinfo.js';
-      document.body.appendChild(script);
-    });
-</script>
+    <!-- Placeholder for dynamic header -->
+    <div id="menu-placeholder"></div>
 
-<div class="container mt-4">
+    <script>
+      // Load header dynamically from dashboard.html
+      fetch('../dashboard.html')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('menu-placeholder').innerHTML = data;
+              
+              const script = document.createElement('script');
+              script.src = '../src/topinfo.js';
+              script.type = 'text/javascript';
+              document.body.appendChild(script);
+          })
+          .catch(error => console.error('Error loading the dashboard content:', error));
+  </script>
 
-  <!-- 보물찾기 안내 -->
-  <div class="card mb-4">
-    <div class="card-header"><h5>보물찾기 안내</h5></div>
-    <div class="card-body">
-      <p>레벨1 이상이면 누구나 참가할 수 있습니다.</p>
-      <p>찾은 보물을 교환하면 BUT을 받을 수 있습니다.</p>
-      <p>QR을 인식하거나 수동 입력 후 박스를 열 수 있습니다.</p>
-      <p>보물박스 1회 오픈 시 1BUT 소모됩니다.</p>
-      <ul class="info-stats">
-        <li class="list-group-item">계약 BUT 잔액: <span id="Q3">-</span> BUT</li>
-      </ul>
-    </div>
-  </div>
+  <audio id="reward-sound" src="/sounds/reward.mp3" preload="auto"></audio>
 
-  <!-- 보물 열기 -->
-  <div class="card mb-4">
-    <div class="card-header"><h5>보물 열기</h5></div>
-    <div class="card-body">
-      <p>보물 코드를 입력하거나 QR코드를 스캔해 박스를 여세요.</p>
-
-      <div class="input-group mb-3">
-        <input type="text" id="qrIdInput" class="form-control" placeholder="보물 코드 입력">
-        <button class="btn btn-primary" onclick="onClickOpenBox()">보물박스열기</button>
+  <div class="container mt-4">
+    <div class="card mb-4 border-primary">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">💎 보물찾기 안내</h5>
       </div>
-
-      <div class="mb-3">
-        <button class="btn btn-secondary" onclick="startQrScanner()">📷 QR 코드 스캔</button>
+      <div class="card-body">
+        <p>✅ 레벨 1 이상이면 누구나 참가할 수 있습니다.</p>
+        <p>🎁 찾은 보물을 교환하면 BUT을 받을 수 있습니다.</p>
+        <p>📦 보물박스를 열면 보상을 획득할 수 있습니다. (1 BUT 소진)</p>
+        <p>보석세트 1 ❤️ 루비, 💙 사파이어, 💚 에메랄드 각 50개당 <span id="Q4">-</span> BUT 보상</p>
+        <p>보석세트 2💛 토파즈, 🤍 다이아, 🪙 골드바 각 50개당 <span id="Q5">-</span> BUT 보상</p>
+        <ul class="list-group mt-3">
+          <li class="list-group-item">🔐 계약 BUT 잔액: <span id="Q3">-</span> BUT</li>
+        </ul>
       </div>
-      <div id="qr-reader" style="width: 100%; max-width: 300px;"></div>
+    </div>
+
+    <div class="card mb-4 border-success">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">📦 보물열기</h5>
+      </div>
+      <div class="card-body">
+        <p>찾은 보물의 코드를 입력 후 <strong>보물박스 열기</strong>를 클릭하세요.</p>
+        <div id="treasure-result" class="mt-3 fw-bold text-center"></div>
+
+        <div class="input-group mb-3">
+          <input type="number" id="qrIdInput" class="form-control" placeholder="보물 코드 입력">
+          <button class="btn btn-primary" onclick="claimTreasure(document.getElementById('qrIdInput').value)">보물박스열기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4 border-warning">
+      <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">🔎 내가 찾은 보물</h5>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-outline-success mb-3" type="button" onclick="Mystatus()">지갑 연결</button>
+        <ul class="list-group">
+          <li class="list-group-item">❤️ 루비: <span id="Luby">-</span>개</li>
+          <li class="list-group-item">💙 사파이어: <span id="Sapp">-</span>개</li>
+          <li class="list-group-item">💚 에메랄드: <span id="Emer">-</span>개</li>
+          <li class="list-group-item">💛 토파즈: <span id="Topa">-</span>개</li>
+          <li class="list-group-item">🤍 다이아: <span id="Dia">-</span>개</li>
+          <li class="list-group-item">🪙 골드바: <span id="Gold">-</span>개</li>
+        </ul>
+        <div class="mt-3">
+          <button class="btn btn-primary me-2" type="button" onclick="Openbox1()">💼 보석세트1 교환</button>
+          <button class="btn btn-primary" type="button" onclick="Openbox2()">💼 보석세트2 교환</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- 내가 찾은 보물 -->
-  <div class="card mb-4">
-    <div class="card-header"><h5>내가 찾은 보물</h5></div>
-    <div class="card-body">
-      <button class="btn btn-outline-success mb-3" onclick="Mystatus()">지갑 연결</button>
-      <ul class="list-group">
-        <li class="list-group-item">루비: <span id="Luby">-</span>개</li>
-        <li class="list-group-item">사파이어: <span id="Sapp">-</span>개</li>
-        <li class="list-group-item">에메랄드: <span id="Emer">-</span>개</li>
-        <button class="btn btn-primary mt-3" onclick="Openbox1()">보물교환</button>
-        <li class="list-group-item">토파즈: <span id="Topa">-</span>개</li>
-        <li class="list-group-item">다이아: <span id="Dia">-</span>개</li>
-        <li class="list-group-item">골드바: <span id="Gold">-</span>개</li>
-        <button class="btn btn-primary mt-3" onclick="Openbox2()">보물교환</button>
-      </ul>
-    </div>
-  </div>
+  <div id="footer"></div>
+  <script>
+    fetch('../footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+        const script = document.createElement('script');
+        document.body.appendChild(script);
+      })
+      .catch(error => console.error('Error loading the dashboard content:', error));
+  </script>
 
-</div>
-
-<!-- Footer -->
-<div id="footer"></div>
-<script>
-  fetch('../footer.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('footer').innerHTML = html;
-    });
-</script>
-
-<!-- 기본 스크립트 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="../src/treasure.js"></script>
-
-<!-- ✅ 보물박스 열기 동작 스크립트 -->
-<script>
-function onClickOpenBox() {
-  const input = document.getElementById("qrIdInput").value.trim();
-
-  if (!input) {
-    alert("보물 코드를 입력해주세요.");
-    return;
-  }
-
-  const qrId = parseInt(input.replace(/\D/g, ""), 10);
-  if (isNaN(qrId)) {
-    alert("유효한 숫자 코드가 아닙니다.");
-    return;
-  }
-
-  claimTreasure(qrId); // ✅ 보물박스 열기 실행
-}
-</script>
-
-<!-- ✅ QR 코드 스캔 후 자동 입력 + 실행 -->
-<script>
-function startQrScanner() {
-  const scanner = new Html5Qrcode("qr-reader");
-
-  scanner.start(
-    { facingMode: "environment" },
-    {
-      fps: 10,
-      qrbox: { width: 250, height: 250 }
-    },
-    qrMessage => {
-      scanner.stop().then(() => {
-        document.getElementById("qr-reader").innerHTML = "";
-        const cleanId = parseInt(qrMessage.replace(/\D/g, ""), 10);
-
-        if (!isNaN(cleanId)) {
-          document.getElementById("qrIdInput").value = cleanId;
-          alert("✅ QR 인식 성공: " + cleanId);
-          claimTreasure(cleanId); // ✅ 자동 실행
-        } else {
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../src/treasure.js"></script>
+</body>
+</html>
