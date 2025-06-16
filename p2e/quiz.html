@@ -43,37 +43,42 @@
               <!-- BetSwap Section -->
               <div class="card mb-4">
                 <div class="card-header">
-                  <h5>퀴즈&보물찾기 이벤트</h5>
+                  <h5>퀴즈</h5>
                 </div>
                 <div class="card-body">
-<p>레벨2이상이면 누구나 무료로 참가할 수 있습니다.</p>
+<p>레벨1이상이면 누구나 무료로 참가할 수 있습니다.</p>
 <p>BUT을 보상합니다</p>
-<p>아래 참여하기 버튼을 클립하면  참가권 100장을 받고 참가할 수 있습니다</p>
+<p>1회 시도할때마다 1BUT이 소진됩니다</p>
 <p>BUT을 교환하면 새로운 참가권이 추가됩니다 </p>
 <ul class="info-stats">
 <li class="list-group-item">계약BUT잔액: <span id="Q3">-</span>BUT</li>
 <li class="list-group-item">문제&보물 총수: <span id="Qid">-</span>개</li>
-<li class="list-group-item"><button onclick="Join()">참가권 받기</button></li>
+
                   </ul>
                 </div>
               </div>
             
               <!-- My Status Section -->
-              <div class="card mb-4">
-                <div class="card-header">
-                  <h5>나의 상태</h5>
-                </div>
-                <div class="card-body">
-                  <button class="btn btn-outline-success mb-3" type="submit" onclick="Mystatus()">지갑 연결</button>
-                  <ul class="list-group">
-                  <li class="list-group-item">정답수: <span id="Mtotal">-</span>개</li>
-                  <li class="list-group-item">BUT교환가능포인트: <span id="Mpoint">-</span>개</li>
-                  <li class="list-group-item">참가권: <span id="Mtiket">-</span>개</li>
-                  <li class="list-group-item">참가승인: <span id="Mok">-</span></li>
-                  <button class="btn btn-primary mt-3" type="submit" onclick="Withdraw()">BUT교환하기</button>
-                  </ul>
-                  </div>
-              </div>
+           <div class="card mb-4 border-warning">
+      <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">🔎 획득한 보석들</h5>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-outline-success mb-3" onclick="Mystatus()">지갑 연결</button>
+        <ul class="list-group">
+          <li class="list-group-item">❤️ 오팔: <span id="Opal">-</span>개</li>
+          <li class="list-group-item">🟦 진주: <span id="Pearl">-</span>개</li>
+          <li class="list-group-item">🟢 석류석: <span id="Garnet">-</span>개</li>
+          <li class="list-group-item">🟡 비취: <span id="Jade">-</span>개</li>
+          <li class="list-group-item">⚪ 지르콘: <span id="Zircon">-</span>개</li>
+          <li class="list-group-item">🪙 크리스탈: <span id="Crystal">-</span>개</li>
+        </ul>
+        <div class="mt-3">
+          <button class="btn btn-primary me-2" onclick="Openbox1()">💼 보석세트1 교환</button>
+          <button class="btn btn-primary" onclick="Openbox2()">💼 보석세트2 교환</button>
+        </div>
+      </div>
+    </div>
             
               <!-- BET Staking Section -->
               <div class="card mb-4">
@@ -81,20 +86,19 @@
                   <h5>퀴즈&보물찾기 리스트</h5>
                 </div>
                 <div class="card-body">
-                <p>정답을 인력하고 제출하기 버튼을 클릭하세요</p>
-                <p>문제 난이도에 따라 포인트 보상이 다릅니다</p>
-                <p>포인트 100개 이상부터 BUT과 1:1로 교환됩니다</p>
-                <p>정답 제출 1회당 1개의 참가권이 소진됩니다</p>
+                <p>정답을 입력하고 제출하기 버튼을 클릭하세요</p>
+                <p>문제 난이도에 따라  보상이 다릅니다</p>
+                <p>정답 제출 1회당 1개의 BUT토큰이 소진됩니다</p>
                 <p>정답이 영문인 경우 소문자를 입력하세요</p>
                 <p>정답이 한글인 경우 띄워쓰기 생략하세요</p>
-                <p id="event-log">Waiting for events...</p>
+                <div id="event-log">waiting event...</div>
                 <div id="quiz-container"></div>
                  
                 </div>
             </div>
             </div>
             
-
+        
           
                    
 

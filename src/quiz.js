@@ -1,20 +1,21 @@
 // 스마트 컨트랙트 주소
 let tresureAddr = {
-    tresure: "0xFEF24f08371C4027007E29E86835eCCEB15685C9"
+    tresure: "0x8E31B316cf406BD681df35ae26D541094659f96c" //quizgame
 };
 
 
 let tresureAbi = {
     tresure: [
-        "function withdraw() public",
-        "function member() public",
-        "function openbox(uint _id, string memory _answer) public",
+        "function answer(uint qrId, string memory _answer) external ",
+        "function openbox1() public",
+        "function openbox2() public",
         "function g3() public view returns(uint)",
         "function qid() public view returns(uint)",
         "function qs(uint _id) public view returns(uint,uint,bytes32,string,string)", 
-        "function myinfo(address user) public view returns(uint256,uint256,uint256,bool)",
-        "event reward(uint amount)",
-        "event wrong(string message)"
+        "function myinfo(address user) public view returns(uint256,uint256,uint256,uint256,uint256,uint256)",
+    "event RewardClaimed(address indexed user, uint qrId, uint reward, string jewelType)",
+    "event Wrong(string message)",
+    "event JewelsCombined(address indexed user, uint amount, uint level)"
     ]
 };
 
@@ -40,6 +41,30 @@ let topSync = async () => {
 // 실행
 topSync();
 
+async function submitAnswer(qrId, userAnswer) {
+  try {
+    if (!window.ethereum) throw new Error("MetaMask not found");
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
+
+    const tx = await contract.answer(qrId, userAnswer);
+    console.log("⏳ 트랜잭션 전송 중...", tx.hash);
+
+    const receipt = await tx.wait();
+    console.log("✅ 완료됨:", receipt.transactionHash);
+  } catch (err) {
+    console.error("❌ 오류 발생:", err.message);
+    alert("⚠️ " + err.message);
+  }
+}
+
+
+
+
 async function loadQuizzes() {
     try {
         const totalQuizzes = await contract.qid(); // 전체 퀴즈 개수 가져오기
@@ -56,7 +81,7 @@ async function loadQuizzes() {
                 <p><strong>Reward:</strong> ${quiz[1]} Point</p>
                 <p><strong>Question:</strong> ${quiz[4]}</p>
                 <input type="text" id="answer-${quiz[0]}" placeholder="여기에 정답을 입력하신 후 제출하세요">
-                <button onclick="submitAnswer(${quiz[0]})">제출하기</button>
+                <button onclick="handleSubmit(${quiz[0]})">제출하기</button>
             `;
             quizContainer.appendChild(quizCard);
         }
@@ -65,55 +90,67 @@ async function loadQuizzes() {
     }
 }
 
-async function submitAnswer(quizId) {
-    try {
-        const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-        await userProvider.send("eth_requestAccounts", []); // 지갑 연결
-        const signer = userProvider.getSigner();
-        const contract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
 
-        const answerInput = document.getElementById(`answer-${quizId}`);
-        const answer = answerInput.value.trim();
-
-        if (answer === "") {
-            alert("Please enter an answer before submitting.");
-            return;
-        }
-
-        const tx = await contract.openbox(quizId, answer);
-        alert("Transaction submitted! Waiting for confirmation...");
-
-        await tx.wait(); // 트랜잭션 확인 대기
-        alert("Answer submitted successfully! ✅");
-
-        answerInput.value = ""; // 입력 필드 초기화
-         // ✅ 화면 새로고침 (정답 제출 후)
-         setTimeout(() => {
-            location.reload();
-        }, 1500); // 1.5초 후 새로고침 (트랜잭션 확인 시간 고려)
-    } catch (error) {
-        console.error("Error submitting answer:", error);
-        alert(error.data?.message?.replace('execution reverted: ', '') || "Transaction failed ❌");
+function handleSubmit(qrId) {
+    const inputElement = document.getElementById(`answer-${qrId}`);
+    if (!inputElement) {
+        alert(`입력창을 찾을 수 없습니다: answer-${qrId}`);
+        return;
     }
+
+    const userAnswer = inputElement.value.trim();
+    if (!userAnswer) {
+        alert("정답을 입력해주세요.");
+        return;
+    }
+
+    submitAnswer(qrId, userAnswer);
 }
- // ✅ 이벤트 리스너 추가 (실시간 모니터링)
- function startEventMonitoring() {
+
+
+
+async function startEventMonitoring() {
+  try {
+    // ✅ 지갑 연결
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+
+    // ✅ signer로 연결된 contract 객체 생성
+    const eventContract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
+
     const eventLog = document.getElementById("event-log");
 
-    contract.on("reward", (amount) => {
-        const message = `🎉 축하합니다.정답입니다: ${amount} points!`;
-        console.log(message);
-        eventLog.innerHTML = `<p style="color:green;">${message}</p>` + eventLog.innerHTML;
+    // ✅ 보석 조합 이벤트
+    eventContract.on("JewelsCombined", (user, amount, level) => {
+      const msg = `💎 ${user} 님이 보석을 조합해 ${amount} BUT을 수령했습니다! (레벨 ${level})`;
+      console.log(msg);
+      eventLog.innerHTML = `<p style="color:blue;">${msg}</p>` + eventLog.innerHTML;
     });
 
-    contract.on("wrong", (message) => {
-        const errorMessage = `❌ 틀렸습니다: ${message}`;
-        console.log(errorMessage);
-        eventLog.innerHTML = `<p style="color:red;">${errorMessage}</p>` + eventLog.innerHTML;
+    // ✅ 퀴즈 정답 이벤트
+    eventContract.on("RewardClaimed", (user, qrId, reward, jewelType) => {
+      const msg = `🎯 [퀴즈 ${qrId}] ${user}님이 ${jewelType} ${reward}개 획득!`;
+      console.log(msg);
+      eventLog.innerHTML = `<p style="color:green;">${msg}</p>` + eventLog.innerHTML;
     });
 
-    console.log("🔍 Listening for events...");
+    // ✅ 오답 이벤트
+    eventContract.on("Wrong", (message) => {
+      const msg = `❌ 오답 처리됨: ${message}`;
+      console.log(msg);
+      eventLog.innerHTML = `<p style="color:red;">${msg}</p>` + eventLog.innerHTML;
+    });
+
+    console.log("📡 이벤트 리스닝이 시작되었습니다.");
+  } catch (err) {
+    console.error("❌ 이벤트 리스닝 실패:", err);
+    alert("이벤트 연결 중 오류 발생: " + (err.message || err));
+  }
 }
+
+
+
 
 
 window.onload = () => {
@@ -122,70 +159,13 @@ window.onload = () => {
 };
 
 
-let Join = async () => {
-    try {
-        const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-        await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [{
-                chainId: "0xCC",
-                rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-                chainName: "opBNB",
-                nativeCurrency: {
-                    name: "BNB",
-                    symbol: "BNB",
-                    decimals: 18
-                },
-                blockExplorerUrls: ["https://opbnbscan.com"]
-            }]
-        });
-        await userProvider.send("eth_requestAccounts", []);
-        const signer = userProvider.getSigner();
 
-        // 스마트 컨트랙트 객체 생성 (Ethers.js 사용)
-        const contract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
-        await contract.member(); 
-
-        alert("Membership joined successfully!");
-    } catch(e) {
-        alert(e.data.message.replace('execution reverted: ',''))
-    }
-};
-
-let Withdraw = async () => {
-    try {
-        const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-        await window.ethereum.request({
-            method: "wallet_addEthereumChain",
-            params: [{
-                chainId: "0xCC",
-                rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-                chainName: "opBNB",
-                nativeCurrency: {
-                    name: "BNB",
-                    symbol: "BNB",
-                    decimals: 18
-                },
-                blockExplorerUrls: ["https://opbnbscan.com"]
-            }]
-        });
-        await userProvider.send("eth_requestAccounts", []);
-        const signer = userProvider.getSigner();
-
-        // 스마트 컨트랙트 객체 생성 (Ethers.js 사용)
-        const contract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
-        await contract.withdraw(); 
-
-        alert("Membership joined successfully!");
-    } catch(e) {
-        alert(e.data.message.replace('execution reverted: ',''))
-    }
-};
 
 // ✅ 사용자 상태 조회 (myinfo)
 let Mystatus = async () => {
     try {
         const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+
         await window.ethereum.request({
             method: "wallet_addEthereumChain",
             params: [{
@@ -200,25 +180,30 @@ let Mystatus = async () => {
                 blockExplorerUrls: ["https://opbnbscan.com"]
             }]
         });
+
         await userProvider.send("eth_requestAccounts", []);
 
         const signer = userProvider.getSigner();
         const contract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
-        let myinfo = await contract.myinfo(await signer.getAddress());
+        const myinfo = await contract.myinfo(await signer.getAddress());
 
-        // 📌 올바른 인덱스 사용
-        let mytotal = myinfo[0].toString(); // 맞춘 문제 수
-        let mypoint = myinfo[1].toString(); // BUT 교환 가능 개수
-        let mytiket = myinfo[2].toString(); // 참가권
-        let myok = Boolean(myinfo[3]) ? "✅ Yes" : "❌ No"; // 참가 가능 여부 (수정됨!)
+        // ✅ 보석별 정보 추출
+        const opal = myinfo[0].toString();    // 오팔
+        const pearl = myinfo[1].toString();   // 진주
+        const garnet = myinfo[2].toString();  // 석류석
+        const jade = myinfo[3].toString();    // 비취
+        const zircon = myinfo[4].toString();  // 지르콘
+        const crystal = myinfo[5].toString(); // 크리스탈
 
-        // ✅ 올바른 ID 값 업데이트
-        document.getElementById("Mtotal").innerHTML = mytotal;
-        document.getElementById("Mpoint").innerHTML = mypoint;
-        document.getElementById("Mtiket").innerHTML = mytiket;
-        document.getElementById("Mok").innerHTML = myok;
+        // ✅ HTML 업데이트
+        document.getElementById("Opal").innerHTML = opal;
+        document.getElementById("Pearl").innerHTML = pearl;
+        document.getElementById("Garnet").innerHTML = garnet;
+        document.getElementById("Jade").innerHTML = jade;
+        document.getElementById("Zircon").innerHTML = zircon;
+        document.getElementById("Crystal").innerHTML = crystal;
 
-    }  catch(e) {
+    } catch (e) {
         alert(e.data?.message?.replace('execution reverted: ', '') || "Transaction failed");
     }
 };
