@@ -9,6 +9,7 @@ let tresureAbi = {
         "function answer(uint qrId, string memory _answer) external ",
         "function openbox1() public",
         "function openbox2() public",
+        "function butAmount() public view returns(uint)",
         "function g3() public view returns(uint)",
         "function qid() public view returns(uint)",
         "function qs(uint _id) public view returns(uint,uint,bytes32,string,string)", 
@@ -30,9 +31,12 @@ let topSync = async () => {
     try {
         let ig3 = await contract.g3();  // 전체 발행 부동산 수
         let iqid = await contract.qid();  // 전체 퀴즈 개수
+        let ig4 = await contract.butAmount();  // 보상
 
         document.getElementById("Q3").innerHTML = ig3.toString();
         document.getElementById("Qid").innerHTML = iqid.toString();
+         document.getElementById("Q4").innerHTML = ig4.toString();
+        document.getElementById("Q5").innerHTML = (ig4 * 2).toString();
     } catch (error) {
         console.error("Error fetching contract data:", error);
     }
@@ -56,7 +60,7 @@ async function submitAnswer(qrId, userAnswer) {
 
     const receipt = await tx.wait();
     console.log("✅ 완료됨:", receipt.transactionHash);
-    alert("✅ 정답이 제출되어 보상이 지급되었습니다.");
+    alert("✅ 결과를 기다리세요.오답인 경우에도 BUT토큰 1개가 소진됩니다.");
     
   } catch (err) {
     console.error("❌ 오류 발생:", err);
@@ -163,6 +167,8 @@ async function startEventMonitoring() {
       if (user.toLowerCase() !== userAddress) return;
       const msg = `🎯 [퀴즈 #${qrId}] ${jewelType} ${reward}개 획득!`;
       console.log(msg);
+      const sound = document.getElementById("reward");
+    if (sound) sound.play();
       addEventMessage(msg, "green");
     });
 
@@ -182,7 +188,86 @@ async function startEventMonitoring() {
 }
 
 
+  async function Openbox1() {
+    try {
+        // 1. 지갑 연결 및 네트워크 설정
+        const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
+        await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [{
+                chainId: "0xCC", // opBNB
+                rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+                chainName: "opBNB",
+                nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                blockExplorerUrls: ["https://opbnbscan.com"]
+            }]
+        });
+
+        await userProvider.send("eth_requestAccounts", []);
+        const signer = userProvider.getSigner();
+
+        // 2. 컨트랙트 연결
+        const contract = new ethers.Contract(
+            tresureAddr.tresure,
+            tresureAbi.tresure,
+            signer
+        );
+
+        // 3. openbox1() 호출
+        const tx = await contract.openbox1();
+        alert("📦 보물 교환 요청 전송됨! 블록 확인 중...");
+        await tx.wait();
+
+        alert("🎉 보물을 성공적으로 교환했습니다!");
+        Mystatus(); // 보유 보석 수 다시 조회
+
+    } catch (error) {
+        console.error("openbox1() Error:", error);
+        alert(error?.data?.message?.replace("execution reverted: ", "") || "오팔,진주,석류석이 50개씩 있어야 합니다 ❌");
+    }
+}
+
+
+async function Openbox2() {
+    try {
+        // 1. 지갑 연결 및 네트워크 설정
+        const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+
+        await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [{
+                chainId: "0xCC", // opBNB
+                rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+                chainName: "opBNB",
+                nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+                blockExplorerUrls: ["https://opbnbscan.com"]
+            }]
+        });
+
+        await userProvider.send("eth_requestAccounts", []);
+        const signer = userProvider.getSigner();
+
+        // 2. 컨트랙트 연결
+        const contract = new ethers.Contract(
+            tresureAddr.tresure,
+            tresureAbi.tresure,
+            signer
+        );
+
+        // 3. openbox1() 호출
+        const tx = await contract.openbox2();
+        alert("📦 보물 교환 요청 전송됨! 블록 확인 중...");
+        await tx.wait();
+
+        alert("🎉 보물을 성공적으로 교환했습니다!");
+        Mystatus(); // 보유 보석 수 다시 조회
+
+    } catch (error) {
+        console.error("openbox2() Error:", error);
+        alert(error?.data?.message?.replace("execution reverted: ", "") || "비취,지르콘,크리스탈 50개씩 있어야 합니다  ❌");
+    }
+}
 
 
 window.onload = () => {

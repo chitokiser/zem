@@ -162,7 +162,7 @@ async function getMyTreasureList() {
 
     } catch (error) {
         console.error("openbox1() Error:", error);
-        alert(error?.data?.message?.replace("execution reverted: ", "") || "보물 교환 실패 ❌");
+        alert(error?.data?.message?.replace("execution reverted: ", "") || "루비,사파이어,에메럴드 50개씩 필요합니다 ❌");
     }
 }
 
@@ -203,7 +203,7 @@ async function Openbox2() {
 
     } catch (error) {
         console.error("openbox2() Error:", error);
-        alert(error?.data?.message?.replace("execution reverted: ", "") || "보물 교환 실패 ❌");
+        alert(error?.data?.message?.replace("execution reverted: ", "") || "토파즈,다이아,골드바 50개씩 필요함 ❌");
     }
 }
 
