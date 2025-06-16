@@ -43,7 +43,7 @@ topSync();
 
 async function submitAnswer(qrId, userAnswer) {
   try {
-    if (!window.ethereum) throw new Error("MetaMask not found");
+    if (!window.ethereum) throw new Error("🦊 MetaMask를 설치해주세요.");
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -56,9 +56,22 @@ async function submitAnswer(qrId, userAnswer) {
 
     const receipt = await tx.wait();
     console.log("✅ 완료됨:", receipt.transactionHash);
+    alert("✅ 정답이 제출되어 보상이 지급되었습니다.");
+    
   } catch (err) {
-    console.error("❌ 오류 발생:", err.message);
-    alert("⚠️ " + err.message);
+    console.error("❌ 오류 발생:", err);
+
+    // 오류 메시지를 가능한 세부적으로 추출
+    const message =
+      err?.error?.data?.message ||         // Ethers.js 버전 6 이상
+      err?.data?.message ||                // 스마트 컨트랙트 revert 메시지
+      err?.message ||                      // 일반 에러
+      "알 수 없는 오류가 발생했습니다.";
+
+    // revert 메시지에서 "execution reverted: " 제거
+    const cleanedMessage = message.replace("execution reverted: ", "");
+
+    alert("⚠️ 오류: " + cleanedMessage);
   }
 }
 
@@ -111,41 +124,60 @@ function handleSubmit(qrId) {
 
 async function startEventMonitoring() {
   try {
-    // ✅ 지갑 연결
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
+    const userAddress = (await signer.getAddress()).toLowerCase();
 
-    // ✅ signer로 연결된 contract 객체 생성
     const eventContract = new ethers.Contract(tresureAddr.tresure, tresureAbi.tresure, signer);
-
     const eventLog = document.getElementById("event-log");
 
-    // ✅ 보석 조합 이벤트
+    if (!eventLog) {
+      console.warn("⚠️ #event-log 요소가 HTML에 없습니다.");
+      return;
+    }
+
+    // ✅ 메시지 삽입 함수 (자동 제거 포함)
+    const addEventMessage = (message, color = "black") => {
+      const p = document.createElement("p");
+      p.style.color = color;
+      p.innerText = message;
+      eventLog.prepend(p);
+
+      // 10초 뒤 자동 삭제
+      setTimeout(() => {
+        p.remove();
+      }, 10000);
+    };
+
+    // ✅ 이벤트 1: 보석 조합
     eventContract.on("JewelsCombined", (user, amount, level) => {
-      const msg = `💎 ${user} 님이 보석을 조합해 ${amount} BUT을 수령했습니다! (레벨 ${level})`;
+      if (user.toLowerCase() !== userAddress) return;
+      const msg = `💎 [조합성공] ${amount} BUT 수령 (레벨 ${level})`;
       console.log(msg);
-      eventLog.innerHTML = `<p style="color:blue;">${msg}</p>` + eventLog.innerHTML;
+      addEventMessage(msg, "blue");
     });
 
-    // ✅ 퀴즈 정답 이벤트
+    // ✅ 이벤트 2: 정답
     eventContract.on("RewardClaimed", (user, qrId, reward, jewelType) => {
-      const msg = `🎯 [퀴즈 ${qrId}] ${user}님이 ${jewelType} ${reward}개 획득!`;
+      if (user.toLowerCase() !== userAddress) return;
+      const msg = `🎯 [퀴즈 #${qrId}] ${jewelType} ${reward}개 획득!`;
       console.log(msg);
-      eventLog.innerHTML = `<p style="color:green;">${msg}</p>` + eventLog.innerHTML;
+      addEventMessage(msg, "green");
     });
 
-    // ✅ 오답 이벤트
+    // ✅ 이벤트 3: 오답
     eventContract.on("Wrong", (message) => {
       const msg = `❌ 오답 처리됨: ${message}`;
       console.log(msg);
-      eventLog.innerHTML = `<p style="color:red;">${msg}</p>` + eventLog.innerHTML;
+      addEventMessage(msg, "red");
     });
 
-    console.log("📡 이벤트 리스닝이 시작되었습니다.");
+    console.log("📡 이벤트 리스닝 활성화 완료");
+
   } catch (err) {
     console.error("❌ 이벤트 리스닝 실패:", err);
-    alert("이벤트 연결 중 오류 발생: " + (err.message || err));
+    alert("이벤트 연결 오류: " + (err.message || err));
   }
 }
 
