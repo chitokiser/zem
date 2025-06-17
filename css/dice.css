@@ -1,40 +1,38 @@
 .dice-area {
-.dice-area {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap; /* ✅ 화면 좁을 때 자동 줄바꿈 */
-  gap: 40px;       /* ✅ 간격 조절 */
+  flex-wrap: wrap;
+  gap: 32px;
   padding: 20px;
-  max-width: 100%;
   box-sizing: border-box;
 }
 
 .dice-img {
-  width: 120px;     /* ✅ 기본 크기 (PC용) */
-  height: 120px;
+  width: 100px;
+  height: 100px;
   transition: transform 0.6s ease-in-out;
 }
 
 .dice-img.roll {
-  transform: rotate(720deg) scale(1.2);
+  transform: rotate(720deg) scale(1.15);
 }
 
-/* ✅ 모바일 대응 */
+/* ✅ 모바일 최적화 */
 @media (max-width: 600px) {
   .dice-img {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
 
   .dice-area {
-    gap: 24px;
-    padding: 16px;
+    gap: 20px;
+    padding: 12px;
   }
 
   #eventS2 {
-    font-size: 16px;
+    font-size: 15px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 8px;
   }
 }
