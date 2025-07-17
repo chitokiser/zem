@@ -1,6 +1,6 @@
 // 게임머니 처리는 topinfo에서 처리됨
 let address2 = {
-    soccerAddr: "0xC0f3DCB3140DB01D8F264a3fd4349D073752743E" // Soccer contract address
+    soccerAddr: "0x3C811447f6e91cf810f8eDECeB18e7E3Fb4625dE" // ZEM Soccer contract address
 };
 
 let abi2 = {
@@ -52,10 +52,27 @@ let fetchUserState = async () => {
         });
 
     } catch (e) {
-        console.error("Error fetching user state:", e);
-        alert("Failed to load user state. Please check your connection.");
-    }
+  handleContractError(e, "유저 정보를 불러올 수 없습니다. 연결을 확인하세요.");
+}
 };
+
+function handleContractError(e, fallback = "문제가 발생했습니다. 다시 시도해주세요.") {
+  let msg = fallback;
+
+  if (e?.error?.data?.message) {
+    msg = e.error.data.message.replace("execution reverted: ", "");
+  } else if (e?.data?.message) {
+    msg = e.data.message.replace("execution reverted: ", "");
+  } else if (e?.message?.includes("execution reverted:")) {
+    msg = e.message.split("execution reverted:")[1].trim();
+  } else if (e?.message) {
+    msg = e.message;
+  }
+
+  console.error("📛 스마트컨트랙트 오류:", e);
+  alert(msg);
+}
+
 
 let updateUserState = (() => {
     let totalReward = 0;
@@ -107,9 +124,8 @@ let executePlayFunction = async (argument) => {
 
         await soccerContract.play(argument, selectedValue);
     } catch (e) {
-        let errorMessage = e.data?.message || e.message || "Unknown error occurred";
-        alert(errorMessage.replace("execution reverted: ", ""));
-    }
+  handleContractError(e, "유저 정보를 불러올 수 없습니다. 연결을 확인하세요.");
+}
 };
 
 // 실사 주사위 애니메이션 (이미지 교체)

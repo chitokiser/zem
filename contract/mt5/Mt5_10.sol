@@ -3,7 +3,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
   
-  interface Ibet{
+  interface Izem{
   function balanceOf(address account) external view returns (uint256);
   function allowance(address owner, address spender) external view returns (uint256);
   function transfer(address recipient, uint256 amount) external returns (bool);
@@ -14,7 +14,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 
 
-    interface Ibutbank{      // 컷뱅크
+    interface Izumbank{      
      function depoup(address _user, uint _depo) external;
     function depodown(address _user, uint _depo) external;
     function getprice() external view returns (uint256);
@@ -27,14 +27,15 @@ pragma solidity >=0.7.0 <0.9.0;
   }  
     
  
-contract mt5 {   
+contract Mt5_10{   //10000usd 1/10
   
-  Ibet bet;
-  Ibutbank butbank;
+  Izem zem;
+  Izumbank zumbank;
   address public admin; 
-  address public cbank; 
+  address public tbank; 
   uint256 public mid;  
   uint256 public fee; 
+  uint256 public tax; 
  
   
 
@@ -43,13 +44,13 @@ contract mt5 {
 
       
       
-   constructor(address _bet, address _butbank) {
-    bet = Ibet(_bet);
-    butbank = Ibutbank(_butbank);
-    cbank = _butbank;
+   constructor(address _zem, address _zumbank) {
+    zem = Izem(_zem);
+    zumbank = Izumbank(_zumbank);
+    tbank = _zumbank;
     admin = msg.sender;
     staff[msg.sender] = 5;
-    fee = 30*1e18; //30bet
+    fee = 1000*1e18; //10000usd 1/10
 }
 
 
@@ -74,19 +75,20 @@ contract mt5 {
 
 
 
-function registration(uint256 _metanum,string memory  _invest)public {   //랠리 참여 데모계좌등록
-    require(bet.balanceOf(msg.sender) >= fee,"no bet");    
-    require(butbank.getlevel(msg.sender) >= 2,"no member"); 
-    bet.approve(msg.sender, fee); 
-    uint256 allowance = bet.allowance(msg.sender, address(this));
+function registration(uint256 _metanum,string memory  _invest)public {   //참여 데모계좌등록
+    require(zem.balanceOf(msg.sender) >= fee,"no zem");    
+    require(zumbank.getlevel(msg.sender) >= 2,"no member"); 
+    zem.approve(msg.sender, fee); 
+    uint256 allowance = zem.allowance(msg.sender, address(this));
     require(allowance >= fee, "Check the token allowance");
-    bet.transferFrom(msg.sender, address(this), fee);  
-    address _mento =  butbank.getmento(msg.sender);
-    butbank.depoup(_mento,fee*20/100);  //멘토 수당
+    zem.transferFrom(msg.sender, address(this), fee);  
+    address _mento =  zumbank.getmento(msg.sender);
+    zumbank.depoup(_mento,fee*10/100);  //멘토 수당
+    tax += fee*1/100;
     metainfo[mid].time = block.timestamp;
     metainfo[mid].mid = mid;
     metainfo[mid].metanum = _metanum;
-    metainfo[mid].init = 5000;
+    metainfo[mid].init = 10000;
     metainfo[mid].invest = _invest;   //관람자 비번
     metainfo[mid].owner = msg.sender;
     mid += 1;
@@ -103,11 +105,19 @@ function exit(uint256 _mid)public {   //보상신청
    
 } 
 
+function exitcancell(uint256 _mid)public {   //보상신청 취소
+    
+    require( metainfo[_mid].owner == msg.sender,"no owner");   
+    require( metainfo[_mid].act == 1,"Compensation application not in progress");   
+  
+    metainfo[_mid].act = 0; //보상신청 상태
+   
+} 
+
 
 function audit(uint256 _mid,uint256 _reward)public {   //보상검증
     
     require(staff[msg.sender] >= 5,"no staff");   
-   
     metainfo[_mid].reward = _reward*1e18;
     metainfo[_mid].act = 2; //처리완료
 
@@ -119,13 +129,21 @@ function  withdrw(uint256 _mid)public {   //인출
     uint pay = metainfo[_mid].reward;
     require( metainfo[_mid].owner == msg.sender,"no owner");   
     require( metainfo[_mid].act == 2,"Processing");  
-    require(g1() >= pay,"no but"); 
-
+    require(g1() >= pay,"no zum"); 
+    address _mento =  zumbank.getmento(msg.sender);
+    zumbank.depoup(_mento,pay* 3/100);  //멘토 수당
     metainfo[_mid].act = 3; //인출완료
-    bet.transfer(msg.sender,pay);
+    zem.transfer(msg.sender,pay* 97/100);
+    taxtran();
+
 } 
+
+function  taxtran()public{
+  zem.transfer(tbank,tax);
+  tax = 0;
+}
     
-    function feeup(uint256 _fee) public {  //기본값 30e18
+    function feeup(uint256 _fee) public {  //기본값 1000e18
       require(staff[msg.sender] >= 5,"no staff");
       fee = _fee*1e18;
     }
@@ -134,11 +152,11 @@ function  withdrw(uint256 _mid)public {   //인출
  
   
   function g1() public view virtual returns(uint256){  
-  return bet.balanceOf(address(this));
+  return zem.balanceOf(address(this));
   }
 
   function g2(address user) public view virtual returns(uint256){  
-  return bet.balanceOf(user);
+  return zem.balanceOf(user);
   }
 
 }

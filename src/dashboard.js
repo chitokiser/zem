@@ -7,7 +7,7 @@
 
   // Graphs
   const contractAddress = {
-    cyacoopAddr: "0x7af12A131182b966b813369Eb45393657a5a1bd5" //NEW BUTbank
+    cyacoopAddr: "0x8EBAA1f6fBb4197e83f88238e7386cB3A37bE355" //ZUMbank
   };
   const contractAbi = {
     cyacoop: [

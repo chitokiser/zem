@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+      
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -12,7 +13,7 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
         crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
-    <title>BetDAO</title>
+    <title>ZEM DAO</title>
 </head>
 
 <body>
@@ -33,48 +34,43 @@
             })
             .catch(error => console.error('Error loading the dashboard content:', error));
     </script>
+ 
 
-    <!-- Game Point Management -->
-<div class="container my-4">
-    
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5>게임포인트 관리</h5>
-            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#gamePointContent" aria-expanded="true" aria-controls="gamePointContent">
-                펼침목록
-            </button>
-        </div>
-        <div id="gamePointContent" class="collapse show">
-            <div class="card-body">
-                <!-- Charge Game Points -->
-                <div class="mb-4">
-                    <h6 class="fw-bold">게임포인트 충전</h6>
-                    <label for="Amount" class="form-label">충전금액입력 1P=1BET</label>
-                    <input type="number" id="Amount" class="form-control mb-3" placeholder="충전금액을 입력하세요" required>
-                    <button id="chargeButton" class="btn btn-primary w-100">충전하기</button>
-                    <p id="resultMessage" class="mt-3 text-center text-success"></p>
-                </div>
+   <!-- Main Content -->
+    <div class="container my-5">
+   <!-- Game Point Management --> 
+<div class="card mb-4"> 
+<div class="card-header d-flex justify-content-between align-items-center"> 
+<p>[GamePoint Management] Contract Balance: <span id="Gpbal" class="stat-value">-</span>ZEM</p> 
+<button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" 
+data-bs-target="#gamePointContent" aria-expanded="true" aria-controls="gamePointContent"> 
+Toggle 
+</button> 
+</div> 
+<div id="gamePointContent" class="collapse show"> 
+<div class="card-body"> 
+<div class="mb-4"> 
+<h6 class="fw-bold">Recharge game points</h6> 
 
-                <hr class="my-4">
-
-                <!-- Check Game Points -->
-                <div class="mb-4">
-                    <h6 class="fw-bold">나의 게임포인트 보기</h6>
-                    <button id="checkMypgButton" class="btn btn-secondary w-100">게임포인트 확인</button>
-                    <p id="mypgResult" class="mt-3 text-center text-info">여기에 게임포인트가 표시됩니다</p>
-                </div>
-
-                <hr class="my-4">
-
-                <!-- Withdraw Game Points -->
-                <div>
-                    <h6 class="fw-bold">게임포인트 인출</h6>
-                    <button id="withdrawButton" class="btn btn-warning w-100">게임포인트 인출하기</button>
-                    <p id="withdrawResultMessage" class="mt-3 text-center text-danger">게임포인트를 인출하면 BET토큰으로 교환됩니다</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<label for="Amount" class="form-label">Enter Amount:</label> 
+<input type="number" id="Amount" class="form-control mb-3" placeholder="Enter amount" required> 
+<button id="chargeButton" class="btn btn-primary w-100">Charge</button> 
+<p id="resultMessage" class="mt-3 text-center text-success"></p> 
+</div> 
+<hr> 
+<div class="mb-4"> 
+<h6 class="fw-bold">Check My Game Points</h6> 
+<button id="checkMypgButton" class="btn btn-secondary w-100">My Game Points</button> 
+<p id="mypgResult" class="mt-3 text-center text-info">Game point value will be displayed here</p> 
+</div> 
+<hr> 
+<div> 
+<h6 class="fw-bold">Withdraw Game Points</h6> 
+<button id="withdrawButton" class="btn btn-warning w-100">Withdraw Game Points</button> 
+<p id="withdrawResultMessage" class="mt-3 text-center text-danger">Game points will be converted to ZEM tokens(5% commission) </p> 
+</div> 
+</div> 
+</div> 
 </div>
 
 
@@ -86,43 +82,53 @@
                     <h5>릴레이 로또(only game point)</h5>
                 </div>
                 <div class="card-body">
-                    <p>자신의 게임 기록은 지갑이 연결된 경우에만 표시됩니다.</p>
-                    <p>노란색표시는 포함되지만 자리가 맞지 않은 경우</p>
-                    <p>녹색표시는 자리도 맞고 숫자도 일치하는 경우</p>
-                    <p>회색은 둘다 맞지 않는 경우</p>
-                    <p>이 게임은 10번의 시도 안에 5개의 숫자를 맞춰야 합니다.</p>
-                    <p>정답은 1~45 사이의 숫자로 고정됩니다.</p>
-                    <p>시도 횟수와 잭팟 금액에 비례하여 보상을 받게 됩니다.</p>
-                    <p>게임을 등록한 소유자는 초기 등록 수수료를 제외한 금액을 인출할 수 있습니다</p>
-                    <p>RelayLotto 등록 수수료: <span id="Wprice">로딩 중...</span>GP</p>
+                    <p>이 게임은 6번의 시도 안에 5개의 숫자를 맞춰야 합니다</p>
+                    <p>순서는 관계 없습니다</p>
+                    <p>1회제출당 1gp가 소모 됩니다</p>
+                    <p>정답은 1~45 사이의 숫자로 고정됩니다</p>
+                    <p>6번 시도하여 5개의 숫자를 맞추면 잭팟 금액에 비례하여 보상을 받게 됩니다.</p>
+                    
+            
 <div>
-    <div>
-        <label>숫자 5개를 입력하세요(한칸에 1개):</label>
-        <div id="game-input-container" style="display: flex; gap: 10px;">
-            <input type="number" id="num1" class="game-input" placeholder="1" min="1" max="45" />
-            <input type="number" id="num2" class="game-input" placeholder="2" min="1" max="45" />
-            <input type="number" id="num3" class="game-input" placeholder="3" min="1" max="45" />
-            <input type="number" id="num4" class="game-input" placeholder="4" min="1" max="45" />
-            <input type="number" id="num5" class="game-input" placeholder="5" min="1" max="45" />
-        </div>
-        <button onclick="CreateGame()">Create Game</button>
+       <!-- Current GP Price / Jackpot -->
+    <div class="mb-4">
+        <span class="h5">JackPot: </span>
+        <span id="Jack" class="fw-bold">...</span> GP
     </div>
+     <div class="mb-4">
+        <span class="h5">Total Game: </span>
+        <span id="Wid" class="fw-bold">...</span> 
+    </div>
+   <!-- Create Game (staff only) -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Create New Game (Staff only)</h5>
+            <div class="row g-2 mb-2">
+                <div class="col"><input type="number" id="num1" class="form-control" placeholder="#1" min="1" max="45"></div>
+                <div class="col"><input type="number" id="num2" class="form-control" placeholder="#2" min="1" max="45"></div>
+                <div class="col"><input type="number" id="num3" class="form-control" placeholder="#3" min="1" max="45"></div>
+                <div class="col"><input type="number" id="num4" class="form-control" placeholder="#4" min="1" max="45"></div>
+                <div class="col"><input type="number" id="num5" class="form-control" placeholder="#5" min="1" max="45"></div>
+            </div>
+            <button class="btn btn-success" onclick="CreateGame()">Create Game</button>
+        </div>
+    </div>
+<h4 class="mt-4">Event Log</h4>
+<ul id="eventLog" class="list-group mb-5"></ul>
 
 </div>
 <p id="statusMessage"></p>
                 </div>
             </div>
-
-            <div class="card mb-3 shadow-sm rounded">
-                <div class="card-header" style="background-color: #f8f9fa;">
-                    <h5>RalayLotto List</h5>
-                </div>
-                <div class="card-body">
-            <div id="gameList" class="container my-4">
-            </div>
-            </div>
-        </div>
-         <!-- Start footer -->
+ 
+     <!-- Games List -->
+        <h5 class="mb-3">Games List</h5>
+        <div id="gameList" class="row gy-3"></div>
+      </div>
+    </div>
+  </div><!-- /.container -->
+         
+<!-- Start footer -->
     <div id="footer"></div>
 
     <script>
@@ -143,7 +149,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../src/RelayLotto.js"></script>
 </body>

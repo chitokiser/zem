@@ -10,8 +10,8 @@ interface IERC20 {
    }
 
 contract But is IERC20 {
-    string public constant name = "BetUtilityToken";
-    string public constant symbol = "BUT";
+    string public constant name = "ZemUtilityToken";
+    string public constant symbol = "ZUM";
     uint8 public constant decimals = 0;
     uint public totalSupply;
     address admin;

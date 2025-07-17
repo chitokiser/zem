@@ -5,7 +5,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 
-interface Ibet {     
+interface Izem {     
   function balanceOf(address account) external view returns (uint256);
   function allowance(address owner, address spender) external view returns (uint256);
   function transfer(address recipient, uint256 happy) external returns (bool);
@@ -13,24 +13,36 @@ interface Ibet {
   function transferFrom(address sender, address recipient, uint256 happy) external returns (bool);
   }
 
-
+    interface Izumbank{      
+    function depoup(address _user, uint _depo) external;
+    function getprice() external view returns (uint256);
+    function getlevel(address user) external view returns (uint);
+    function g9(address user) external view returns (uint);  // 각 depo현황
+    function getagent(address user) external view returns (address);
+    function getmento(address user) external view returns (address);
+    function expup(address _user,uint _exp) external;
+  
+  }  
+    
 
     contract gamepoint {
   
-      Ibet bet;
+      Izem zem;
+      Izumbank zumbank;
      uint tax;
      address public admin;
-     address public butbank;
+     address public tbank;
       mapping (address => uint)public mygp;
       mapping (address => uint)public staff;
       mapping (address => uint)public fa;
    
   
 
-     constructor(address _bet,address _butbank) public { 
+     constructor(address _zem,address _zumbank) public { 
     
-      bet = Ibet(_bet);
-      butbank = _butbank;
+      zem = Izem(_zem);
+      zumbank = Izumbank(_zumbank);
+      tbank = _zumbank;
       admin =msg.sender;
       staff[msg.sender] = 10;
       
@@ -64,35 +76,39 @@ interface Ibet {
 
   function charge (uint _pay)public {
     uint pay = _pay*1e18;
-    require(g3(msg.sender) >= pay,"no bet");
-    bet.approve(msg.sender,pay);
-    uint256 allowance = bet.allowance(msg.sender, address(this));
+    require(g3(msg.sender) >= pay,"no zem");
+    zem.approve(msg.sender,pay);
+    uint256 allowance = zem.allowance(msg.sender, address(this));
     require(allowance >= pay, "Check the  allowance");
-    bet.transferFrom(msg.sender, address(this),pay);
+    zem.transferFrom(msg.sender, address(this),pay);
+    address _mento =  zumbank.getmento(msg.sender);
+    zumbank.depoup(_mento,pay*1/100);  //멘토 수당
+    zumbank.expup(msg.sender,pay*1/1E16);  //경험치
     mygp[msg.sender] += pay;
-    tax += _pay*10/100;
   }
 
   function withdraw( )public {     
-    uint pay = mygp[msg.sender];
-    require(pay >=1e16,"0.01bet or more");   
-    require(pay <= g1(),"no bet");  
-    
+    uint pay = mygp[msg.sender]*950/1000;
+    require(pay >=1e16,"0.01zem or more");   
+    require(pay <= g1(),"no zem");  
+    address _mento =  zumbank.getmento(msg.sender);
+    zumbank.depoup(_mento,pay*1/100);  //멘토 수당
+    zumbank.expup(msg.sender,pay*1/1E16);  //경험치
     mygp[msg.sender] = 0;
-    bet.transfer(msg.sender,pay);
-    taxout();
+    zem.transfer(msg.sender,pay);
+
    }
   
    
    function taxout( )public{
-    bet.transfer(butbank, tax);
-    tax = 0;
+    zem.transfer(tbank, g1()*50/100);
+
    } 
 
 
 
  function g1() public view virtual returns(uint256){  
-  return bet.balanceOf(address(this));
+  return zem.balanceOf(address(this));
   }
   
   function g2(address user) public view virtual returns(uint256){  
@@ -100,7 +116,7 @@ interface Ibet {
   }
 
    function  g3(address user) public view returns(uint) {  
-  return bet.balanceOf(user);
+  return zem.balanceOf(user);
   }  
 
   

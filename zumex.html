@@ -13,7 +13,7 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/font.css">
-    <title>BetDAO</title>
+    <title>ZEM DAO</title>
 </head>
 <body>
     <!-- Placeholder for dynamic header -->
@@ -39,18 +39,17 @@
             <div class="container-box">
             <div class="card">
               <div class="card-header">
-                BUT(Bet Utility Token)
+                ZUM(ZEM Utility Token)
               </div>
               <div class="card-body">
 
            
-          
-                <li class="list-group-item">BUT 보유량에 비례하여 주 1회 BET을 배당합니다.</li>
-                <li class="list-group-item">레벨 6 이상이고 거래 상태가 3인 경우 BUT를 스마트 계약에 판매할 수 있습니다.</li>
+<li class="list-group-item">ZEM is distributed once a week in proportion to the amount of ZUM held.</li>
+<li class="list-group-item">You can sell ZUM to smart contracts if you are at least level 6 and have a transaction status of 3.</li>
                 
                 <link href="../css/dashboard.css" rel="stylesheet">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h3 class="h5">BUT price change</h>
+                <h3 class="h5">ZUM price change</h>
                 <div class="btn-toolbar mb-2 mb-md-0">
                 <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
                 <span data-feather="calendar"></span>
@@ -75,59 +74,59 @@
         </div>
       </div>    
         
-      <div class="card">
-        <div class="card-header">
-        BUT 기본 정보
-        </div>
-        <div class="card-body">
-        
-        <li class="list-group-item">거래 가능 상태: <span id="Act">-</span> </li>
-        <p class="small-text">상태 설명 1=매수 가능 2=분배 가능 3=판매 가능</p>
-        
-        <li class="list-group-item">스마트 계약 BET 잔액: <span id="Cyabal">-</span>BET</li>
-        <li class="list-group-item">스마트 계약 BUT 잔액: <span id="Mutbal">-</span>BUT</li>
-        <li class="list-group-item">BUT 유통: <span id="Mutcir">-</span>BUT</li>
-        <li class="list-group-item">1BUT 가격: <span id="Mprice">-</span>BET</li>
-        <li class="list-group-item">1BUT 배당금(레벨 10기준): <span id="Mallow">-</span>BET</li>
-        <li class="list-group-item">이 거래소에서 1회 이상 1개이상 BUT을 매수해야 배당금받을 시간이 적용됩니다 </li>
-        <li class="list-group-item">5,000개 이상의 BUT를 보유한 조합원은 배당금을 받을 수 있습니다<a class="btn btn-light" href="./memberjoin.html"
-        role="button">마이페이지 &raquo;</a> </li>
-        
-        <!-- 목록 그룹 -->
-        <button class="btn btn-outline-success" type="submit" onclick="cutmemberLogin()">
-        
-        내 상태(지갑 링크)
-        </button>
-        
-        <ul class="list-group">
-        <li class="list-group-item">나의 BUT: <span id="myCut">-</span>BUT</li>
-        <li class="list-group-item">나의 BUT 시가총액: <span id="myCutvalue">-</span>BET</li>
-        <li class="list-group-item">이번배당금액: <span id="myAllow">-</span>BET</li>
-        <li class="list-group-item">다음배당까지 남은시간 <span id="epsLeftTime">-</span></li>
-        
-        </ul>
-        
-        <button class="btn btn-outline-success" type="submit" onclick="Allow()">Receive Dividend</button>
-        </div>
-        </div>
+   <div class="card">
+<div class="card-header">
+ZUM Basic Information
+</div>
+<div class="card-body">
+
+<li class="list-group-item">Tradable Status: <span id="Act">-</span> </li>
+<p class="small-text">Status Description 1=Purchase 2=Distribute 3=Sell</p>
+
+<li class="list-group-item">Smart Contract ZEM Balance: <span id="Cyabal">-</span>ZEM</li>
+<li class="list-group-item">Smart Contract ZUM Balance: <span id="Mutbal">-</span>ZUM</li>
+<li class="list-group-item">ZUM Distribution: <span id="Mutcir">-</span>ZUM</li>
+<li class="list-group-item">1ZUM Price: <span id="Mprice">-</span>ZEM</li>
+<li class="list-group-item">1ZUM Dividend (Level 10): <span id="Mallow">-</span>ZEM</li>
+<li class="list-group-item">You must have purchased at least 1 ZUM on this exchange at least once to receive the dividend. </li>
+<li class="list-group-item">Members with more than 5,000 ZUM can receive dividends every week<a class="btn btn-light" href="./memberjoin.html"
+role="button">My Page &raquo;</a> </li>
+
+<!-- List Group -->
+<button class="btn btn-outline-success" type="submit" onclick="cutmemberLogin()">
+
+My Status (Wallet Link)
+</button>
+
+<ul class="list-group">
+<li class="list-group-item">My ZUM: <span id="myCut">-</span>ZUM</li>
+<li class="list-group-item">My ZUM Market Cap: <span id="myCutvalue">-</span>ZEM</li>
+<li class="list-group-item">This Dividend Amount: <span id="myAllow">-</span>ZEM</li>
+<li class="list-group-item">Time Left Until Next Dividend <span id="epsLeftTime">-</span></li>
+
+</ul>
+
+<button class="btn btn-outline-success" type="submit" onclick="Allow()">Receive Dividend</button>
+</div>
+</div>
         
         <div class="card">
         <div class="card-header">
-        BUT Exchange
+        ZUM Exchange
         </div>
         <div class="card-body">
-        
+         <div><span style="color:red">Available for purchase at level 1 or higher</span></div>
         <div class="input-group mb-3">
-        <input type="text" id="buyAmount" class="form-control" placeholder="Enter the number of CUTs to purchase. (No decimal points allowed.)" aria-label="BET"
+        <input type="text" id="buyAmount" class="form-control" placeholder="Enter the number of ZUM to purchase. (No decimal points allowed.)" aria-label="ZEM"
         aria-describedby="basic-addon2">
-        <span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Buymut()">Buy BUT</span>
+        <span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Buymut()">Buy ZUM</span>
         </div>
-        <div><span style="color:red">You can sell BUT only if you are level 6 or higher and the tradable status is 3</span></div>
+        <div><span style="color:red">You can sell ZUM only if you are level 6 or higher and the tradable status is 3</span></div>
         
         <div class="input-group mb-3">
-        <input type="text" class="form-control" id="sellAmount" placeholder="If you are level 6 or higher, enter the number of BUTs to sell. (decimal points are not allowed.)" aria-label="BET"
+        <input type="text" class="form-control" id="sellAmount" placeholder="If you are level 6 or higher, enter the number of ZUMs to sell. (decimal points are not allowed.)" aria-label="ZEM"
         aria-describedby="basic-addon2">
-        <span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Sellmut()">BUT Sell</span>
+        <span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Sellmut()">Sell ZUM</span>
         </div>
         </div>
         </div>
@@ -160,7 +159,7 @@ crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.2.0/ethers.umd.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script type="text/javascript"></script>
-<script src="..\src\butbank.js"></script> 
+<script src="..\src\zumex.js"></script> 
 
 
 

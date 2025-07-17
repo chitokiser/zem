@@ -1,5 +1,5 @@
 let metaddr = {  
-    metmarket: "0x723afF92974f07c0829bFF5f215B6a2CfC3751E0" //but mt5
+    metmarket: "0x73B9047De48A5121278B417696A7444AC902b260" //zem mt5_20
 
   };
   
@@ -8,6 +8,7 @@ let metaddr = {
     metmarket: [
       "function registration(uint256 _metanum,string memory  _invest)public",
         "function exit(uint256 _mid)public",
+        "function exitcancell(uint256 _mid)public",
         "function mid() public view returns (uint256)",
         "function fee() public view returns (uint256)",
         "function audit(uint256 _mid,uint256 _cutreward)public",
@@ -98,24 +99,45 @@ let metaddr = {
                     purchasableStatus = 'Unknown';
             }
               const isPurchasable = purchasableStatus;
-  
+// 등록날짜 변환 (서버 시간 기준 보정)
+const serverOffsetHours = -6; // 서버가 한국보다 6시간 느림
+const correctedTimestamp = (Number(metaInfo.info0) + serverOffsetHours * 3600) * 1000; // 밀리초 변환
+const dateObj = new Date(correctedTimestamp);
+const formattedDate = dateObj.toLocaleString("ko-KR", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit"
+});
+
+
           
-              const infoHtml = `
-              <div class="card mb-3">
-              <div class="card-body">
-                  <h5 class="card-title">ID:${i}</h5>
-                  <p class="card-text"><strong>MT5 계좌:</strong> ${metaInfo.info4}</p>
-                   <p class="card-text"><strong>관람자 비밀번호:</strong> ${metaInfo.info3}</p>
-                  <p class="card-text"><strong>등록날짜:</strong> ${metaInfo.info0}</p>
-                  <p class="card-text"><strong>최초보증금:</strong> ${metaInfo.info5}USD</p>
-                  <p class="card-text"><strong>보상요구:</strong> ${isPurchasable}</p>
-                  <p class="card-text"><strong>등록자:</strong> ${metaInfo.info6}</p>
-                  <p class="card-text"><strong>보상금액:</strong> ${metaInfo.info1/1e18}BET</p>
-                  <button type="button" class="btn btn-primary btn-sm mr-2" onclick="purchase(this)" data-id="${i}">보상신청</button>
-                  <button type="button" class="btn btn-dark btn-sm mr-2" onclick="Withdraw(this)" data-id="${i}">보상금액인출</button>
-           
-              </div>
-          </div>`;
+          const infoHtml = ` 
+<div class="card mb-3"> 
+<div class="card-body"> 
+<h5 class="card-title">ID: ${i}</h5> 
+<p class="card-text"><strong>MT5 Account:</strong> ${metaInfo.info4}</p> 
+<p class="card-text"><strong>Viewer Password:</strong> ${metaInfo.info3}</p> 
+<p class="card-text"><strong>Registration Date:</strong> ${formattedDate}</p> 
+<p class="card-text"><strong>Initial deposit:</strong> ${metaInfo.info5} USD</p> 
+<p class="card-text"><strong>Request for compensation:</strong> ${isPurchasable}</p> 
+<p class="card-text"><strong>Registrant:</strong> ${metaInfo.info6}</p> 
+<p class="card-text"><strong>Compensation Amount:</strong> ${(metaInfo.info1 / 1e18).toFixed(2)} ZEM</p> 
+
+<button type="button" class="btn btn-primary btn-sm mr-2" onclick="purchase(this)" data-id="${i}">Request for compensation</button> 
+<button type="button" class="btn btn-danger btn-sm mr-2" onclick="cancelExit(this)" data-id="${i}">Cancel Compensation</button> 
+<button type="button" class="btn btn-dark btn-sm mr-2" onclick="Withdraw(this)" data-id="${i}">Withdraw compensation amount</button> 
+<button type="button" class="btn btn-warning btn-sm mr-2" onclick="toggleAuditInput(${i})">Verify</button> 
+
+<div id="auditForm-${i}" style="display:none; margin-top: 10px;"> 
+<input type="number" class="form-control form-control-sm my-2" placeholder="Reward amount (ZEM)" id="rewardInput-${i}"> 
+<button type="button" class="btn btn-success btn-sm" onclick="auditReward(${i})">Confirm reward</button> 
+</div> 
+</div> 
+</div>
+`;
+
               infoContainer.innerHTML += infoHtml;
           }
       }
@@ -130,12 +152,21 @@ let metaddr = {
   // 페이지 로드 시 정보 표시 함수 호출
   window.onload = displayMetaInfo;
   
-  
+
+
   
   // 호출 코드
   topSync();
   
-  
+  function toggleAuditInput(index) {
+  const form = document.getElementById(`auditForm-${index}`);
+  if (form.style.display === "none") {
+    form.style.display = "block";
+  } else {
+    form.style.display = "none";
+  }
+}
+
   // JavaScript에서 해당 ID 값을 가져와서 구매 함수 호출
   const purchase = async (button) => {
   try {
@@ -161,9 +192,9 @@ let metaddr = {
     let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
     await meta5Contract.exit(accountId); // 해당 ID를 요청함수에 전달
     location.reload();  // ✅ 값 변경 후 자동 새로고침
-  } catch(e) {
-    alert(e.data.message.replace('execution reverted: ',''))
-  }
+  }  catch (e) {
+  handleError(e);
+}
   };
   
   
@@ -194,9 +225,9 @@ let metaddr = {
       let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
       await meta5Contract.withdrw(accountId); // 해당 ID를 요청함수에 전달
       location.reload();  // ✅ 값 변경 후 자동 새로고침
-    } catch(e) {
-      alert(e.data.message.replace('execution reverted: ',''))
-    }
+    }  catch (e) {
+  handleError(e);
+}
     };
   
     let Registration = async () => {
@@ -240,10 +271,91 @@ let metaddr = {
     
         alert("등록이 완료되었습니다.");
         location.reload();  // ✅ 트랜잭션 확정 후 새로고침
-      } catch(e) {
-        let errorMessage = e.data?.message.replace('execution reverted: ', '') || e.message;
-        alert("오류 발생: " + errorMessage);
-      }
+      }  catch (e) {
+  handleError(e);
+}
     };
+
+const cancelExit = async (button) => {
+  try {
+    const accountId = button.getAttribute("data-id");
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId: "0xCC",
+        rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+        chainName: "opBNB",
+        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+        blockExplorerUrls: ["https://opbnbscan.com"]
+      }]
+    });
+    await userProvider.send("eth_requestAccounts", []);
+    const signer = userProvider.getSigner();
+
+    let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
+    await meta5Contract.exitcancell(accountId);
+    alert("보상 신청이 취소되었습니다.");
+    location.reload();
+  } catch (e) {
+    handleError(e);
+  }
+};
+
+const auditReward = async (index) => {
+  try {
+    const inputField = document.getElementById(`rewardInput-${index}`);
+    const rewardValue = inputField.value;
+
+    if (!rewardValue || isNaN(rewardValue) || Number(rewardValue) <= 0) {
+      alert("유효한 보상금액(BET)을 입력해주세요.");
+      return;
+    }
+
+    const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId: "0xCC",
+        rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+        chainName: "opBNB",
+        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+        blockExplorerUrls: ["https://opbnbscan.com"]
+      }]
+    });
+
+    await userProvider.send("eth_requestAccounts", []);
+    const signer = userProvider.getSigner();
+
+    let meta5Contract = new ethers.Contract(metaddr.metmarket, metabi.metmarket, signer);
+
+    // 👉 parseUnits 제거: 컨트랙트에서 *1e18 하므로 숫자 그대로 넘김
+    await meta5Contract.audit(index, rewardValue);
+    alert("보상 검증 완료");
+    location.reload();
+  } catch (e) {
+    handleError(e);
+  }
+};
+
+
+
     
-  
+  function handleError(e) {
+  let raw = e?.data?.message || e?.error?.message || e?.message || "";
+  let clean = "알 수 없는 오류가 발생했습니다.";
+
+  if (raw.includes("execution reverted:")) {
+    raw = raw.split("execution reverted:")[1];
+  }
+
+  const match = raw.match(/"([^"]+)"/); // "메시지"만 추출
+  if (match && match[1]) {
+    clean = match[1];
+  } else if (raw) {
+    clean = raw.split("(")[0].trim(); // 괄호 앞 revert 코드만
+  }
+
+  alert(clean);
+  console.error("에러 상세:", e);
+}

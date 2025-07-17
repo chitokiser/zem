@@ -10,9 +10,9 @@ interface IERC20 {
 
    }
 
-contract BetToken is IERC20 {
-    string public constant name = "BetDaoToken";
-    string public constant symbol = "BET";
+contract ZEM is IERC20 {
+    string public constant name = "ZenEconomyMoney";
+    string public constant symbol = "ZEM";
     uint8 public constant decimals = 18;
     uint public totalSupply;
     address admin;
@@ -28,15 +28,10 @@ contract BetToken is IERC20 {
    constructor() {
     admin=msg.sender;  
     totalSupply = 100000000*1e18;
-    balances[msg.sender] = 100000000*1e18;
+    balances[msg.sender] = 10000000000*1e18;
     }
 
-   function mint( )public{   
-    require(admin==msg.sender,"no admin");
-     balances[msg.sender] += 100000000*1e18;
-     totalSupply += 100000000*1e18;
-
-   }
+  
    
    function balanceOf(address tokenOwner) public override view returns (uint256) {
         return balances[tokenOwner];
@@ -79,7 +74,7 @@ contract BetToken is IERC20 {
         return depot[user];
   }
 
-    function mycatbalances() public view returns(uint256) {
+    function myZEMbalances() public view returns(uint256) {
         return balanceOf(msg.sender);
 }
 }

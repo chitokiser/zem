@@ -1,16 +1,19 @@
- //0x69664D033214F9CA92b764361087C69dF4CF3fc1,0x0E847436D632E614e28EbA9505593516975f3661
+ //0x8133f5271C9636c94d68640E5b4aEF0FF69914b1
 
 const contractAddress = {
-    affiliateAddr: "0x17Dc0b4B6FCE90a04a5a4e2440eA1CfADBa3ebd3",
+    affiliateAddr: "0x8133f5271C9636c94d68640E5b4aEF0FF69914b1",
     BetTokenAddr: "0xBF93D17Dbb666a552bf8De43C8002FE3a3638449"
   };
 
   const contractAbi = {
     affiliate: [
-      "function registration(string memory name,string memory home,string memory phone,string memory add,uint rate) public",
-      "function buy(uint id,uint _fee) public",
-      "function outpay(uint id) public",
-      "function aid() public view returns(uint)",
+      "function stores(string memory name,string memory homepage,string memory phone,string memory location,uint,address,uint,uint,uint) public",
+      "function pay(uint256 storeId, uint256 amount) external",
+      "function withdraw(uint256 storeId) external onlyStoreOwner(storeId)",
+      "function tryJackpot() external",
+      "function getJackpot() external view returns (uint256)",
+      " function getContractBet() public view returns (uint256)",
+      "function nextStoreId() public view returns(uint)",
       "function jack() public view returns(uint)",
       "function g1() public view virtual returns(uint256)",
       "function allis(uint num) public view returns(string memory name,string memory home,string memory phone,string memory add,uint rate,address owner,uint pay,uint totalpay)",
@@ -32,14 +35,14 @@ const contractAddress = {
       );
 
       // Fetch total affiliates count
-      const totalAffiliates = await affiliateContract.aid();
+      const totalAffiliates = await affiliateContract.nextStoreId();
       document.getElementById("Mid").innerText = totalAffiliates;
 
       // Fetch balance
-      const balance = await affiliateContract.g1();
+      const balance = await affiliateContract.getContractBet();
       document.getElementById("Betbal").innerText = (balance / 1e18).toFixed(2);
       
-      const jack = await affiliateContract.jack();
+      const jack = await affiliateContract.getJackpot()();
       document.getElementById("Jack").innerText = (jack/ 1e18).toFixed(2);
 
       affiliateContract.on("reward", async (amount, event) => {

@@ -2,12 +2,12 @@
 // ver1.0
 pragma solidity >=0.7.0 <0.9.0;
 
-interface Ibet {     
+interface Izem {     
     function balanceOf(address account) external view returns (uint256);
     function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
-interface Ibutbank {
+interface Izumbank {
     function depoup(address _user, uint _depo) external;
     function getlevel(address user) external view returns (uint);
     function getmento(address user) external view returns (address);
@@ -21,9 +21,9 @@ interface Igp {
 }
 
 contract Dicefootball {
-    Ibet public bet;
+    Izem public zem;
     Igp public gp;
-    Ibutbank public butbank;
+    Izumbank public zumbank;
     address public admin;
     mapping(address => uint) public staff;
 
@@ -31,10 +31,10 @@ contract Dicefootball {
     event Reward(address user, uint amount);
     event Loss(address user, uint amount);
 
-    constructor(address _bet, address _gp, address _butbank) {
-        bet = Ibet(_bet);
+    constructor(address _zem, address _gp, address _zumbank) {
+        zem = Izem(_zem);
         gp = Igp(_gp);
-        butbank = Ibutbank(_butbank);
+        zumbank = Izumbank(_zumbank);
         admin = msg.sender;
     }
 
@@ -44,7 +44,7 @@ contract Dicefootball {
     }
 
     modifier onlyMember() {
-        require(butbank.getlevel(msg.sender) >= 1, "Not a member");
+        require(zumbank.getlevel(msg.sender) >= 1, "Not a member");
         _;
     }
 
@@ -52,11 +52,11 @@ contract Dicefootball {
         staff[_staff] = num;
     }
 
-function play(uint8 _winnum, uint _bet) public onlyMember {
+function play(uint8 _winnum, uint _zem) public onlyMember {
     require(1 <= _winnum && _winnum <= 3, "Invalid choice");
 
-    uint pay = _bet * 1e18;
-    require(gp.g1() >= pay * 5, "No BET in the contract");
+    uint pay = _zem * 1e18;
+    require(gp.g1() >= pay * 5, "No zem in the contract");
     require(gp.g2(msg.sender) >= pay * 5, "Not enough gamepoints");
 
     uint home = ran1();
@@ -91,8 +91,8 @@ function play(uint8 _winnum, uint _bet) public onlyMember {
     } else {
         gp.gpdown(msg.sender, _loss);
         emit Loss(msg.sender, _loss);
-        address mento = butbank.getmento(msg.sender);
-        butbank.depoup(mento, pay * 10 / 100); // 멘토에게 배팅금액의 10% 지급
+        address mento = zumbank.getmento(msg.sender);
+        zumbank.depoup(mento, pay * 10 / 100); // 멘토에게 배팅금액의 10% 지급
     }
 }
 
@@ -100,11 +100,11 @@ function play(uint8 _winnum, uint _bet) public onlyMember {
 
 
     function g1() public view returns (uint256) {
-        return bet.balanceOf(address(this));
+        return zem.balanceOf(address(this));
     }
 
     function g2(address user) public view returns (uint) {
-        return bet.balanceOf(user);
+        return zem.balanceOf(user);
     }
 
     function ran1() internal returns (uint) {

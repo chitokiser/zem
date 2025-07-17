@@ -1,25 +1,24 @@
 const { ethers } = window;
 
 const contractAddress = {
-  cutbank: "0x7af12A131182b966b813369Eb45393657a5a1bd5",
+  cutbank: "0x8EBAA1f6fBb4197e83f88238e7386cB3A37bE355", // ZUMBank
 };
 
 const cutbankAbi = [
   "function g1() view returns(uint256)",
   "function g6() view returns(uint256)",
-  "function g7() view returns(uint256)",
-  "function g8(address) view returns(uint256)",
+  "function g8(address) view returns(uint)",
   "function g9(address) view returns(uint)",
   "function g10() view returns(uint256)",
-  "function allow() view returns(uint256)",
-  "function sum() view returns(uint256)",
-  "function allowt(address) view returns(uint256)",
   "function g11() view returns(uint256)",
+  "function allow() view returns(uint256)",
+  "function allowt(address) view returns(uint256)",
+  "function sum() view returns(uint256)",
   "function getprice() view returns(uint256)",
   "function gettime() view returns(uint256)",
   "function withdraw()",
-  "function buysut(uint) returns(bool)",
-  "function sellsut(uint) returns(bool)",
+  "function buyzum(uint) returns(bool)",
+  "function sellcut(uint) returns(bool)",
   "function getpay(address) view returns(uint256)",
   "function allowcation() returns(bool)",
   "function getlevel(address) view returns(uint)",
@@ -34,36 +33,45 @@ const cutbankAbi = [
 let provider;
 let signer;
 let contract;
+let initialized = false;
 
 const initialize = async () => {
+  if (initialized) return;
+
   if (!window.ethereum) {
-    alert("MetaMask가 설치되어 있지 않습니다.");
+    alert("지갑이 설치되어 있지 않습니다.");
     return;
   }
 
   provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-  await window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: [{
-      chainId: "0xCC",
-      rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-      chainName: "opBNB",
-      nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
-      blockExplorerUrls: ["https://opbnbscan.com"]
-    }]
-  });
+
+  try {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId: "0xCC",
+        rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+        chainName: "opBNB",
+        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+        blockExplorerUrls: ["https://opbnbscan.com"]
+      }]
+    });
+  } catch (e) {
+    console.warn("네트워크 전환 실패:", e.message);
+  }
 
   await provider.send("eth_requestAccounts", []);
   signer = provider.getSigner();
-  const iface = new ethers.utils.Interface(cutbankAbi);
-  contract = new ethers.Contract(contractAddress.cutbank, iface, signer);
+  contract = new ethers.Contract(contractAddress.cutbank, cutbankAbi, signer);
+  initialized = true;
+
   console.log("✅ Contract connected:", contractAddress.cutbank);
 };
 
 const MemberLogin = async () => {
   await initialize();
   const userAddress = await signer.getAddress();
-  const [_, mybonus, mylev, mymento, myexp] = await contract.myinfo(userAddress);
+  const [totaldepo, mybonus, mylev, mymento, myexp] = await contract.myinfo(userAddress);
   const levelexp = (2 ** mylev) * 10000;
 
   document.getElementById("Mymento").innerText = mymento;
@@ -78,18 +86,44 @@ const MemberLogin = async () => {
 const Levelup = async () => {
   try {
     await initialize();
-    await contract.levelup();
+    const tx = await contract.levelup();
+    await tx.wait();
     alert("레벨업 성공!");
+    location.reload();
   } catch (e) {
-    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
+    // 스마트컨트랙트의 revert 메시지를 추출
+    const message = extractRevertReason(e);
+    alert("레벨업 실패: " + message);
+    console.error("레벨업 실패 상세:", e);
   }
 };
+
+function extractRevertReason(error) {  //스마트 컨트렉트 에러 메세지 
+  // ethers.js v5 기준
+  if (error?.error?.data?.message) {
+    return error.error.data.message.replace("execution reverted: ", "");
+  }
+
+  if (error?.data?.message) {
+    return error.data.message.replace("execution reverted: ", "");
+  }
+
+  if (error?.message?.includes("execution reverted:")) {
+    return error.message.split("execution reverted:")[1].trim();
+  }
+
+  return "알 수 없는 오류가 발생했습니다.";
+}
+
+
+
 
 const Bonuswithdraw = async () => {
   try {
     await initialize();
     await contract.withdraw();
     alert("보너스 출금 완료");
+    location.reload();
   } catch (e) {
     alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
   }
@@ -121,7 +155,7 @@ const fetchAddresses = async () => {
       });
     } else {
       const li = document.createElement("li");
-      li.textContent = "There are no recommended members.";
+      li.textContent = "추천인이 없습니다.";
       addressList.appendChild(li);
     }
   } catch (e) {
@@ -129,11 +163,41 @@ const fetchAddresses = async () => {
   }
 };
 
+const BuyZum = async () => {
+  try {
+    await initialize();
+    const amount = parseInt(document.getElementById("buyAmount").value);
+    await contract.buyzum(amount);
+    alert("ZUM 구매 성공!");
+    location.reload();
+  } catch (e) {
+    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
+  }
+};
+
+const SellCut = async () => {
+  try {
+    await initialize();
+    const amount = parseInt(document.getElementById("sellAmount").value);
+    await contract.sellcut(amount);
+    alert("ZUM 판매 성공!");
+    location.reload();
+  } catch (e) {
+    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
+  }
+};
+
 window.addEventListener("load", async () => {
   await initialize();
+  await MemberLogin();
 });
 
 document.getElementById("fetchAddresses")?.addEventListener("click", fetchAddresses);
+document.getElementById("levelUp")?.addEventListener("click", Levelup);
+document.getElementById("withdraw")?.addEventListener("click", Bonuswithdraw);
+document.getElementById("buff")?.addEventListener("click", Buff);
+document.getElementById("buyZumBtn")?.addEventListener("click", BuyZum);
+document.getElementById("sellCutBtn")?.addEventListener("click", SellCut);
 
 window.onerror = function (message, source, lineno, colno, error) {
   console.error("Global error:", message, error);

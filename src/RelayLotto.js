@@ -1,246 +1,198 @@
+/*************************************
+ *  기본 설정
+ *************************************/
 const RelayLottoAddress = {
-    RelayLottoAddr: "0xcAd10e4aE9b4579810ce99de6a8eec64C00C2e5e",
+  RelayLottoAddr: "0x898aAe1Cb9A81c308256F93DEB0BA9c7b9a2C605" //zemlotto
 };
 
-const RelayLottoAbi = {
-    RelayLotto: [
-        "function createGame(uint256[] memory _answer) public",
-        "function withdraw(uint _wid) public",
-        "function guess(uint256 _wid, uint256[] memory _guess) external",
-        "function wid() public view returns(uint)",
-        "function price() public view returns(uint)",
-        "function getAttempt(uint _attemptNumber, uint _wid) external view returns (string memory word, string memory feedback)",
-        "function games(uint wid) public view returns (uint256 depo, address owner)",
-        "event GameCreated(uint256 indexed gameId, address indexed creator, uint256 rewardPool)",
-        "event GuessMade(uint256 indexed gameId, address indexed player, uint256[] guess, uint256 reward)",
-        "event GameEnded(uint256 indexed gameId, address winner, uint256 reward)"
-    ]
-};
+const RelayLottoAbi = [
+  "function createGame(uint256[] _answer) external",
+  "function guess(uint256 id,uint256[] g) external",
+  "function wid() view returns(uint256)",
+  "function games(uint256) view returns(bool solved,address winner)",
+  "function jack() view returns(uint256)",
+  "function getAttempt(uint256,uint256) view returns(string word,string feedback)",
+  "event GuessMade (uint256 indexed gameId, address indexed user, uint256[] guess, string fb)",
+  "event GameEnded (uint256 indexed gameId, address indexed winner, uint256 reward)"
+];
 
-const Priceup = async () => {
+const RPC = "https://1rpc.io/opbnb";
+
+/*************************************
+ *  잭팟·wid 표시
+ *************************************/
+async function Data() {
+  try {
+    const p = new ethers.providers.JsonRpcProvider(RPC);
+    const c = new ethers.Contract(RelayLottoAddress.RelayLottoAddr, RelayLottoAbi, p);
+    const jackBN = await c.jack();
+    const widBN  = await c.wid();
+    document.getElementById("Jack").textContent =
+      (+ethers.utils.formatUnits(jackBN, 19)).toFixed(4);
+    document.getElementById("Wid").textContent  = widBN.toString();
+  } catch (e) { console.error("Data:", e); }
+}
+document.addEventListener("DOMContentLoaded", Data);
+
+/*************************************
+ *  provider & signer
+ *************************************/
+let signerC;
+async function getSignerContract() {
+  if (signerC) return signerC;
+  if (!window.ethereum) throw new Error("MetaMask required");
+  const p = new ethers.providers.Web3Provider(window.ethereum);
+  await p.send("eth_requestAccounts", []);
+  signerC = new ethers.Contract(
+    RelayLottoAddress.RelayLottoAddr,
+    RelayLottoAbi,
+    p.getSigner()
+  );
+  return signerC;
+}
+
+/*************************************
+ *  Games List 동기화
+ *************************************/
+async function syncRelayGameData() {
+  try {
+    const rp  = new ethers.providers.JsonRpcProvider(RPC);
+    const rc  = new ethers.Contract(RelayLottoAddress.RelayLottoAddr, RelayLottoAbi, rp);
+    const wid = (await rc.wid()).toNumber();
+
+    const list = document.getElementById("gameList");
+    list.innerHTML = "";
+
+    for (let i = 0; i < wid; i++) {
+      const g = await rc.games(i);                       // {solved, winner}
+      list.appendChild(createGameCard(i, g.solved, g.winner));
+    }
+
+    if (window.ethereum && window.ethereum.isMetaMask) {
+      const sc = await getSignerContract();
+      for (let i = 0; i < wid; i++) await renderAllAttempts(i, sc);
+    }
+  } catch (e) { console.error("syncRelayGameData:", e); }
+}
+
+/*************************************
+ *  카드 생성
+ *************************************/
+function createGameCard(id, solved, winner) {
+  const solvedBadge = solved ? `<span class="badge bg-success ms-2">Solved</span>` : "";
+  const card = document.createElement("div");
+  card.className = "col-12 col-md-6 col-lg-4";
+  card.innerHTML = `
+    <div class="card h-100">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">Game #${id} ${solvedBadge}</h5>
+        <p class="card-text mb-2"><strong>Winner:</strong> ${
+          winner === ethers.constants.AddressZero ? "—" : winner
+        }</p>
+        <div id="input-container-${id}" class="mb-3 flex-grow-1">
+          ${!solved ? createInputRowHtml() : ""}
+        </div>
+        <button class="btn btn-primary w-100 mb-2"
+                id="attempt-btn-${id}"
+                ${solved ? "disabled" : ""}>Submit</button>
+      </div>
+    </div>`;
+  card.querySelector(`#attempt-btn-${id}`)
+      .addEventListener("click", () => handleAttemptButtonClick(id));
+  return card;
+}
+
+/* 빈 입력행 HTML 5칸 */
+function createInputRowHtml() {
+  return [...Array(5)]
+    .map(() => '<input type="number" min="1" max="45" class="form-control me-1" style="width:60px;">')
+    .join("");
+}
+
+/*************************************
+ *  시도·피드백 렌더링
+ *************************************/
+const MAX_TRIES = 6;
+
+async function renderAllAttempts(id, c) {
+  const box = document.getElementById(`input-container-${id}`);
+  if (!box) return;
+  box.innerHTML = "";
+
+  for (let n = 1; n <= MAX_TRIES; n++) {
     try {
+      const at = await c.getAttempt(n, id);
+      const row = createInputRow(at.word.replace(/,$/, "").split(","), false);
+      applyFeedbackToInputs(row, at.feedback);
+      box.appendChild(row);
+    } catch { break; }
+  }
 
-     // ethers setup
-      const provider = new ethers.providers.JsonRpcProvider('https://1rpc.io/opbnb');
-      const RelayLottoWithSigner = new ethers.Contract(
-        RelayLottoAddress.RelayLottoAddr,
-        RelayLottoAbi.RelayLotto,
-        provider
-    );
-      let wprice = await RelayLottoWithSigner.price();
-      document.getElementById("Wprice").innerHTML = parseFloat(wprice/ 1e18).toFixed(2);
-    } catch (e) {
-      // 에러 발생 시 아무 작업도 하지 않음
-      console.error(e); // 필요 시 콘솔에만 에러를 출력
-    }
-  };
-  
-  Priceup();
+  const g = await c.games(id);
+  if (!g.solved) box.appendChild(createInputRow([], true));
+}
 
-const provider = new ethers.providers.JsonRpcProvider('https://1rpc.io/opbnb');
+function createInputRow(vals = [], editable = false) {
+  const row = document.createElement("div");
+  row.className = "d-flex mb-2";
+  for (let i = 0; i < 5; i++) {
+    const inp = document.createElement("input");
+    inp.type = "number"; inp.min = 1; inp.max = 45;
+    inp.className = "form-control me-1";
+    inp.value = vals[i] || "";
+    inp.disabled = !editable;
+    row.appendChild(inp);
+  }
+  return row;
+}
+function applyFeedbackToInputs(row, fb) {
+  [...row.querySelectorAll("input")].forEach((inp, i) => {
+    const c = fb[i] || "";
+    inp.classList.remove("match-green","match-yellow","match-gray");
 
-// Sync data and display games
-const syncRelayGameData = async () => {
-    try {
-        if (!window.ethereum) {
-            alert("MetaMask or Ethereum wallet is required!");
-            return;
-        }
-
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const signer = provider.getSigner();
-        const RelayLottoWithSigner = new ethers.Contract(
-            RelayLottoAddress.RelayLottoAddr,
-            RelayLottoAbi.RelayLotto,
-            signer
-        );
-
-        const currentWid = await RelayLottoWithSigner.wid();
-        const gameList = document.getElementById("gameList");
-        gameList.innerHTML = "";
-
-        for (let i = 0; i < currentWid; i++) {
-            const gameData = await RelayLottoWithSigner.games(i);
-            const deposit = (gameData.depo / 1e18).toFixed(2);
-
-            const card = document.createElement("div");
-            card.className = "card mb-3";
-            card.innerHTML = `
-                <div class="card-body">
-                    <h5 class="card-title">Game ID: ${i}</h5>
-                    <p class="card-text"><strong>Jackpot:</strong> ${deposit} BET</p>
-                    <p class="card-text"><strong>Owner:</strong> ${gameData.owner}</p>
-                    <div id="input-container-${i}" class="input-container"></div>
-                    <button id="attempt-button-${i}" class="btn btn-primary">Submit Attempt</button>
-                    <button id="withdraw-button-${i}" class="btn btn-warning">Owner Withdraw</button>
-                    <p id="feedback-${i}" class="text-info mt-2"></p>
-                </div>
-            `;
-            gameList.appendChild(card);
-
-            await renderAllAttempts(i, RelayLottoWithSigner);
-
-            document.getElementById(`attempt-button-${i}`).addEventListener("click", async () => {
-                await handleAttemptButtonClick(i, RelayLottoWithSigner);
-            });
-
-            document.getElementById(`withdraw-button-${i}`).addEventListener("click", async () => {
-                await handleWithdraw(i, RelayLottoWithSigner);
-            });
-        }
-    } catch (error) {
-        console.error("Error syncing game data:", error);
-    }
-};
-
-// Render All Attempts
-const renderAllAttempts = async (gameId, contract) => {
-    const inputContainer = document.getElementById(`input-container-${gameId}`);
-    inputContainer.innerHTML = ""; // Clear previous content
-    const maxAttempts = 11;
-
-    for (let attemptNumber = 1; attemptNumber <= maxAttempts; attemptNumber++) {
-        try {
-            const attemptData = await contract.getAttempt(attemptNumber, gameId);
-            const submittedNumbers = attemptData.word.split(',');
-            const feedback = attemptData.feedback;
-
-            const attemptRow = createInputRow(gameId, attemptNumber, submittedNumbers);
-            applyFeedbackToInputs(attemptRow, feedback);
-            inputContainer.appendChild(attemptRow);
-        } catch (error) {
-            if (attemptNumber === 1 || inputContainer.childElementCount < maxAttempts) {
-                const newInputRow = createInputRow(gameId, "new");
-                inputContainer.appendChild(newInputRow); // Add new input row for next attempt
-            }
-            break;
-        }
-    }
-};
-
-// Handle Attempt Submission
-const handleAttemptButtonClick = async (gameId, contract) => {
-    try {
-        const inputContainer = document.getElementById(`input-container-${gameId}`);
-        const currentRow = inputContainer.querySelector(".input-row.new");
-        const inputs = Array.from(currentRow.querySelectorAll(".input-number"));
-        const numbers = inputs.map(input => Number(input.value));
-
-        if (numbers.length !== 5 || numbers.some(num => isNaN(num) || num < 1 || num > 45)) {
-            alert("Invalid input. Please enter exactly 5 numbers between 1 and 45.");
-            return;
-        }
-
-        const tx = await contract.guess(gameId, numbers);
-        const receipt = await tx.wait();
-
-        if (receipt.status === 1) {
-            await renderAllAttempts(gameId, contract); // Refresh attempts after successful submission
-        } else {
-            throw new Error("Transaction failed.");
-        }
-    } catch (error) {
-        console.error("Error submitting attempt:", error);
-        alert(error.data?.message || error.message || "An error occurred.");
-    }
-};
-
-// Apply Feedback to Inputs
-const applyFeedbackToInputs = (inputRow, feedback) => {
-    const inputs = Array.from(inputRow.querySelectorAll(".input-number"));
-    feedback.split("").forEach((feedbackChar, idx) => {
-        const input = inputs[idx];
-        switch (feedbackChar) {
-            case "G":
-                input.style.backgroundColor = "lightgreen";
-                break;
-            case "Y":
-                input.style.backgroundColor = "yellow";
-                break;
-            case "X":
-                input.style.backgroundColor = "gray";
-                break;
-            default:
-                input.style.backgroundColor = "";
-        }
-    });
-};
-
-// Create Input Row
-const createInputRow = (gameId, attemptNumber, values = []) => {
-    const inputRow = document.createElement("div");
-    inputRow.className = `d-flex mb-2 input-row ${attemptNumber === "new" ? "new" : ""}`;
-    inputRow.id = `input-row-${attemptNumber}-${gameId}`;
-
-    Array.from({ length: 5 }).forEach((_, idx) => {
-        const input = document.createElement("input");
-        input.type = "number";
-        input.className = "form-control input-number";
-        input.min = 1;
-        input.max = 45;
-        input.value = values[idx] || "";
-        input.disabled = attemptNumber !== "new";
-        input.style.marginRight = "10px";
-        input.style.width = "60px";
-        inputRow.appendChild(input);
-    });
-
-    return inputRow;
-};
-
-// Withdraw Handler
-const handleWithdraw = async (gameId, contract) => {
-    try {
-        const tx = await contract.withdraw(gameId);
-        const receipt = await tx.wait();
-
-        if (receipt.status === 1) {
-            alert("Withdrawal successful!");
-            location.reload();
-        } else {
-            throw new Error("Transaction failed.");
-        }
-    } catch (error) {
-        console.error("Error withdrawing funds:", error);
-        alert(error.data?.message || error.message || "Withdraw failed.");
-    }
-};
-
-// Initialize Data Sync
-syncRelayGameData();
+    if (c === "G")      inp.classList.add("match-green");   // 초록
+    else if (c === "Y") inp.classList.add("match-yellow");  // 노랑
+    else                inp.classList.add("match-gray");    // 회색
+  });
+}
 
 
-// Handle game creation
-const CreateGame = async () => {
-    try {
-        const answer = [
-            parseInt(document.getElementById('num1').value),
-            parseInt(document.getElementById('num2').value),
-            parseInt(document.getElementById('num3').value),
-            parseInt(document.getElementById('num4').value),
-            parseInt(document.getElementById('num5').value)
-        ];
+/*************************************
+ *  시도 제출
+ *************************************/
+async function handleAttemptButtonClick(id) {
+  const c   = await getSignerContract();
+  const box = document.getElementById(`input-container-${id}`);
+  const nums = [...box.querySelectorAll("input")]
+                 .map(v => Number(v.value))
+                 .filter(n => !isNaN(n));
 
-        if (answer.length !== 5 || answer.some(num => isNaN(num) || num < 1 || num > 45)) {
-            alert("Invalid input. Please enter 5 numbers between 1 and 45.");
-            return;
-        }
+  if (nums.length !== 5 || nums.some(n => n < 1 || n > 45) ||
+      new Set(nums).size !== 5) {
+    alert("1–45 사이 중복 없는 숫자 5개 입력"); return;
+  }
 
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const RelayLottoWithSigner = new ethers.Contract(
-            RelayLottoAddress.RelayLottoAddr,
-            RelayLottoAbi.RelayLotto,
-            signer
-        );
+  await (await c.guess(id, nums)).wait();   // ↔ ABI 실행
+  await Data();                          // 잭팟 갱신
+  await syncRelayGameData();                // 카드·피드백 갱신
+}
 
-        const tx = await RelayLottoWithSigner.createGame(answer);
-        await tx.wait();
-        alert("Game created successfully!");
-        location.reload();
-    } catch (e) {
-        console.error("Error creating game:", e);
-        alert(e.data?.message || e.message || "An error occurred.");
-    }
-};
+/*************************************
+ *  게임 생성 (스태프)
+ *************************************/
+async function CreateGame() {
+  const nums = [...Array(5)].map((_, i) =>
+    Number(document.getElementById(`num${i+1}`).value));
+  if (nums.some(n => n < 1 || n > 45) || new Set(nums).size !== 5) {
+    alert("중복 없이 1–45 숫자 5개"); return;
+  }
+  const c = await getSignerContract();
+  await (await c.createGame(nums)).wait();
+  alert("Game created!");
+  await syncRelayGameData();
+}
+
+/*************************************
+ *  최초 로드
+ *************************************/
+window.addEventListener("DOMContentLoaded", syncRelayGameData);

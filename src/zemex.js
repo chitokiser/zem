@@ -1,18 +1,18 @@
 
-       
+   
       const contractAddress = {
-        cyadexAddr: "0x40A29c38cA258020c6e2EdbcE9BD99f006f6260e", //new betdex
+        cyadexAddr: "0x547c1A704d610bb76988d6ff6aE0121a4A7cfE9b", //zemex
         cyamemAddr: "0x3Fa37ba88e8741Bf681b911DB5C0F9d6DF99046f",   
-        cyabankAddr:"0xE823F9d04faF94a570409DC0076580ba74820B4c",
-        erc20: "0xBF93D17Dbb666a552bf8De43C8002FE3a3638449" //bet
+        cyabankAddr:"0x8EBAA1f6fBb4197e83f88238e7386cB3A37bE355", //zumbank
+        erc20: "0xB4C12Bf7491D70c91A2c272D191B7a3D4ED27bE5" //zem
       };
       const contractAbi = {
         cyadex: [
           "function getprice() public view returns(uint256)",
           "function balance() public view returns(uint256)",
-          "function betbalances() public view returns(uint256)",
-          "function betbuy() payable public",
-          "function bnbsell(uint256 num) public",
+          "function zembalances() public view returns(uint256)",
+          "function zembuy() external payable",
+          "function bnbsell(uint256 num) external",
           "function priceup(uint256 num)public"
         ],
         cyamem: [
@@ -71,7 +71,7 @@ const bnbPrice = parseFloat(responseBinanceTicker.data.price);
           const signer = userProvider.getSigner();
   
           const cyadexContract = new ethers.Contract(contractAddress.cyadexAddr, contractAbi.cyadex, signer);
-          await cyadexContract.betbuy({ value: ethers.utils.parseUnits(document.getElementById('bnbInput').value, 'ether') });
+          await cyadexContract.zembuy({ value: ethers.utils.parseUnits(document.getElementById('bnbInput').value, 'ether') });
         };
   
         const sellCya = async () => {
@@ -102,7 +102,7 @@ const bnbPrice = parseFloat(responseBinanceTicker.data.price);
           }
           // Sell
           const cyadexContract = new ethers.Contract(contractAddress.cyadexAddr, contractAbi.cyadex, signer);
-          await cyadexContract.sell(quantity);
+          await cyadexContract.bnbsell(quantity);
         };
   
 

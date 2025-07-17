@@ -127,7 +127,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
         <div class="container">
             <a class="navbar-brand" href="../index.html">
-                <img src="/images/logo.png" alt="Logo" width="116" height="120">
+                <img src="/images/logo.png" alt="Logo" width="300" height="250">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,42 +140,35 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            MT5 DemoAccount
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../p2e/mt5_10.html">MT5 1/10</a></li>
+                            <li><a class="dropdown-item" href="../p2e/mt5_20.html">MT5 1/20 </a></li>
+                            <li><a class="dropdown-item" href="../p2e/mt5_50.html">MT5 1/50</a></li>
+                            <li><a class="dropdown-item" href="../p2e/mt5_100.html">MT5 1/100</a></li>
+                            <li><a class="dropdown-item" href="../p2e/mt5_200.html">MT5 1/200</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             P2E
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../p2e/mt5.html">MT5 데모계좌</a></li>
-                            <li><a class="dropdown-item" href="../p2e/dicefootball.html">주사위축구</a></li>
-                            <li><a class="dropdown-item" href="../p2e/quiz.html">퀴즈</a></li>
-                            <li><a class="dropdown-item" href="../p2e/Treasure.html">보물찾기</a></li>
+                        
+                            <li><a class="dropdown-item" href="../p2e/dicefootball.html">Dice Soccer</a></li>
+                             <li><a class="dropdown-item" href="../p2e/RelayLotto.html">RelayLotto</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Defi
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../defi/farm.html">이자농장</a></li>
-                            <li><a class="dropdown-item" href="../defi/betswap.html">예치&대출</a></li>
-                            <li><a class="dropdown-item" href="../trust/trust.html">자금관리</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            RWA
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../RWA/kind.html">현물출자</a></li>
-                            <li><a class="dropdown-item" href="../RWA/betshop.html">스토어</a></li>
-                       
-                        </ul>
-                    </li>
+                  
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Token Exchange
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../betex.html">BET Token</a></li>
-                            <li><a class="dropdown-item" href="../butex.html">BUT Token</a></li>
+                            <li><a class="dropdown-item" href="../zemex.html">ZEM Token</a></li>
+                            <li><a class="dropdown-item" href="../zumex.html">ZUM Token</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -184,8 +177,8 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="../memberjoin.html">Sign up</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="addTokenBet()">Add BET</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="addTokenBut()">Add BUT</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addTokenZEM()">Add ZEM</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addTokenZUM()">Add ZUM</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -207,14 +200,14 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            1BET = $1
+                            1ZEM = $1
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            1BET = <span id="cPrice2">-</span> BNB
+                            1ZEM = <span id="cPrice2">-</span> BNB
                         </div>
                     </div>
                 </div>
