@@ -187,41 +187,50 @@
         </div>
     </nav>
 
-    <!-- Main alert section -->
-    <div class="alert alert-primary" role="alert">
-        <div class="container-box">
-            <div class="row row-cols-2 row-cols-md-4 g-2 g-md-3">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            1BNB = $<span id="bPrice">-</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            1ZEM = $1
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            1ZEM = <span id="cPrice2">-</span> BNB
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            BNB TVL = <span id="Tvl">-</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+   <!-- Main alert section -->
+<div class="alert alert-primary py-3" role="alert" style="background: #f0f4ff; border: none;">
+  <div class="container">
+    <div class="row g-3">
+      <!-- 1BNB = $ Price -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card shadow-sm rounded-3 border-0 h-100">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted">1 BNB</h6>
+            <h5 class="fw-bold text-primary">$<span id="bPrice">-</span></h5>
+          </div>
         </div>
+      </div>
+      <!-- 1ZEM = $1 -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card shadow-sm rounded-3 border-0 h-100">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted">1 ZEM</h6>
+            <h5 class="fw-bold text-success">$1</h5>
+          </div>
+        </div>
+      </div>
+      <!-- 1ZEM in BNB -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card shadow-sm rounded-3 border-0 h-100">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted">1 ZEM =</h6>
+            <h5 class="fw-bold"><span id="cPrice2">-</span> BNB</h5>
+          </div>
+        </div>
+      </div>
+      <!-- BNB TVL -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="card shadow-sm rounded-3 border-0 h-100">
+          <div class="card-body text-center">
+            <h6 class="card-title text-muted">BNB TVL</h6>
+            <h5 class="fw-bold"><span id="Tvl">-</span></h5>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Your custom content here -->
     <div class="container">
