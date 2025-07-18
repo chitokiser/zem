@@ -113,30 +113,46 @@ const formattedDate = dateObj.toLocaleString("ko-KR", {
 
 
           
-          const infoHtml = ` 
-<div class="card mb-3"> 
-<div class="card-body"> 
-<h5 class="card-title">ID: ${i}</h5> 
-<p class="card-text"><strong>MT5 Account:</strong> ${metaInfo.info4}</p> 
-<p class="card-text"><strong>Viewer Password:</strong> ${metaInfo.info3}</p> 
-<p class="card-text"><strong>Registration Date:</strong> ${formattedDate}</p> 
-<p class="card-text"><strong>Initial deposit:</strong> ${metaInfo.info5} USD</p> 
-<p class="card-text"><strong>Request for compensation:</strong> ${isPurchasable}</p> 
-<p class="card-text"><strong>Registrant:</strong> ${metaInfo.info6}</p> 
-<p class="card-text"><strong>Compensation Amount:</strong> ${(metaInfo.info1 / 1e18).toFixed(2)} ZEM</p> 
+   const infoHtml = ` 
+<div class="card border border-dark rounded mb-3"> 
+  <div class="card-body">
+    <h5 class="card-title border-bottom pb-2 mb-3">🧾 Meta Info ID: ${i}</h5> 
 
-<button type="button" class="btn btn-primary btn-sm mr-2" onclick="purchase(this)" data-id="${i}">Request for compensation</button> 
-<button type="button" class="btn btn-danger btn-sm mr-2" onclick="cancelExit(this)" data-id="${i}">Cancel Compensation</button> 
-<button type="button" class="btn btn-dark btn-sm mr-2" onclick="Withdraw(this)" data-id="${i}">Withdraw compensation amount</button> 
-<button type="button" class="btn btn-warning btn-sm mr-2" onclick="toggleAuditInput(${i})">Verify</button> 
-
-<div id="auditForm-${i}" style="display:none; margin-top: 10px;"> 
-<input type="number" class="form-control form-control-sm my-2" placeholder="Reward amount (ZEM)" id="rewardInput-${i}"> 
-<button type="button" class="btn btn-success btn-sm" onclick="auditReward(${i})">Confirm reward</button> 
-</div> 
-</div> 
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>MT5 Account:</strong> ${metaInfo.info4}
+    </div>
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>Viewer Password:</strong> ${metaInfo.info3}
+    </div>
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>Registration Date:</strong> ${formattedDate}
+    </div>
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>Initial Deposit:</strong> ${metaInfo.info5} USD
+    </div>
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>Request for Compensation:</strong> ${isPurchasable}
+    </div>
+      <div class="mb-2 p-2 border rounded bg-light">
+  <strong>Registrant:</strong> ${metaInfo.info6.slice(0, 4)}…${metaInfo.info6.slice(-4)}
 </div>
-`;
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>Compensation Amount:</strong> ${(metaInfo.info1 / 1e18).toFixed(2)} ZEM
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <button type="button" class="btn btn-primary btn-sm" onclick="purchase(this)" data-id="${i}">Request for Compensation</button> 
+      <button type="button" class="btn btn-danger btn-sm" onclick="cancelExit(this)" data-id="${i}">Cancel Compensation</button> 
+      <button type="button" class="btn btn-dark btn-sm" onclick="Withdraw(this)" data-id="${i}">Withdraw Compensation</button> 
+      <button type="button" class="btn btn-warning btn-sm" onclick="toggleAuditInput(${i})">Verify</button> 
+    </div>
+
+    <div id="auditForm-${i}" style="display:none; margin-top: 15px;"> 
+      <input type="number" class="form-control form-control-sm my-2" placeholder="Reward amount (ZEM)" id="rewardInput-${i}"> 
+      <button type="button" class="btn btn-success btn-sm" onclick="auditReward(${i})">Confirm Reward</button> 
+    </div> 
+  </div> 
+</div>`;
 
               infoContainer.innerHTML += infoHtml;
           }

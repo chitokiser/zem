@@ -67,13 +67,22 @@ Register MT5 $10,000 Demo Account
 <p><i class="fas fa-users"></i> Registration fee: <span id="Fee" class="stat-value">-</span>ZEM</p>
 <p>You can apply for compensation from $12,000 or more.</p>
 <p>Only members of Level 1 or higher can register.</p>
-<div class="input-group mb-3">
-<input type="text" id="Invest" class="form-control" placeholder="Please enter your viewer password correctly." aria-label="CYA"
-aria-describedby="basic-addon2">
-<input type="text" id="Account" class="form-control" placeholder="Please enter your demo account number." aria-label="CYA" 
-aria-describedby="basic-addon2"> 
-
-<span class="input-group-text" id="basic-addon2" style="cursor: pointer;" onclick="Registration()">Register an account</span> 
+<div class="input-group mb-3"></div>
+<!-- 반응형 입력 영역 -->
+      <form onsubmit="Registration(); return false;">
+        <div class="mb-3">
+          <label for="Account" class="form-label">Demo Account Number</label>
+          <input type="text" class="form-control" id="Account" placeholder="Please enter your demo account number.">
+        </div>
+        <div class="mb-3">
+          <label for="Invest" class="form-label">Viewer Password</label>
+          <input type="text" class="form-control" id="Invest" placeholder="Please enter your viewer password correctly.">
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">✅ Register an Account</button>
+        </div>
+      </form>
+      <!-- 반응형 입력 영역 끝-->
 </div> 
 </div> 
 </div> 

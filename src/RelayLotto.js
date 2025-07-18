@@ -12,8 +12,9 @@ const RelayLottoAbi = [
   "function games(uint256) view returns(bool solved,address winner)",
   "function jack() view returns(uint256)",
   "function getAttempt(uint256,uint256) view returns(string word,string feedback)",
+  "function tries(address user, uint256 gameId) view returns (uint8)", // 시도횟수 조회
   "event GuessMade (uint256 indexed gameId, address indexed user, uint256[] guess, string fb)",
-  "event GameEnded (uint256 indexed gameId, address indexed winner, uint256 reward)"
+  "event GameEnded (uint256 indexed gameId, address indexed winner, uint256 reward)" //정답을 몇 개 맞췄는지 여부
 ];
 
 const RPC = "https://1rpc.io/opbnb";
@@ -87,8 +88,11 @@ function createGameCard(id, solved, winner) {
       <div class="card-body d-flex flex-column">
         <h5 class="card-title">Game #${id} ${solvedBadge}</h5>
         <p class="card-text mb-2"><strong>Winner:</strong> ${
-          winner === ethers.constants.AddressZero ? "—" : winner
-        }</p>
+  winner === ethers.constants.AddressZero
+    ? "—"
+    : `${winner.slice(0, 6)}...${winner.slice(-4)}`
+}</p>
+
         <div id="input-container-${id}" class="mb-3 flex-grow-1">
           ${!solved ? createInputRowHtml() : ""}
         </div>
@@ -96,6 +100,7 @@ function createGameCard(id, solved, winner) {
                 id="attempt-btn-${id}"
                 ${solved ? "disabled" : ""}>Submit</button>
       </div>
+      <p id="result-${id}" class="text-center mt-2 fw-bold text-success"></p>
     </div>`;
   card.querySelector(`#attempt-btn-${id}`)
       .addEventListener("click", () => handleAttemptButtonClick(id));
@@ -119,14 +124,17 @@ async function renderAllAttempts(id, c) {
   if (!box) return;
   box.innerHTML = "";
 
-  for (let n = 1; n <= MAX_TRIES; n++) {
-    try {
-      const at = await c.getAttempt(n, id);
-      const row = createInputRow(at.word.replace(/,$/, "").split(","), false);
-      applyFeedbackToInputs(row, at.feedback);
-      box.appendChild(row);
-    } catch { break; }
+  const addr = await c.signer.getAddress();
+for (let n = 1; n <= MAX_TRIES; n++) {
+  try {
+    const at = await c.getAttempt(addr, id); // 순서 수정
+    const row = createInputRow(at.word.replace(/,$/, "").split(","), false);
+    applyFeedbackToInputs(row, at.feedback);
+    box.appendChild(row);
+  } catch {
+    break;
   }
+}
 
   const g = await c.games(id);
   if (!g.solved) box.appendChild(createInputRow([], true));
@@ -161,21 +169,81 @@ function applyFeedbackToInputs(row, fb) {
  *  시도 제출
  *************************************/
 async function handleAttemptButtonClick(id) {
-  const c   = await getSignerContract();
+  const c = await getSignerContract();
+  const addr = await c.signer.getAddress();
   const box = document.getElementById(`input-container-${id}`);
   const nums = [...box.querySelectorAll("input")]
-                 .map(v => Number(v.value))
-                 .filter(n => !isNaN(n));
+    .map(v => Number(v.value))
+    .filter(n => !isNaN(n));
 
   if (nums.length !== 5 || nums.some(n => n < 1 || n > 45) ||
       new Set(nums).size !== 5) {
-    alert("1–45 사이 중복 없는 숫자 5개 입력"); return;
+    alert("1–45 사이 중복 없는 숫자 5개 입력");
+    return;
   }
 
-  await (await c.guess(id, nums)).wait();   // ↔ ABI 실행
-  await Data();                          // 잭팟 갱신
-  await syncRelayGameData();                // 카드·피드백 갱신
+  try {
+    // 시도 제출
+    await (await c.guess(id, nums)).wait();
+    await Data();
+
+    // 정확한 시도 횟수 조회
+    const tryCount = await c.tries(addr, id);
+    const remaining = 6 - tryCount;
+
+    // 마지막 시도 결과 가져오기
+    const at = await c.getAttempt(tryCount, id);
+    const fb = at.feedback;
+    const green = (fb.match(/G/g) || []).length;
+    const yellow = (fb.match(/Y/g) || []).length;
+    const totalMatch = green + yellow;
+
+    let message = `🧪 <strong>${tryCount}번째 시도</strong> — `;
+
+    if (fb === "GGGGG") {
+      message += `🎉 <span class="text-success">정답! 상금 획득!</span>`;
+    } else if (totalMatch === 0) {
+      message += `❌ <span class="text-muted">하나도 못 맞췄습니다.</span>`;
+    } else {
+      message += `🎯 ${totalMatch}개 맞춤 (정확한 위치 ${green}개, 숫자만 일치 ${yellow}개)`;
+    }
+
+    message += `<br>💡 남은 시도 횟수: <strong>${remaining}회</strong>`;
+
+    document.getElementById(`result-${id}`).innerHTML = message;
+
+    // 새로고침 지연
+    setTimeout(() => {
+      syncRelayGameData();
+    }, 3000);
+ } catch (e) {
+  console.error("guess 실패:", e);
+
+  let msg = "알 수 없는 오류가 발생했습니다.";
+
+  if (e.error?.message) {
+    msg = e.error.message;
+  } else if (e.data?.message) {
+    msg = e.data.message;
+  } else if (e.reason) {
+    msg = e.reason;
+  } else if (e.message) {
+    msg = e.message;
+  }
+
+  // Revert reason 깔끔하게 추출
+  msg = msg.replace("execution reverted: ", "").replace("execution reverted", "실패");
+
+  document.getElementById(`result-${id}`).innerHTML = `
+    <span class="text-danger">🚫 ${msg}</span>
+  `;
 }
+
+}
+
+
+
+
 
 /*************************************
  *  게임 생성 (스태프)
