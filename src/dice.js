@@ -128,12 +128,19 @@ let executePlayFunction = async (argument) => {
 }
 };
 
-// 실사 주사위 애니메이션 (이미지 교체)
 function animateDiceImage(elementId, result) {
     const diceImg = document.getElementById(elementId);
     const src = `/images/dice/dice${result}.png`;
 
-    // 애니메이션 클래스 제거 & 재적용
+    // 🔊 주사위 사운드 재생
+    try {
+        diceSound.currentTime = 0;
+        diceSound.play();
+    } catch (e) {
+        console.warn("🔇 사운드 재생 실패:", e.message);
+    }
+
+    // 애니메이션 클래스 재적용
     diceImg.classList.remove("roll");
     void diceImg.offsetWidth;
     diceImg.classList.add("roll");
@@ -148,3 +155,7 @@ function animateDiceImage(elementId, result) {
 document.getElementById("winButton").addEventListener("click", () => executePlayFunction(1));
 document.getElementById("drawButton").addEventListener("click", () => executePlayFunction(2));
 document.getElementById("loseButton").addEventListener("click", () => executePlayFunction(3));
+
+// 전역 선언
+const diceSound = new Audio('/sounds/dice-roll.mp3');
+diceSound.volume = 0.6; // 볼륨 조절 (0~1)

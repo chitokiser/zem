@@ -113,45 +113,49 @@ const formattedDate = dateObj.toLocaleString("ko-KR", {
 
 
           
-   const infoHtml = ` 
-<div class="card border border-dark rounded mb-3"> 
-  <div class="card-body">
-    <h5 class="card-title border-bottom pb-2 mb-3">🧾 Meta Info ID: ${i}</h5> 
+ const infoHtml = ` 
+<div class="card w-100 border border-dark rounded mb-3" style="margin-left: 0; margin-right: 0;">
+  <div class="card-body text-start px-3">
+
+    <h5 class="card-title border-bottom pb-2 mb-3 text-center">
+      🧾 Meta Info ID: ${i}
+    </h5>
 
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>MT5 Account:</strong> ${metaInfo.info4}
+      <strong>MT5 Account:</strong><br>${metaInfo.info4}
     </div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Viewer Password:</strong> ${metaInfo.info3}
+      <strong>Viewer Password:</strong><br>${metaInfo.info3}
     </div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Registration Date:</strong> ${formattedDate}
+      <strong>Registration Date:</strong><br>${formattedDate}
     </div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Initial Deposit:</strong> ${metaInfo.info5} USD
+      <strong>Initial Deposit:</strong><br>${metaInfo.info5} USD
     </div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Request for Compensation:</strong> ${isPurchasable}
+      <strong>Request for Compensation:</strong><br>${isPurchasable}
     </div>
-      <div class="mb-2 p-2 border rounded bg-light">
-  <strong>Registrant:</strong> ${metaInfo.info6.slice(0, 4)}…${metaInfo.info6.slice(-4)}
-</div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Compensation Amount:</strong> ${(metaInfo.info1 / 1e18).toFixed(2)} ZEM
+      <strong>Registrant:</strong><br>${metaInfo.info6.slice(0, 4)}…${metaInfo.info6.slice(-4)}
+    </div>
+    <div class="mb-2 p-2 border rounded bg-light">
+      <strong>Compensation Amount:</strong><br>${(metaInfo.info1 / 1e18).toFixed(2)} ZEM
     </div>
 
-    <div class="d-flex flex-wrap gap-2 mt-3">
-      <button type="button" class="btn btn-primary btn-sm" onclick="purchase(this)" data-id="${i}">Request for Compensation</button> 
-      <button type="button" class="btn btn-danger btn-sm" onclick="cancelExit(this)" data-id="${i}">Cancel Compensation</button> 
-      <button type="button" class="btn btn-dark btn-sm" onclick="Withdraw(this)" data-id="${i}">Withdraw Compensation</button> 
-      <button type="button" class="btn btn-warning btn-sm" onclick="toggleAuditInput(${i})">Verify</button> 
+    <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">
+      <button type="button" class="btn btn-primary btn-sm w-100" onclick="purchase(this)" data-id="${i}">Request</button>
+      <button type="button" class="btn btn-danger btn-sm w-100" onclick="cancelExit(this)" data-id="${i}">Cancel</button>
+      <button type="button" class="btn btn-dark btn-sm w-100" onclick="Withdraw(this)" data-id="${i}">Withdraw</button>
+      <button type="button" class="btn btn-warning btn-sm w-100" onclick="toggleAuditInput(${i})">Verify</button>
     </div>
 
-    <div id="auditForm-${i}" style="display:none; margin-top: 15px;"> 
-      <input type="number" class="form-control form-control-sm my-2" placeholder="Reward amount (ZEM)" id="rewardInput-${i}"> 
-      <button type="button" class="btn btn-success btn-sm" onclick="auditReward(${i})">Confirm Reward</button> 
-    </div> 
-  </div> 
+    <div id="auditForm-${i}" class="mt-3" style="display:none;">
+      <input type="number" class="form-control form-control-sm mb-2" placeholder="Reward amount (ZEM)" id="rewardInput-${i}"> 
+      <button type="button" class="btn btn-success btn-sm w-100" onclick="auditReward(${i})">Confirm Reward</button> 
+    </div>
+
+  </div>
 </div>`;
 
               infoContainer.innerHTML += infoHtml;

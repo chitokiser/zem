@@ -68,50 +68,55 @@ Toggle
 </div> 
 </div>
 
-        <!-- Blockchain Football Betting -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5>DiceSoccer</h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label for="bettingAmount" class="form-label">Select Betting Amount:</label>
-                    <select id="bettingAmount" class="form-select">
-                        <option value="1">1 GP</option>
-                        <option value="5">5 GP</option>
-                        <option value="10">10 GP</option>
-                        <option value="50">50 GP</option>
-                        <option value="100">100 GP</option>
-                    </select>
-                </div>
-                <ul class="list-group mb-3">
-<div id="diceContainer" class="dice-area">
-  <div class="dice-wrapper">
-    <div class="dice-label">HOME</div>
-    <img id="homeDice" class="dice-img" src="/images/dice/dice1.png" alt="Home Dice">
+     <!-- DiceSoccer Section -->
+<div class="card mb-4">
+  <div class="card-header text-center">
+    <h5>DiceSoccer</h5>
   </div>
-  <div class="dice-wrapper">
-    <div class="dice-label">AWAY</div>
-    <img id="awayDice" class="dice-img" src="/images/dice/dice6.png" alt="Away Dice">
+  <div class="card-body text-center">
+
+    <!-- 베팅 금액 선택 -->
+    <div class="mb-3">
+      <label for="bettingAmount" class="form-label">Select Betting Amount:</label>
+      <select id="bettingAmount" class="form-select">
+        <option value="1">1 GP</option>
+        <option value="5">5 GP</option>
+        <option value="10">10 GP</option>
+        <option value="50">50 GP</option>
+        <option value="100">100 GP</option>
+      </select>
+    </div>
+
+    <!-- 주사위 표시 -->
+    <div id="diceContainer" class="d-flex justify-content-around align-items-center my-3">
+      <div>
+        <div class="fw-bold mb-1">HOME</div>
+        <img id="homeDice" class="img-fluid" src="/images/dice/dice1.png" alt="Home Dice" style="width:60px;">
+      </div>
+      <div>
+        <div class="fw-bold mb-1">AWAY</div>
+        <img id="awayDice" class="img-fluid" src="/images/dice/dice6.png" alt="Away Dice" style="width:60px;">
+      </div>
+    </div>
+
+    <!-- 상태 표시 -->
+    <div class="mb-2">
+      <strong>Event Status:</strong>
+      <div id="userState" class="text-muted small">-</div>
+    </div>
+    <div class="mb-3">
+      <span id="eventS2" class="text-info fw-bold">-</span>
+    </div>
+
+    <!-- 선택 버튼 -->
+    <div class="d-grid gap-2">
+      <button id="winButton" class="btn btn-success">🏆 Win <span id="Winre"></span></button>
+      <button id="drawButton" class="btn btn-secondary">⚖️ Draw <span id="Drawre"></span></button>
+      <button id="loseButton" class="btn btn-danger">💥 Lose <span id="Losere"></span></button>
+    </div>
+
   </div>
 </div>
-                    <li class="list-group-item text-center">
-                        <strong>Event Status:</strong>
-                        <div id="userState"></div>
-                    </li>
-                    <li class="list-group-item text-center">
-                        <span id="eventS2" class="text-info">-</span>
-                    </li>
-                </ul>
-                <div class="text-center">
-                    <button id="winButton" class="btn btn-success m-2">Win <span id="Winre"></span></button>
-                    <button id="drawButton" class="btn btn-secondary m-2">Draw <span id="Drawre"></span></button>
-                    <button id="loseButton" class="btn btn-danger m-2">Lose <span id="Losere"></span></button>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
     <!-- Footer -->
     <div id="footer"></div>
