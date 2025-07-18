@@ -41,145 +41,127 @@
           .catch(error => console.error('Error loading the dashboard content:', error));
   </script>
     
-
-
-    
-             <!-- Welcome  Section -->
-          <div class="container my-4">
-
-<div class="card-body text-center">
-<p><strong>ZEM DAO (ZenEcomomyMoney)</strong></p>
-<p>Decentralized P2E DAO service</p>
-<p>To use the site, you must install a wallet (Rabby Wallet recommended) and select the opBNB network</p>
-<p><strong>1ZEM token = 1 USD</strong></p>
-<p>The value of ZEM is guaranteed by <strong>opBNB coins</strong>.</p>
-<p>Anyone who holds ZUM tokens can participate in DAO management.</p>
-<p><strong>The platform profits are distributed to all participants in proportion to their ZUM tokens.</p>
-<p>Transparent and fair distribution is made according to platform contribution.</p>
-<img src="/images/poster.png" class="card-img-top img-fluid w-100 rounded" alt="MetaTrader5"> 
-
-</div> 
+<!-- Welcome Section -->
+<div class="container my-4">
+  <div class="card-body text-center">
+    <p><strong>ZEM DAO (ZenEconomyMoney)</strong></p>
+    <p>Decentralized P2E DAO service</p>
+    <p>To use the site, install a wallet (Rabby Wallet recommended) and select the opBNB network</p>
+    <p><strong>1ZEM token = 1 USD</strong></p>
+    <p>ZEM value is guaranteed by <strong>opBNB coins</strong>.</p>
+    <p>Holders of ZUM tokens can participate in DAO management.</p>
+    <p><strong>Profits are distributed in proportion to ZUM tokens.</strong></p>
+    <p>Transparent and fair based on platform contribution</p>
+    <img src="/images/poster.png" class="img-fluid w-100 rounded" alt="MetaTrader5">
+  </div>
 </div>
 
+<!-- Services Section -->
+<div class="container my-4">
+  <div class="card">
+    <div class="card-header text-center bg-secondary text-white">
+      <h4>ZEM Services</h4>
+    </div>
+    <div class="card-body text-center">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
 
+        <!-- MetaTrader5 -->
+        <div class="col">
+          <div class="card h-100">
+            <img src="/images/MT5.png" class="card-img-top img-fluid" alt="MetaTrader5">
+            <div class="card-body text-center">
+              <h5 class="card-title">MetaTrader5 Simulated Trading</h5>
+              <p class="card-text">Register an MT5 demo account ($5000) and earn token rewards upon profit realization.</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Opening account: $10,000</li>
+                <li class="list-group-item">Leverage: Free choice</li>
+              </ul>
+              <a href="../p2e/mt5_10.html" class="btn btn-primary w-100 mt-2">GO</a>
+            </div>
+          </div>
+        </div>
 
-            
-              <!-- Services Section -->
-              <div class="card mb-4">
-                <div class="card-header text-center bg-secondary text-white">
-                  <h4>ZEM Services</h4>
-                </div>
-                <div class="card-body">
-                  <div class="row g-4">
+        <!-- opBNB Exchange -->
+        <div class="col">
+          <div class="card h-100">
+            <img src="/images/bnb.png" class="card-img-top img-fluid" alt="BNB Exchange">
+            <div class="card-body text-center">
+              <h5 class="card-title">opBNB:ZEM Exchange</h5>
+              <p>Exchange ZEM based on opBNB price.</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">1 ZEM = $1 (Stable)</li>
+                <li class="list-group-item">Linked to opBNB</li>
+                <li class="list-group-item">Payment token for Cheongchodam</li>
+              </ul>
+              <a href="../zemex.html" class="btn btn-primary w-100 mt-2">GO</a>
+            </div>
+          </div>
+        </div>
 
-              <!-- Service Card: MetaTrader5 -->
-<div class="col-md-6 col-lg-4">
-<div class="card h-100">
-<img src="/images/MT5.png" class="card-img-top" alt="MetaTrader5">
-<div class="card-body">
-<h5 class="card-title">MetaTrader5 Simulated Trading</h5>
-<p class="card-text">Open and register an MT5 demo account ($5000) Earn token rewards when you realize your profits.</p>
-</div>
-<ul class="list-group list-group-flush">
-<li class="list-group-item">Opening account: $10,000</li>
-<li class="list-group-item">Leverage: Free choice</li>
-</ul>
-<div class="card-body text-center">
-<a href="../p2e/mt5_10.html" class="btn btn-primary w-100">GO</a>
-</div>
-</div>
-</div>
-      
-                
-                           
+        <!-- ZUM Exchange -->
+        <div class="col">
+          <div class="card h-100">
+            <img src="/images/zum.png" class="card-img-top img-fluid" alt="ZUM Exchange">
+            <div class="card-body text-center">
+              <h5 class="card-title">ZEM:ZUM Exchange</h5>
+              <p>Buy ZUM with ZEM at market price</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Weekly dividends</li>
+                <li class="list-group-item">Required for DAO governance</li>
+                <li class="list-group-item">Price depends on DAO performance</li>
+              </ul>
+              <a href="../zumex.html" class="btn btn-primary w-100 mt-2">GO</a>
+            </div>
+          </div>
+        </div>
 
-             <!-- Service Card: BnB Exchange-->
-<div class="col-md-6 col-lg-4">
-<div class="card h-100">
-<img src="..\images\bnb.png" class="card-img-top" alt="Blockchain Interest Farm">
-<div class="card-body">
-<h5 class="card-title">opBNB:ZEM Exchange</h5>
-<p class="card-text">Exchange ZEM based on the opBNB price</p>
-</div>
-<ul class="list-group list-group-flush">
-<li class="list-group-item">Regardless of the opBNB price, 1ZEM converges to $1</li>
-<li class="list-group-item">ZEM is a stable token linked to opBNB</li>
-<li class="list-group-item">ZEM is This is a payment method token exclusively for Cheongchodam members.</li>
-</ul>
-<div class="card-body text-center">
-<a href="../zemex.html" class="btn btn-primary w-100">GO</a>
-</div>
-</div>
-</div>
-                   
-                       <!-- Service Card: ZUM Exchange-->
-<div class="col-md-6 col-lg-4">
-<div class="card h-100">
-<img src="..\images\zum.png" class="card-img-top" alt="ZUMex">
-<div class="card-body">
-<h5 class="card-title">ZEM:ZUM Exchange</h5>
-<p class="card-text">You can buy ZUM with ZEM at the market price</p>
-</div>
-<ul class="list-group list-group-flush">
-<li class="list-group-item">You receive weekly dividends</li>
-<li class="list-group-item">It is necessary for union activities such as voting, running for office, attending, proposing agenda items, and using facilities</li>
-<li class="list-group-item">Based on DAO performance Price change</li> 
-</ul> 
-<div class="card-body text-center"> 
-<a href="../zumex.html" class="btn btn-primary w-100">GO</a> 
-</div> 
-</div> 
-</div>
-           
+        <!-- Relay Lotto -->
+        <div class="col">
+          <div class="card h-100">
+            <img src="/images/RelayLotto.png" class="card-img-top img-fluid" alt="Relay Lotto">
+            <div class="card-body text-center">
+              <h5 class="card-title">Relay Lotto</h5>
+              <p>Pick 5 numbers from 1 to 45. Match in order to win!</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Reward for perfect match</li>
+                <li class="list-group-item">Shared prize pool</li>
+                <li class="list-group-item">Two-way participation game</li>
+              </ul>
+              <a href="../p2e/RelayLotto.html" class="btn btn-primary w-100 mt-2">GO</a>
+            </div>
+          </div>
+        </div>
 
-                       
-                            
-                            
-                  <!-- Service Card: RelayLotto-->
-<div class="col-md-6 col-lg-4">
-<div class="card h-100">
-<img src="..\images\RelayLotto.png" class="card-img-top" alt="Blockchain Interest Farm">
-<div class="card-body">
-<h5 class="card-title">Relay Lotto</h5>
-<p class="card-text">You can enter 5 numbers from 1 to 45 until you match them</p>
+      </div>
+    </div>
+  </div>
 </div>
-<ul class="list-group list-group-flush">
-<li class="list-group-item">Get rewards when 5 numbers match in order</li>
-<li class="list-group-item">Get rewards proportional to the accumulated amount</li>
-<li class="list-group-item">Two-way where participants register and participants participate It's a game.</li> 
-</ul> 
-<div class="card-body text-center"> 
-<a href="../p2e/RelayLotto.html" class="btn btn-primary w-100">Go</a> 
-</div> 
-</div> 
-</div> 
-</div> 
-</div> 
-</div>
-          
 
 <!-- Notice Section -->
 <div class="container my-5">
-<div class="card">
-<div class="card-header text-center">
-<h4>ZEM DAO agenda proposal</h4>
-</div>
-<P>Contract balance:<span id="Ntvl"></span>points</P>
-<P>Proposal qualification: Owners of 50,000 BUT or more</P>
-<P>Commenter qualification: Owners of 5,000 BUT or more</P>
-<P>When 100 or more comments are received, the commenter and proposer will receive a reward in proportion to the contract balance.</P>
-<button class="btn btn-secondary mt-2" onclick="togglePostForm()">Create a new proposal (10 points consumed)</button>
-</div>
-<div class="card-body">
-<div id="post-notice-form" style="display: none;">
-<textarea class="form-control mb-2" id="post-content" rows="3" placeholder="Enter your content here and click [Submit Proposal] ..."></textarea>
-<button class="btn btn-success" onclick="postNotice()">Submit Proposal</button>
-</div>
-<div id="notices-container" class="accordion accordion-flush"></div>
-</div>
-</div>
+  <div class="card">
+    <div class="card-header text-center">
+      <h4>ZEM DAO Agenda Proposal</h4>
+    </div>
+    <div class="card-body text-center">
+      <p>Contract balance: <span id="Ntvl"></span> points</p>
+      <p>Proposal: 50,000+ BUT holders</p>
+      <p>Comment: 5,000+ BUT holders</p>
+      <p>100+ comments: Reward based on balance</p>
+      <button class="btn btn-secondary mt-2" onclick="togglePostForm()">Create a new proposal (10 pts)</button>
+
+      <div id="post-notice-form" class="mt-3" style="display: none;">
+        <textarea class="form-control mb-2" id="post-content" rows="3" placeholder="Enter your proposal..."></textarea>
+        <button class="btn btn-success w-100" onclick="postNotice()">Submit Proposal</button>
+      </div>
+
+      <div id="notices-container" class="accordion accordion-flush mt-3"></div>
+    </div>
+  </div>
 </div>
 
+
+    
   <!--Start footer -->
   
      <div id="footer"></div>

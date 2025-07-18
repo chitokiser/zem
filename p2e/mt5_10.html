@@ -35,73 +35,68 @@
           .catch(error => console.error('Error loading the dashboard content:', error));
   </script>
   
-  
- 
+<div class="container my-4">
 
+  <!-- 보상 설명 -->
+  <div class="card mb-4">
+    <div class="card-header text-center">
+      <h5>MT5 $10,000 Demo Account 1/10 Reward</h5>
+    </div>
+    <div class="card-body text-center">
+      <h6 class="card-title">Trade manually or automatically to achieve $12,000+</h6>
+      <p>Reward: Exchange 1/10 ZEM per USD</p>
+      <p>Ongoing until 20% profit is realized</p>
+      <p>Register your account below <strong>before</strong> trading</p>
+      <p><strong>Late registration = No reward</strong></p>
+      <p>Contact your mentor for more details</p>
+      <p class="fw-bold">Contract Balance: <span id="Ibal">-</span> ZEM</p>
+    </div>
+  </div>
 
-   <div class="container-box">
-<div class="card">
-<div class="card-header">
-<h5>MT5 $10,000 Demo Account 1/10 Reward</h5>
-</div>
-<div class="card-body">
-<h5 class="card-title">MT5 $10,000 Demo Account, Trade Automatically or Manually to Achieve $12,000 or More Profit</h5>
-<p>Reward Criteria: Exchange 1/10 ZEM per USD</p>
-<p>The period is not fixed, and it continues until you realize a profit of more than 20%</p>
-<p>After opening a $10000 Demo Account, register a Demo Account Account below and start trading</p>
-<p>If you trade first and then register an account, you will not receive a reward</p>
-<p>For more information, please contact your mentor</p>
-<li class="list-group-item"> Contract Balance: <span id="Ibal">-</span>ZEM</li>
-</div>
-</div>
+  <!-- 계정 등록 -->
+  <div class="card mb-4">
+    <div class="card-header text-center">
+      <h5>Register MT5 $10,000 Demo Account</h5>
+    </div>
+    <div class="card-body text-center">
+      <p>Open on MetaQuotes server and register before trading</p>
+      <p>Late registration is considered fraudulent</p>
+      <p>Enter your demo account number and viewer password</p>
+      <p class="text-danger">Do not change your viewer password</p>
+      <p><i class="fas fa-users"></i> Registration Fee: <span id="Fee" class="stat-value">-</span> ZEM</p>
+      <p>You may claim reward after reaching $12,000</p>
+      <p><strong>Only Level 1 or higher members can register</strong></p>
 
-<div class="container-box">
-<div class="card">
-<div class="card-header">
-Register MT5 $10,000 Demo Account
-</div>
-<p>Open a $10,000 demo account on MetaQuotes server and register.</p>
-<p>You must register an account before you can start trading. Registering after a transaction is considered fraudulent.</p>
-<p>Enter your account number and viewer password and click Register Account.</p>
-<p>Do not change your viewer password.</p>
-<p><i class="fas fa-users"></i> Registration fee: <span id="Fee" class="stat-value">-</span>ZEM</p>
-<p>You can apply for compensation from $12,000 or more.</p>
-<p>Only members of Level 1 or higher can register.</p>
-<div class="input-group mb-3"></div>
-<!-- 반응형 입력 영역 -->
-      <form onsubmit="Registration(); return false;">
+      <!-- Form 입력 -->
+      <form onsubmit="Registration(); return false;" class="mt-3 text-start">
         <div class="mb-3">
           <label for="Account" class="form-label">Demo Account Number</label>
-          <input type="text" class="form-control" id="Account" placeholder="Please enter your demo account number.">
+          <input type="text" class="form-control" id="Account" placeholder="Enter your demo account number">
         </div>
         <div class="mb-3">
           <label for="Invest" class="form-label">Viewer Password</label>
-          <input type="text" class="form-control" id="Invest" placeholder="Please enter your viewer password correctly.">
+          <input type="text" class="form-control" id="Invest" placeholder="Enter your viewer password">
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary">✅ Register an Account</button>
         </div>
       </form>
-      <!-- 반응형 입력 영역 끝-->
-</div> 
-</div> 
-</div> 
+    </div>
+  </div>
 
-
-<div class="container-box">
+  <!-- 메타 정보 출력 -->
   <div class="card">
-    <div class="card-body">
-      <div id="metaInfoContainer" class="mx-auto text-center" style="max-width: 500px; width: 100%;">
-        <!-- 여기에 메타 정보가 동적으로 삽입됩니다 -->
+    <div class="card-body text-center">
+      <div id="metaInfoContainer" style="max-width: 500px; margin: auto;">
+        <!-- 메타 정보 동적 출력 영역 -->
       </div>
     </div>
   </div>
+
 </div>
-
-
-              
+  
+ 
         
-                    
   
 
   

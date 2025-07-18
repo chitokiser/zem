@@ -40,86 +40,66 @@
           .catch(error => console.error('Error loading the dashboard content:', error));
   </script>
     
-  
-  
- <!-- My Page Section -->
+  <!-- My Page Section -->
 <div class="container mt-4">
+  <div class="card">
+    <div class="card-header text-center">
+      <h5>My Page</h5>
+    </div>
+    <div class="card-body text-center">
 
-<div class="card">
-<div class="card-header">
-<h5>My Page</h5>
+      <ul class="list-group mb-3">
+        <li class="list-group-item">
+          Click <strong>[Connection Wallet > sign up]</strong> in the upper right menu,<br>
+          enter the referrer's address, and sign up to become level 1.
+        </li>
+      </ul>
+
+      <div class="mb-3">
+        <button class="btn btn-outline-success w-100" onclick="MemberLogin()">Wallet Connection</button>
+      </div>
+
+      <ul class="list-group mb-3 text-start">
+        <li class="list-group-item">Level: <span id="Mylev">-</span></li>
+        <li class="list-group-item">Experience: <span id="Exp">-</span> exp</li>
+        <li class="list-group-item">Experience needed to level up: <span id="Expneeded">-</span> exp</li>
+        <li class="list-group-item">Points: <span id="Mypoint">-</span> p</li>
+        <li class="list-group-item">Mentor: <span id="Mymento">-</span></li>
+
+        <li class="list-group-item">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <button class="btn btn-outline-dark position-relative mb-2 mb-md-0" onclick="Levelup()">
+              Level Up
+              <span class="badge bg-dark position-absolute top-0 start-100 translate-middle" id="Mylev2">-</span>
+            </button>
+            <div class="progress w-100 ms-md-3">
+              <div class="progress-bar progress-bar-striped bg-success" id="LevelBar" role="progressbar"
+                aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <p class="text-danger fw-bold mb-3">1 Point = 1 ZEM</p>
+
+      <div class="d-flex flex-column flex-md-row justify-content-between">
+        <button class="btn btn-outline-success w-100 mb-2 me-md-2" onclick="Bonuswithdraw()">Withdraw points (ZEM deposited)</button>
+        <button class="btn btn-outline-primary w-100 ms-md-2" id="fetchAddresses" onclick="fetchMentees()">The member who recommended me</button>
+      </div>
+
+      <ul id="addressList" class="list-group mt-3 text-start"></ul>
+
+      <div class="mt-4">
+        <button class="btn btn-outline-warning w-100" onclick="Buff()">Become Level 2 (Holder of 500 ZUM or more)</button>
+      </div>
+
+    </div>
+  </div>
 </div>
-<div class="card-body">
-<ul class="list-group mb-3">
-<li class="list-group-item">
-Click <strong>[Connection Wallet > sign up]</strong> in the upper right menu, enter the referrer's address, and sign up to become level 1. </li>
-</ul>
 
-<div class="mb-3">
-<button class="btn btn-outline-success w-100" onclick="MemberLogin()">
-Wallet Connection
-</button>
-</div>
+  
 
-<ul class="list-group mb-3">
-<li class="list-group-item">
-Level: <span id="Mylev">-</span>
-</li>
-<li class="list-group-item">
-Experience: <span id="Exp">-</span> exp
-</li>
-<li class="list-group-item">
-Experience needed to level up: <span id="Expneeded">-</span> exp
-</li>
-<li class="list-group-item">
-Points: <span id="Mypoint">-</span> p
-</li>
-<li class="list-group-item"> 
-Mentor: <span id="Mymento">-</span> 
-</li> 
-<li class="list-group-item"> 
-<div class="d-flex justify-content-between align-items-center"> 
-<button class="btn btn-outline-dark position-relative" onclick="Levelup()"> 
-Level Up 
-<span class="badge bg-dark position-absolute top-0 start-100 translate-middle" id="Mylev2">-</span> 
-</button> 
-<div class="progress w-75 ms-3"> 
-<div 
-class="progress-bar progress-bar-striped bg-success" 
-id="LevelBar" 
-role="progressbar" 
-aria-valuemin="0" 
-aria-valuemax="100" 
-style="width: 0%;"> 
-</div> 
-</div> 
-</div> 
-</li> 
-</ul> 
-
-<p class="text-danger text-center mb-3"><strong>1 Point = 1 ZEM </strong></p> 
-
-<div class="d-flex justify-content-between"> 
-<button class="btn btn-outline-success w-50 me-2" onclick="Bonuswithdraw()"> 
-Withdraw points (ZEM deposited) 
-</button> 
-<button class="btn btn-outline-primary w-50 ms-2" id="fetchAddresses" onclick="fetchMentees()"> 
-The member who recommended me 
-</button> 
-</div> 
-
-<div class="mt-3"> 
-<ul id="addressList" class="list-group"></ul> 
-</div> 
-
-<div class="mt-4">
-<button class="btn btn-outline-warning w-100" onclick="Buff()">
-Become Level 2 (Holder of 500 ZUM or more)
-</button>
-</div>
-</div>
-</div>
-</div>
          
 
  <!--Start footer -->
