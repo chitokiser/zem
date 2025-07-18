@@ -84,6 +84,7 @@ function registration(uint256 _metanum,string memory  _invest)public {   //참�
     zem.transferFrom(msg.sender, address(this), fee);  
     address _mento =  zumbank.getmento(msg.sender);
     zumbank.depoup(_mento,fee*10/100);  //멘토 수당
+    zumbank.expup(msg.sender,fee*1/1E16);  //경험치
     tax += fee*1/100;
     metainfo[mid].time = block.timestamp;
     metainfo[mid].mid = mid;
