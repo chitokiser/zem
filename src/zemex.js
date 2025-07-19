@@ -13,7 +13,7 @@
           "function zembalances() public view returns(uint256)",
           "function zembuy() external payable",
           "function bnbsell(uint256 num) external",
-          "function priceup(uint256 num)public"
+          "function priceup(uint256 newPrice) external",
         ],
         cyamem: [
           "function sum() public view returns(uint256)",
@@ -36,18 +36,18 @@
       };
       const topDataSync = async () => {
     
-        // BNB Price
-const responseBinanceTicker = await axios.get('https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT');
-const bnbPrice = parseFloat(responseBinanceTicker.data.price);
-
+      
 
        // ethers setup
        let provider = new ethers.providers.JsonRpcProvider('https://opbnb-mainnet-rpc.bnbchain.org');
        let cyadexContract = new ethers.Contract(contractAddress.cyadexAddr, contractAbi.cyadex, provider);
        let price = await cyadexContract.getprice();  //bnb설정가격
-       document.getElementById("BNBset").innerHTML= (price);
+        let zembal = await cyadexContract.zembalances();  //zem잔고
+       document.getElementById("currentPrice").innerHTML= (price/1e18);
+       document.getElementById("Zembalan").innerHTML = (zembal / 1e18).toFixed(2);
         };
      
+        
      
      
 
@@ -107,9 +107,52 @@ const bnbPrice = parseFloat(responseBinanceTicker.data.price);
   
 
 
- 
+const Priceup = async () => {
+  const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  await window.ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [{
+      chainId: "0xCC",
+      rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
+      chainName: "opBNB",
+      nativeCurrency: {
+        name: "BNB",
+        symbol: "BNB",
+        decimals: 18
+      },
+      blockExplorerUrls: ["https://opbnbscan.com"]
+    }]
+  });
 
-        (async () => {
+  await userProvider.send("eth_requestAccounts", []);
+  const signer = userProvider.getSigner();
+  const cyadexContract = new ethers.Contract(contractAddress.cyadexAddr, contractAbi.cyadex, signer);
+
+  const newPriceInput = document.getElementById("newPriceInput").value;
+
+  if (!newPriceInput || isNaN(newPriceInput)) {
+    alert("정확한 가격(예: 0.001)을 입력하세요.");
+    return;
+  }
+
+  const newPrice = ethers.utils.parseUnits(newPriceInput, 18);  // 여기 다시 필요함
+
+  try {
+    const tx = await cyadexContract.priceup(newPrice);
+    console.log("트랜잭션 전송됨:", tx.hash);
+    await tx.wait();
+    alert("가격이 성공적으로 업데이트되었습니다.");
+  } catch (err) {
+    console.error("priceup 실패:", err);
+    alert("트랜잭션 실패: " + err.message);
+  }
+};
+
+
+
+
+
+     (async () => {
           topDataSync();
           let userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
           await window.ethereum.request({
@@ -136,38 +179,12 @@ const bnbPrice = parseFloat(responseBinanceTicker.data.price);
             if (event.target.value < 0.001) {
               alert("now enough value");
             } else {
-              document.getElementById('bnbOutput').value=event.target.value*parseFloat(await cyadexContract.getprice())
+             const price = await cyadexContract.getprice(); // 예: 750000000000000000000
+      const priceFloat = parseFloat(ethers.utils.formatUnits(price, 18)); // 750.0
+      document.getElementById('bnbOutput').value = priceFloat;
             }
           });
           selectElement2.addEventListener('change', async (event) => {
-            document.getElementById('cyaOutput').value=event.target.value/parseFloat(await cyadexContract.getprice())*990/1000
+            document.getElementById('cyaOutput').value=event.target.value/parseFloat(await cyadexContract.getprice())*1e18*990/1000
           })
           })();
-
-        const Priceup = async () => {
-          const userProvider = new ethers.providers.Web3Provider(window.ethereum, "any");
-          await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [{
-                  chainId: "0xCC",
-                  rpcUrls: ["https://opbnb-mainnet-rpc.bnbchain.org"],
-                  chainName: "opBNB",
-                  nativeCurrency: {
-                      name: "BNB",
-                      symbol: "BNB",
-                      decimals: 18
-                  },
-                  blockExplorerUrls: ["https://opbnbscan.com"]
-              }]
-          });
-          await userProvider.send("eth_requestAccounts", []);
-          const signer = userProvider.getSigner();
-  
-          const cyadexContract = new ethers.Contract(contractAddress.cyadexAddr, contractAbi.cyadex, signer);
-          try {
-            await cyadexContract.priceup(document.getElementById('BNBprice').value);
-          } catch(e) {
-            alert(e.data.message.replace('execution reverted: ',''))
-          }
-        };
-

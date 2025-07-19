@@ -83,7 +83,22 @@ ZEM Token Exchange
 </div>
 </div>
       
-        
+ <!-- 가격 보기 및 설정 UI -->
+
+  <div class="card-header text-center">
+    <strong>BNB Price 관리(staff only)<p>계약잔고: <span id="Zembalan">Loading...</span>zem</p></strong>
+  </div>
+  <div class="card-body text-center">
+    <p>📊 현재 설정된 가격: <span id="currentPrice">Loading...</span></p>
+
+   <div class="input-group mb-3 w-100">
+  <input type="text" class="form-control" id="newPriceInput" placeholder="새 가격 입력 (only staff)">
+  <button class="btn btn-primary" onclick="Priceup()">✅ 가격 설정</button>
+</div>
+
+  </div>
+
+       
 
  
  <!--Start footer -->
