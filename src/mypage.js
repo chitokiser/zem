@@ -2,10 +2,13 @@ const { ethers } = window;
 
 const contractAddress = {
   cutbank: "0x8EBAA1f6fBb4197e83f88238e7386cB3A37bE355", // ZUMBank
+  erc20: "0xB4C12Bf7491D70c91A2c272D191B7a3D4ED27bE5"   // ZEM
 };
 
+// 👉 ABI는 객체가 아닌, 따로 두 배열로 정의
 const cutbankAbi = [
   "function g1() view returns(uint256)",
+  "function g3() public view returns(uint)",
   "function g6() view returns(uint256)",
   "function g8(address) view returns(uint)",
   "function g9(address) view returns(uint)",
@@ -30,13 +33,16 @@ const cutbankAbi = [
   "function getmymenty(address) view returns(address[])"
 ];
 
+const erc20Abi = [
+  "function myZEMbalances() public view returns(uint256)"
+];
+
 let provider;
 let signer;
 let contract;
-let initialized = false;
 
 const initialize = async () => {
-  if (initialized) return;
+  if (signer) return;
 
   if (!window.ethereum) {
     alert("지갑이 설치되어 있지 않습니다.");
@@ -63,17 +69,23 @@ const initialize = async () => {
   await provider.send("eth_requestAccounts", []);
   signer = provider.getSigner();
   contract = new ethers.Contract(contractAddress.cutbank, cutbankAbi, signer);
-  initialized = true;
-
-  console.log("✅ Contract connected:", contractAddress.cutbank);
 };
 
 const MemberLogin = async () => {
   await initialize();
   const userAddress = await signer.getAddress();
+
   const [totaldepo, mybonus, mylev, mymento, myexp] = await contract.myinfo(userAddress);
   const levelexp = (2 ** mylev) * 10000;
+  const g8Value = await contract.g8(userAddress);
 
+  // erc20 ZEM 계약 연결 및 잔액 조회
+  const erc20Contract = new ethers.Contract(contractAddress.erc20, erc20Abi, signer);
+  const zemBalance = await erc20Contract.myZEMbalances();
+
+  // DOM 업데이트
+  document.getElementById("MyZem").innerText = (zemBalance / 1e18).toFixed(4);
+  document.getElementById("MyZum").innerText = g8Value.toString();
   document.getElementById("Mymento").innerText = mymento;
   document.getElementById("Mylev").innerText = mylev;
   document.getElementById("Mylev2").innerText = mylev;
@@ -91,32 +103,9 @@ const Levelup = async () => {
     alert("레벨업 성공!");
     location.reload();
   } catch (e) {
-    // 스마트컨트랙트의 revert 메시지를 추출
-    const message = extractRevertReason(e);
-    alert("레벨업 실패: " + message);
-    console.error("레벨업 실패 상세:", e);
+    alert("레벨업 실패: " + extractRevertReason(e));
   }
 };
-
-function extractRevertReason(error) {  //스마트 컨트렉트 에러 메세지 
-  // ethers.js v5 기준
-  if (error?.error?.data?.message) {
-    return error.error.data.message.replace("execution reverted: ", "");
-  }
-
-  if (error?.data?.message) {
-    return error.data.message.replace("execution reverted: ", "");
-  }
-
-  if (error?.message?.includes("execution reverted:")) {
-    return error.message.split("execution reverted:")[1].trim();
-  }
-
-  return "알 수 없는 오류가 발생했습니다.";
-}
-
-
-
 
 const Bonuswithdraw = async () => {
   try {
@@ -147,13 +136,13 @@ const fetchAddresses = async () => {
     const addressList = document.getElementById("addressList");
     addressList.innerHTML = "";
 
-    if (addresses.length > 0) {
-      addresses.forEach(addr => {
-        const li = document.createElement("li");
-        li.textContent = addr;
-        addressList.appendChild(li);
-      });
-    } else {
+    addresses.forEach(addr => {
+      const li = document.createElement("li");
+      li.textContent = addr;
+      addressList.appendChild(li);
+    });
+
+    if (addresses.length === 0) {
       const li = document.createElement("li");
       li.textContent = "추천인이 없습니다.";
       addressList.appendChild(li);
@@ -187,6 +176,20 @@ const SellCut = async () => {
   }
 };
 
+function extractRevertReason(error) {
+  if (error?.error?.data?.message) {
+    return error.error.data.message.replace("execution reverted: ", "");
+  }
+  if (error?.data?.message) {
+    return error.data.message.replace("execution reverted: ", "");
+  }
+  if (error?.message?.includes("execution reverted:")) {
+    return error.message.split("execution reverted:")[1].trim();
+  }
+  return "알 수 없는 오류가 발생했습니다.";
+}
+
+// 초기 실행
 window.addEventListener("load", async () => {
   await initialize();
   await MemberLogin();

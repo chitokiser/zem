@@ -35,65 +35,98 @@
           .catch(error => console.error('Error loading the dashboard content:', error));
   </script>
 
-            
-         <div class="container-box">
-<div class="card">
-<div class="card-header">
-ZEM Token Exchange
-</div>
-<div class="card-body">
+       
 
-<p>ZEM is issued based on opBNB (Network ID: 204).</p>
-<p>ZEM can be exchanged for opBNB.</p>
-<p>BNB:opBNB Official Bridge => <a class="navbar-brand" href="https://opbnb-bridge.bnbchain.org/withdraw">
-<img src="\images\opBNB.png" alt="" class="img-fluid" style="max-width: 100%; height: auto;">
-</a> </p>
-
-
-</div>
-</div>
-</div>
-
-<div class="alert alert-info" role="alert"> 
-<P>Enter opBNB and it will be exchanged for ZEM.</P>
-
-
-<div class="input-group mb-3"> 
-<span class="input-group-text" id="basic-addon1">BNB input</span> 
-<input id="bnbInput" type="text" class="form-control" placeholder="Enter opBNB here (decimal points allowed)...." aria-label="Username" aria-describedby="basic -addon1">
+<div class="card mb-4 shadow-sm">
+  <div class="card-header text-center fw-bold">
+    ZEM Token Exchange
+  </div>
+  <div class="card-body text-center">
+    <p>ZEM is issued based on <strong>opBNB</strong> (Network ID: <code>204</code>).</p>
+    <p>You can exchange ZEM for opBNB anytime.</p>
+    
+    <div class="mt-3">
+      <p class="mb-2">👉 Official BNB ↔ opBNB Bridge</p>
+      <a href="https://opbnb-bridge.bnbchain.org/withdraw" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary d-inline-flex align-items-center px-3 py-2">
+        <img src="/images/opBNB.png" alt="opBNB" style="width:34px; height: 34px;" class="me-2">
+        <span>Go to Bridge</span>
+      </a>
+    </div>
+  </div>
 </div>
 
-<div class="input-group mb-3"> 
-<input id="bnbOutput" type="text" class="form-control" placeholder="Number of BETs exchanged...." aria-label="Recipient's username" aria-describedby="basic-addon2"> 
-<span onclick="buyCya()" style="cursor: pointer;" class="input-group-text" id="basic-addon2">Exchange</span>
-</div>
+
+
+<div class="card mb-4 shadow-sm">
+  <div class="card-body text-center">
+
+    <h5 class="mb-3"><strong>Swap Tokens</strong></h5>
+    <p class="text-muted">Exchange between opBNB and ZEM (1 ZEM = $1)</p>
+
+    <!-- Input: From -->
+    <div class="input-group mb-3">
+      <span class="input-group-text">
+        <img src="../images/op_bnb.png" alt="BNB" style="width: 40px; height: 40px; object-fit: contain;" class="me-2">
+      </span>
+      <input id="bnbInput" type="number" class="form-control" placeholder="Enter BNB amount" />
+    </div>
+
+    <!-- Output: To -->
+    <div class="input-group mb-3">
+      <input id="bnbOutput" type="text" class="form-control" placeholder="Estimated ZEM amount" readonly />
+      <button class="btn btn-success" onclick="buyCya()">Swap to ZEM</button>
+    </div>
+
+   
+
+    <!-- Input: ZEM -->
+    <div class="input-group mb-3">
+      <span class="input-group-text">
+         <img src="../images/logo.png" alt="BNB" style="width: 40px; height: 40px; object-fit: contain;" class="me-2">
+      </span>
+      <input id="cyaInput" type="number" class="form-control" placeholder="Enter ZEM amount" />
+    </div>
+
+    <!-- Output: To BNB -->
+    <div class="input-group mb-3">
+      <input id="cyaOutput" type="text" class="form-control" placeholder="Estimated BNB amount" readonly />
+      <button class="btn btn-primary" onclick="sellCya()">Swap to BNB</button>
+    </div>
+
+    <!-- Current Price Display -->
+    <div class="mt-3">
+      <span class="badge bg-info text-dark">
+        Current Price: <span id="currentPrice">Loading...</span> ZEM per BNB
+      </span>
+    </div>
+
+  </div>
 </div>
 
-<div class="alert alert-info" role="alert"> 
-<P> Enter ZEM to exchange opBNB.</P>
-
-<div class="input-group mb-3"> 
-<span class="input-group-text" id="basic-addon1">ZEM input</span> 
-<input id="cyaInput" type="text" class="form-control" placeholder="Enter the number of BETs to be exchanged here"aria-label="Username" aria-describedby="basic-addon1">
-</div>
-<div class="input-group mb-3"> 
-
-<input id="cyaOutput" type="text" class="form-control" placeholder="Here you will see the opBNB to be exchanged" aria-label="Recipient's username" aria-describedby="basic-addon2"> 
-<span onclick="sellCya()" style="cursor: pointer;" class="input-group-text" id="basic-addon2">Exchange</span>
-</div>
-</div>
       
  <!-- 가격 보기 및 설정 UI -->
 
-  <div class="card-header text-center">
-    <strong>BNB Price 관리(staff only)<p>계약잔고: <span id="Zembalan">Loading...</span>zem</p></strong>
-  </div>
-  <div class="card-body text-center">
-    <p>📊 현재 설정된 가격: <span id="currentPrice">Loading...</span></p>
+ <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#priceManageSection" aria-expanded="false" aria-controls="priceManageSection">
+  🔧 BNB Price 관리 (Staff Only)
+</button>
 
-   <div class="input-group mb-3 w-100">
-  <input type="text" class="form-control" id="newPriceInput" placeholder="새 가격 입력 (only staff)">
-  <button class="btn btn-primary" onclick="Priceup()">✅ 가격 설정</button>
+<div class="collapse" id="priceManageSection">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header text-center bg-light">
+      <strong>
+        BNB Price 관리 (staff only)
+        <p>계약잔고: <span id="Zembalan">Loading...</span> ZEM</p>
+      </strong>
+    </div>
+    <div class="card-body text-center">
+      <p>📊 현재 설정된 가격: <span id="currentPrice">Loading...</span></p>
+
+      <div class="input-group mb-3 w-100">
+        <input type="text" class="form-control" id="newPriceInput" placeholder="새 가격 입력 (only staff)">
+        <button class="btn btn-primary" onclick="Priceup()">✅ 가격 설정</button>
+      </div>
+    </div>
+  </div>
 </div>
 
   </div>
