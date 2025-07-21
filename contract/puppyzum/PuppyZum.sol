@@ -251,32 +251,32 @@ function buyPuppy(string calldata _name) external {
     return uint8(rand % 100 + 1); // 1-100
 }
 
-    function geti(uint _pid)internal view returns (uint16){
+    function geti(uint _pid)public view returns (uint16){
     
     return myinfo[_pid].intell;
     }
 
-      function getc(uint _pid)internal view returns (uint16){
-    
+      function getc(uint _pid)public view returns (uint16){
+
     return myinfo[_pid].courage;
     }
 
-     function gets(uint _pid)internal view returns (uint16){
+     function gets(uint _pid)public view returns (uint16){
     
     return myinfo[_pid].strength;
     }
 
-      function geta(uint _pid)internal view returns (uint16){
+      function geta(uint _pid)public view returns (uint16){
     
     return myinfo[_pid].agility;
     }
 
-       function gete(uint _pid)internal view returns (uint16){
+       function gete(uint _pid)public view returns (uint16){
     
     return myinfo[_pid].endurance;
     }
 
-        function getf(uint _pid)internal view returns (uint16){
+        function getf(uint _pid)public view returns (uint16){
     
     return myinfo[_pid].flexibility;
     }
@@ -284,4 +284,6 @@ function buyPuppy(string calldata _name) external {
     function g1() public view virtual returns(uint256){  
     return zum.balanceOf(address(this));
   }
+
+  
 }

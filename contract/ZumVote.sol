@@ -106,8 +106,10 @@ contract ZumVote {
     function postNotice(string memory content) external onlyPostEligible {
         require(bytes(content).length > 0, "Empty content");
         require(g4(msg.sender) >= fee, "Not enough ZUM");
-        require(zum.allowance(msg.sender, address(this)) >= fee, "Approve first");
-        zum.transferFrom(msg.sender, address(this), fee);
+         zum.approve(msg.sender, fee);
+    uint256 allowance = zum.allowance(msg.sender, address(this));
+    require(allowance >= fee, "Check the allowance");
+    zum.transferFrom(msg.sender, address(this), fee); 
         tax += fee;
 
         Notice storage newNotice = notices[noticeCount];

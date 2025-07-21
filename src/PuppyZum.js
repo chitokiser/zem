@@ -1,6 +1,6 @@
 /* ---------- 주소 & ABI ---------- */
 let pupaddr = {
-  puppy: "0x03426D0265f42c1C9D419F41D27FAf6D5e3456ac"
+  puppy: "0xB6D5B92BbD9E84823B01C636df09Ccfb19a54317"//PuppyZum
 };
 
 let pupabi = {

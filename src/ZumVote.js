@@ -78,25 +78,15 @@ const truncateAddress = (address) => {
               <p><strong>작성자:</strong> ${truncateAddress(notice.author)}</p>
               <p><strong>제안내용:</strong> ${notice.content}</p>
               <p><strong>작성시간:</strong> ${new Date(notice.timestamp * 1000).toLocaleString('en-GB', { timeZone: 'Etc/GMT-3' })}</p>
-              <p><strong>투표내용:</strong> 찬성 (${notice.agreeWeight}), 반대 (${notice.disagreeVotes})</p>
+              <p><strong>투표내용:</strong> approval (${notice.agreeWeight}), opposition(${notice.disagreeVotes})</p>
               <div class="d-flex justify-content-between my-3">
-                <button class="btn btn-success w-25" onclick="vote(${notice.id}, 1)">찬성</button>
-                <button class="btn btn-danger w-25" onclick="vote(${notice.id}, 2)">반대</button>
+                <button class="btn btn-success w-25" onclick="vote(${notice.id}, 1)">approval</button>
+                <button class="btn btn-danger w-25" onclick="vote(${notice.id}, 2)">opposition</button>
               </div>
-              <div class="d-flex justify-content-between my-3">
-                <button class="btn btn-warning w-50" onclick="claimNoticeReward(${notice.id})">작성자 보상요구</button>
-              </div>
+            
             </div>
-            <div class="col-md-12">
-              <h6>댓글내용:</h6>
-              <ul class="list-group mb-3" id="comments-${notice.id}"></ul>
-              <div class="input-group mb-3">
-                <input type="text" class="form-control" id="comment-input-${notice.id}" placeholder="댓글 입력">
-                <button class="btn btn-primary" onclick="addComment(${notice.id})">Submit</button>
-              </div>
-              <div class="d-flex justify-content-between my-3">
-                <button class="btn btn-info w-50" onclick="claimCommentReward(${notice.id})">댓글보상</button>
-              </div>
+           
+             
             </div>
           </div>
         `;
