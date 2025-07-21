@@ -1,6 +1,6 @@
 /* ---------- 주소 & ABI ---------- */
 let pupaddr = {
-  hipuppy: "0x3678fFF1ef5E414cA9Bb5980d0AEdf9540391CE9"//HiPuppy
+  hipuppy: "0xc6e31C06aB97b25b373730870F05bE1bbE7F6c76"//HiPuppy
 };
 
 let pupabi = {
@@ -20,7 +20,7 @@ async function updateRateInfo() {
     // contractRead는 이미 선언된 읽기 전용 컨트랙트 객체입니다.
     const rate = await contractRead.rate();
     // 보통 uint8이므로 숫자로 바로 쓸 수 있습니다.
-    document.getElementById('rateValue').textContent = rate;
+    document.getElementById('rateValue').textContent = (rate/100);
   } catch (e) {
     document.getElementById('rateValue').textContent = '..';
   }
@@ -108,10 +108,11 @@ window.onload = async () => {
             document.getElementById("rewardAmount").textContent = ethers.utils.formatEther(amount);
             document.getElementById("log").innerHTML += `<p>🎉 리워드 획득: ${ethers.utils.formatEther(amount)} GP, 매치 ${matchCount}개</p>`;
           }
-          if (name === "Bonus") {
-            const [user, amount, reward] = args;
-            document.getElementById("log").innerHTML += `<p>🎁 보너스 획득: ${ethers.utils.formatEther(amount)} GP (능력치 ${reward})</p>`;
-          }
+         if (name === "Bonus") {
+  const [user, amount, reward] = args;
+  document.getElementById("bonusAmount").textContent = `${ethers.utils.formatEther(amount)} GP (능력치 ${reward})`;
+  document.getElementById("log").innerHTML += `<p>🎁 보너스 획득: ${ethers.utils.formatEther(amount)} GP (능력치 ${reward})</p>`;
+}
           if (name === "lost") {
             const [amount] = args;
             document.getElementById("log").innerHTML += `<p>😢 실패: ${ethers.utils.formatEther(amount)} GP 손실</p>`;
@@ -141,6 +142,8 @@ window.onload = async () => {
     document.getElementById("log").innerHTML += `<p class="text-red-500">❌ 오류 발생: ${err.message}</p>`;
   }
 }
+
+
 
   // ---------- (선택) 자동 연결/동기화 ----------
   window.onload = async () => {
