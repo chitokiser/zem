@@ -229,7 +229,7 @@ async function feedMyPuppy() {
     const pid = pidBN.toNumber();
 
     if (pid === 0) {
-      alert("⚠️ 아직 강아지를 구매하지 않았습니다.");
+      alert("⚠️ 아직 강아지를 구매하지 않았습니다.");  /*************** 첫번째 0번은 적용안됨***************/
       return;
     }
 

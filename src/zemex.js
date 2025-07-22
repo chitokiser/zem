@@ -43,7 +43,7 @@
        let cyadexContract = new ethers.Contract(contractAddress.cyadexAddr, contractAbi.cyadex, provider);
        let price = await cyadexContract.getprice();  //bnb설정가격
         let zembal = await cyadexContract.zembalances();  //zem잔고
-       document.getElementById("currentPrice").innerHTML= (price/1e18);
+       document.getElementById("currentPrice").innerHTML= (price/1e18).toFixed(2);;
        document.getElementById("Zembalan").innerHTML = (zembal / 1e18).toFixed(2);
         };
      
