@@ -2,17 +2,27 @@
 const BATTLE_CONTRACT_ADDR = "0x4b7c4641844EC478cd0B5263174CFEe6a6e0d2E3";
 const BATTLE_ABI = [
   "function bpid() view returns(uint8)",
+  "function jack() view returns(uint256)",
   "function bps(uint8) view returns(uint8 mybreed, uint256 depo, uint256 power, address owner, uint8 defense)",
   "function getmypuppy(address) view returns(uint16)",
   "function getmypower(uint256 pid) view returns(uint256)",
   "function Battle(uint8 _pid) external",
   "function getreward() view returns(uint256)",
+  "function allowcation(uint8 _pid) public returns (bool)",
   "event lost(uint256 amount, uint256 myPower)",
   "event Bonus(address indexed user, uint256 amount, uint256 reward)",
   "event RewardGiven(address indexed user, uint256 amount, uint256 myPower)",
   "event getdepo(uint256 pay)"
 ];
-
+async function renderJackpot() {
+  try {
+    const jackpot = await battleContractRead.jack();
+    // GP 단위 변환 필요시(1e18 기준) → ethers.utils.formatEther(jackpot)
+    document.getElementById('jackpotValue').textContent = parseFloat(jackpot/1e18/100).toFixed(2);
+  } catch (e) {
+    document.getElementById('jackpotValue').textContent = "알수없음";
+}
+}
 /* ---------- provider & contract ---------- */
 const providerRead = new ethers.providers.JsonRpcProvider("https://opbnb-mainnet-rpc.bnbchain.org");
 const battleContractRead = new ethers.Contract(BATTLE_CONTRACT_ADDR, BATTLE_ABI, providerRead);
@@ -53,14 +63,14 @@ async function renderChampionList() {
       html += `
       <div class="card-body text-center bg-blue-50 rounded shadow p-2 m-1">
         <div class="font-bold text-blue-600">#${i + 1}</div>
-        <img src="/images/puppy/${mybreed}.png" class="w-12 h-12 mx-auto rounded" alt="강아지"/>
+        <img src="/images/puppy/${mybreed}.png" class="w-24 h-24 mx-auto rounded" alt="강아지"/>
         <div class="text-xs mt-1">품종: <span class="font-bold">${mybreed}</span></div>
         <div class="text-xs">파워: <span class="font-bold">${power}</span></div>
         <div class="text-xs">방어성공: <span class="font-bold">${defense}</span></div>
         <div class="text-[10px] truncate text-gray-400">오너: ${owner.substring(0, 6)}...${owner.substring(owner.length-4)}</div>
-        <button class="mt-1 text-xs px-2 py-1 bg-pink-500 text-white rounded battle-btn" data-slot="${i}">
-          도전!
-        </button>
+        <button class="mt-1 text-xs px-2 py-1 bg-green-600 text-white rounded allow-btn" data-slot="${i}">
+  방어상금인출
+</button>
       </div>
       `;
     }
@@ -86,22 +96,35 @@ async function renderMyPuppy() {
     document.getElementById("myBreed").textContent = myBreed;
     document.getElementById("myPuppyImg").src = `/images/puppy/${myBreed}.png`;
 
-    const power = await battleContractRead.getmypower(myBreed);
-    document.getElementById("myPower").textContent = power.toString();
+ 
   } catch (e) {
     document.getElementById("myBreed").textContent = "?";
-    document.getElementById("myPower").textContent = "?";
+ 
   }
 }
 
-/* ---------- 배틀 실행 ---------- */
+
+async function randomBattle() {
+      
+  // bpid 읽어서 1~bpid 중 랜덤값 선택(슬롯은 0~bpid-1이므로)
+  const bpid = await battleContractRead.bpid();
+  if (bpid == 0) {
+    alert("챔피언 슬롯이 없습니다.");
+    return;
+  }
+  // 랜덤으로 0~(bpid-1) 중 하나 선택
+  const slot = Math.floor(Math.random() * bpid);
+  logEvent(`랜덤 슬롯 #${slot+1}에 도전합니다!`);
+  battle(slot);
+}
+
 async function battle(slot) {
   if (!battleContractWrite) await connectWallet();
   try {
     document.getElementById("battleResult").textContent = "대결 진행 중...";
     const tx = await battleContractWrite.Battle(slot);
     logEvent(`⏳ 배틀 트랜잭션 전송: ${tx.hash}`);
-
+    await showDogFrameAnimation();
     const receipt = await tx.wait();
     logEvent(`✅ 배틀 완료: ${tx.hash}`);
 
@@ -129,16 +152,77 @@ async function battle(slot) {
             `<span class='text-red-500 font-bold'>😢 패배! GP 소멸. 내 파워: ${args.myPower}</span>`;
           logEvent(`😢 Lost: ${ethers.utils.formatEther(args.amount)} GP, 내 파워: ${args.myPower}`);
         }
-      } catch (e) { }
+      } catch (e) {
+        // 이벤트 파싱 오류는 무시 (ex. 내 이벤트 아닌 로그)
+      }
     }
-    if (!foundResult) document.getElementById("battleResult").textContent = "결과 없음(이벤트 미검출)";
+    if (!foundResult)
+      document.getElementById("battleResult").textContent = "결과 없음(이벤트 미검출)";
+
     await renderChampionList();
     await renderMyPuppy();
   } catch (err) {
-    document.getElementById("battleResult").innerHTML = `<span class="text-red-500">❌ 오류: ${err.message}</span>`;
-    logEvent(`❌ 오류: ${err.message}`);
+    let shortMsg = "❌ 배틀 실패";
+    if (err && err.message && err.message.includes("You can't challenge yourself")) {
+      shortMsg = "❌ 내 강아지 슬롯엔 도전 불가!";
+    }
+    document.getElementById("battleResult").innerHTML = `<span class="text-red-500">${shortMsg}</span>`;
+    logEvent(shortMsg);
   }
 }
+
+
+// allowcation 실행 함수
+async function claimReward(slot) {
+  if (!battleContractWrite) await connectWallet();
+  try {
+    logEvent(`⏳ 인출 트랜잭션 전송...`);
+    const tx = await battleContractWrite.allowcation(slot);
+    logEvent(`✅ 인출 TX: ${tx.hash}`);
+    const receipt = await tx.wait();
+    logEvent(`✅ 인출 완료!`);
+
+    // 이벤트 파싱(옵션)
+    // ... (이벤트 로그 파싱도 추가 가능)
+    await renderChampionList();
+    await renderMyPuppy();
+  } catch (err) {
+    logEvent(`❌ 인출실패: ${err.message}`);
+    alert("상금 인출 실패: " + err.message);
+  }
+}
+
+
+async function showDogFrameAnimation() {
+  const aniDiv = document.getElementById("dogAnimationLayer");
+  const aniImg = document.getElementById("dogAniFrame");
+  aniDiv.style.display = "flex";
+  // 효과음 재생
+  try {
+    const sound = document.getElementById("battleSound");
+    sound.currentTime = 0;
+    sound.play();
+  } catch (e) {
+    // 브라우저 자동재생 제한 등 무시
+  }
+
+  const frames = [0, 1, 2, 3, 4]; // 프레임 번호
+  let idx = 0;
+
+  // 프레임을 200ms 간격으로 순차 교체
+  const interval = setInterval(() => {
+    aniImg.src = `/images/puppy/battle/${frames[idx]}.png`;
+    idx++;
+    if (idx >= frames.length) {
+      clearInterval(interval);
+      // 0.3초 후 애니메이션 레이어 숨김
+      setTimeout(() => {
+        aniDiv.style.display = "none";
+      }, 1000);
+    }
+  }, 200); // 200ms 간격 (조절 가능)
+}
+
 
 /* ---------- 로그 기록 ---------- */
 function logEvent(msg) {
@@ -151,4 +235,5 @@ window.onload = async () => {
   await connectWallet();
   await renderChampionList();
   await renderMyPuppy();
+   await renderJackpot();
 };

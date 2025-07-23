@@ -7,17 +7,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-pink-100 via-white to-blue-100 min-h-screen">
-
+<audio id="battleSound" src="/sounds/dogfight.mp3"></audio>
   <!-- 타이틀 -->
   <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-6 p-4">
     <h1 class="text-2xl font-bold text-blue-500">🐶 Puppy Battle Arena</h1>
-    <p class="text-sm text-gray-600 mt-1">최강의 배틀 강아지를 뽑아보세요!</p>
+    <p class="text-sm text-gray-600 mt-1">챔피언&방어10회성공 상금: <span id="jackpotValue">-</span> GP</p>
+    
   </div>
 
   <!-- 배틀 강아지 리스트(슬롯) -->
   <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
     <h2 class="text-lg font-semibold mb-2">🥇 top10</h2>
-   <div id="championList" class="grid grid-cols-2 gap-2"></div>
+   <div id="championList" class="flex flex-col gap-2"></div>
+
   </div>
 
   <!-- 도전 결과 / 내 강아지 정보 -->
@@ -27,21 +29,23 @@
       <img id="myPuppyImg" src="/images/puppy/0.png" class="w-12 h-12 rounded" />
       <div class="text-xs text-gray-500">
         품종: <span id="myBreed" class="font-bold text-blue-500">?</span><br/>
-        파워: <span id="myPower" class="font-bold text-pink-500">?</span>
       </div>
     </div>
     <div class="mt-3 text-sm text-gray-700">
-      <label class="block mb-1">도전 베팅 GP</label>
-      <input id="battleAmount" type="number" min="1" value="1" class="w-full border rounded px-2 py-1 mb-3"/>
+     
       <div>
-        <button onclick="battle()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-semibold">
-          배틀 도전하기
-        </button>
+      <button onclick="randomBattle()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-semibold">
+  배틀 도전하기(-1GP)
+</button>
+
       </div>
     </div>
     <div id="battleResult" class="mt-4 text-xs text-gray-600"></div>
   </div>
-
+  <!-- 애니메이션 -->
+  <div id="dogAnimationLayer" class="fixed inset-0 flex items-center justify-center z-50" style="display:none;">
+  <img id="dogAniFrame" class="w-40 h-40" src="/images/puppy/0.png" alt="강아지" />
+</div>
   <!-- 보상/로그 -->
   <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
     <h3 class="font-semibold text-md mb-2">📜 게임 이벤트 로그</h3>
