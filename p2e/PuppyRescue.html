@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PuppyRescue</title>
-  
   <style>
     body {
       background: #cce7ff;
@@ -22,6 +21,10 @@
     canvas {
       background: #aadd88;
       border: 3px solid #555;
+      width: 90vw;         /* 화면 너비의 90% */
+      max-width: 400px;    /* 최대 크기 */
+      height: auto;        /* 비율 유지 */
+      touch-action: none;  /* 터치 제스처 충돌 방지 */
     }
     #startBtn, #restartBtn {
       margin: 10px;
@@ -79,7 +82,7 @@
 🏠 Puppy Home 
 </a> 
   <div id="scoreboard">구한 강아지 수: 0</div>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <canvas id="gameCanvas"></canvas>
 
   <select id="skinSelect">
     <option value="1">강아지 1</option>
@@ -102,7 +105,17 @@
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
-    const box = 20;
+    let box = 20;
+
+    // 반응형 크기 조정
+    function resizeCanvas() {
+      const size = Math.min(window.innerWidth * 0.9, 400); // 최대 400px
+      canvas.width = size;
+      canvas.height = size;
+      box = size / 20; // 20x20 그리드 유지
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     let score = 0;
     let snake = [{ x: 9 * box, y: 9 * box }];
@@ -140,11 +153,35 @@
       loadHeadImage();
     });
 
+    // 키보드 조작
     document.addEventListener("keydown", e => {
       if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
       else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
       else if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
       else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+    });
+
+    // 터치 스와이프 조작
+    let touchStartX = 0, touchStartY = 0;
+
+    canvas.addEventListener("touchstart", e => {
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    });
+
+    canvas.addEventListener("touchend", e => {
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - touchStartX;
+      const dy = touch.clientY - touchStartY;
+
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0 && direction !== "LEFT") direction = "RIGHT";
+        else if (dx < 0 && direction !== "RIGHT") direction = "LEFT";
+      } else {
+        if (dy > 0 && direction !== "UP") direction = "DOWN";
+        else if (dy < 0 && direction !== "DOWN") direction = "UP";
+      }
     });
 
     function setDirection(dir) {
