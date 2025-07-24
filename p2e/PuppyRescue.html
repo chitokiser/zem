@@ -5,130 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PuppyRescue</title>
   <style>
-    body {
-      background: #cce7ff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      margin: 0;
-    }
-    #scoreboard {
-      margin: 10px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    canvas {
-      background: #aadd88;
-      border: 3px solid #555;
-      width: 90vw;         /* 화면 너비의 90% */
-      max-width: 400px;    /* 최대 크기 */
-      height: auto;        /* 비율 유지 */
-      touch-action: none;  /* 터치 제스처 충돌 방지 */
-    }
-    #startBtn, #restartBtn {
-      margin: 10px;
-      padding: 10px 20px;
-      background: #ff7f50;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    #skinSelect {
-      margin: 10px;
-      padding: 5px;
-    }
+    body { background: #cce7ff; display: flex; flex-direction: column; align-items: center; font-family: Arial, sans-serif; margin: 0; }
+    #scoreboard { margin: 10px; font-size: 18px; font-weight: bold; }
+    canvas { background: #aadd88; border: 3px solid #555; width: 90vw; max-width: 400px; touch-action: none; }
+    #startBtn, #restartBtn { margin: 10px; padding: 10px 20px; background: #ff7f50; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+    #skinSelect { margin: 10px; padding: 5px; }
+
+    /* 컨트롤러 디자인 개선 - 게임 화면 밑에 배치 */
     .controls {
       display: grid;
-      grid-template-columns: 60px 60px 60px;
-      grid-template-rows: 60px 60px;
-      gap: 10px;
+      grid-template-columns: repeat(3, 60px);
+      grid-template-rows: repeat(2, 60px);
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 40px;
+      margin-top: 20px;
+    }
+    .controls .btn {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      font-size: 24px;
+      color: #333;
+      border: none;
+      display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background 0.1s, transform 0.1s;
     }
-    .btn {
-      background: #555;
-      border: none;
-      border-radius: 10px;
-      font-size: 20px;
-      color: white;
-      cursor: pointer;
-      user-select: none;
+    .controls .btn:active {
+      background: rgba(255, 255, 255, 1);
+      transform: scale(0.95);
     }
-    .btn:active { background: #777; }
-    .up { grid-column: 2; grid-row: 1; }
-    .left { grid-column: 1; grid-row: 2; }
-    .down { grid-column: 2; grid-row: 2; }
+
+    .up    { grid-column: 2; grid-row: 1; }
+    .left  { grid-column: 1; grid-row: 2; }
+    .down  { grid-column: 2; grid-row: 2; }
     .right { grid-column: 3; grid-row: 2; }
-    #flashOverlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 9999;
-    }
+
+    #flashOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 9999; }
   </style>
 </head>
 <body>
-  <a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition"> 
-🏠 Puppy Home 
-</a> 
+  <a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition">🏠 Puppy Home</a>
   <div id="scoreboard">구한 강아지 수: 0</div>
-  <canvas id="gameCanvas"></canvas>
-
-  <select id="skinSelect">
+   <select id="skinSelect">
     <option value="1">강아지 1</option>
     <option value="2">강아지 2</option>
     <option value="3">강아지 3</option>
   </select>
 
-  <button id="startBtn">구조 작전 시작!</button>
+<button id="startBtn">구조 작전 시작!</button>
   <button id="restartBtn" style="display:none;">게임 다시 시작</button>
 
+
+  <canvas id="gameCanvas"></canvas>
+
+ 
+   <!-- 개선된 컨트롤러: 게임 화면 바로 아래에 표시 -->
   <div class="controls">
-    <button class="btn up" onclick="setDirection('UP')">↑</button>
-    <button class="btn left" onclick="setDirection('LEFT')">←</button>
-    <button class="btn down" onclick="setDirection('DOWN')">↓</button>
-    <button class="btn right" onclick="setDirection('RIGHT')">→</button>
+    <button class="btn up" onclick="setDirection('UP')">&#9650;</button>
+    <button class="btn left" onclick="setDirection('LEFT')">&#9664;</button>
+    <button class="btn down" onclick="setDirection('DOWN')">&#9660;</button>
+    <button class="btn right" onclick="setDirection('RIGHT')">&#9654;</button>
   </div>
 
   <div id="flashOverlay"></div>
+ 
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
     let box = 20;
 
-    // 반응형 크기 조정
     function resizeCanvas() {
-      const size = Math.min(window.innerWidth * 0.9, 400); // 최대 400px
+      const size = Math.min(window.innerWidth * 0.9, 400);
       canvas.width = size;
       canvas.height = size;
-      box = size / 20; // 20x20 그리드 유지
+      box = size / 20;
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
     let score = 0;
-    let snake = [{ x: 9 * box, y: 9 * box }];
+    let snake = [];
     let direction = null;
-    let food;
+    let food = {};
+    let watchers = [];
     let gameInterval;
-    const MAX_SCORE = 15; // 구조 완료 시점
+    const MISSION_TARGET = 10;
 
     let selectedSkin = localStorage.getItem("dogSkin") || "1";
     document.getElementById("skinSelect").value = selectedSkin;
 
     const dogHead = new Image();
     const rescueDog = new Image();
+    const watcherImg = new Image();
     const dogBodies = [];
 
     function loadHeadImage() {
@@ -138,8 +113,9 @@
     function loadImages(callback) {
       loadHeadImage();
       rescueDog.src = `/images/dogs/rescue.png`;
+      watcherImg.src = `/images/dogs/watcher.png`;
       dogBodies.length = 0;
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 1; i <= 10; i++) {
         const img = new Image();
         img.src = `/images/dogs/body_${i}.png`;
         dogBodies.push(img);
@@ -153,7 +129,6 @@
       loadHeadImage();
     });
 
-    // 키보드 조작
     document.addEventListener("keydown", e => {
       if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
       else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
@@ -161,20 +136,14 @@
       else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
     });
 
-    // 터치 스와이프 조작
     let touchStartX = 0, touchStartY = 0;
-
     canvas.addEventListener("touchstart", e => {
-      const touch = e.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     });
-
     canvas.addEventListener("touchend", e => {
-      const touch = e.changedTouches[0];
-      const dx = touch.clientX - touchStartX;
-      const dy = touch.clientY - touchStartY;
-
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
       if (Math.abs(dx) > Math.abs(dy)) {
         if (dx > 0 && direction !== "LEFT") direction = "RIGHT";
         else if (dx < 0 && direction !== "RIGHT") direction = "LEFT";
@@ -195,11 +164,10 @@
       score = 0;
       snake = [{ x: 9 * box, y: 9 * box }];
       direction = null;
+      watchers = [];
       placeFood();
-
       document.getElementById("scoreboard").textContent = `구한 강아지 수: 0`;
       document.getElementById("restartBtn").style.display = "none";
-
       clearInterval(gameInterval);
       gameInterval = setInterval(draw, 120);
       draw();
@@ -208,12 +176,20 @@
     function placeFood() {
       let valid = false;
       while (!valid) {
-        const newFood = {
-          x: Math.floor(Math.random() * 20) * box,
-          y: Math.floor(Math.random() * 20) * box
-        };
-        if (!snake.some(seg => seg.x === newFood.x && seg.y === newFood.y)) {
-          food = newFood;
+        const pos = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+        if (!snake.some(s => s.x === pos.x && s.y === pos.y) && !watchers.some(w => w.x === pos.x && w.y === pos.y)) {
+          food = pos;
+          valid = true;
+        }
+      }
+    }
+
+    function addWatcher() {
+      let valid = false;
+      while (!valid) {
+        const pos = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+        if (!snake.some(s => s.x === pos.x && s.y === pos.y) && !(pos.x === food.x && pos.y === food.y) && !watchers.some(w => w.x === pos.x && w.y === pos.y)) {
+          watchers.push(pos);
           valid = true;
         }
       }
@@ -226,14 +202,19 @@
         ctx.drawImage(dogBodies[i % dogBodies.length], snake[i].x, snake[i].y, box, box);
       }
       ctx.drawImage(rescueDog, food.x, food.y, box, box);
+      watchers.forEach(w => ctx.drawImage(watcherImg, w.x, w.y, box, box));
 
       if (!direction) return;
+      const nx = snake[0].x + (direction === "LEFT" ? -box : direction === "RIGHT" ? box : 0);
+      const ny = snake[0].y + (direction === "UP" ? -box : direction === "DOWN" ? box : 0);
 
-      let nx = snake[0].x + (direction === "LEFT" ? -box : direction === "RIGHT" ? box : 0);
-      let ny = snake[0].y + (direction === "UP" ? -box : direction === "DOWN" ? box : 0);
-
-      if (nx < 0 || ny < 0 || nx >= canvas.width || ny >= canvas.height || collision({ x: nx, y: ny }, snake)) {
+      if (nx < 0 || ny < 0 || nx >= canvas.width || ny >= canvas.height || snake.some(s => s.x === nx && s.y === ny)) {
         endGame(`벽이나 몸에 부딪힘! 총 ${score}마리 구조`);
+        return;
+      }
+
+      if (watchers.some(w => w.x === nx && w.y === ny)) {
+        endGame('감시자에게 잡혔습니다! 게임 오버');
         return;
       }
 
@@ -242,8 +223,9 @@
         document.getElementById("scoreboard").textContent = `구한 강아지 수: ${score}`;
         playBarkSound();
         flashEffect();
-        if (score >= MAX_SCORE) {
-          endGame(`축하합니다! ${MAX_SCORE}마리 모두 구조!`);
+        addWatcher();
+        if (score >= MISSION_TARGET) {
+          endGame(`미션 성공! ${MISSION_TARGET}마리 구조 완료!`);
           return;
         }
         placeFood();
@@ -253,13 +235,9 @@
       snake.unshift({ x: nx, y: ny });
     }
 
-    function collision(head, array) {
-      return array.some(seg => seg.x === head.x && seg.y === head.y);
-    }
-
-    function endGame(message) {
+    function endGame(msg) {
       clearInterval(gameInterval);
-      alert(message);
+      alert(msg);
       document.getElementById("restartBtn").style.display = "block";
     }
 
@@ -280,7 +258,6 @@
 
     document.getElementById("startBtn").addEventListener("click", () => loadImages(startGame));
     document.getElementById("restartBtn").addEventListener("click", () => loadImages(startGame));
-
     loadImages(() => {});
   </script>
 </body>
