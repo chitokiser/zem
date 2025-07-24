@@ -45,8 +45,8 @@ const initialize = async () => {
   if (signer) return;
 
   if (!window.ethereum) {
-    alert("지갑이 설치되어 있지 않습니다.");
-    return;
+  alert("Wallet is not installed.");
+return;
   }
 
   provider = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -96,22 +96,22 @@ const MemberLogin = async () => {
 };
 
 const Levelup = async () => {
-  try {
-    await initialize();
-    const tx = await contract.levelup();
-    await tx.wait();
-    alert("레벨업 성공!");
-    location.reload();
-  } catch (e) {
-    alert("레벨업 실패: " + extractRevertReason(e));
-  }
+try {
+await initialize();
+const tx = await contract. levelup();
+await tx. wait();
+alert("Levelup success!");
+location. reload();
+} catch (e) {
+alert("Levelup failure: " + extractRevertReason(e));
+}
 };
 
 const Bonuswithdraw = async () => {
   try {
     await initialize();
     await contract.withdraw();
-    alert("보너스 출금 완료");
+    alert("Bonus withdrawal completed");
     location.reload();
   } catch (e) {
     alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
@@ -122,7 +122,7 @@ const Buff = async () => {
   try {
     await initialize();
     await contract.buffing();
-    alert("버프 성공!");
+    alert("Buff success!");
   } catch (e) {
     alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
   }
@@ -144,7 +144,7 @@ const fetchAddresses = async () => {
 
     if (addresses.length === 0) {
       const li = document.createElement("li");
-      li.textContent = "추천인이 없습니다.";
+      li.textContent = "There are no menty.";
       addressList.appendChild(li);
     }
   } catch (e) {
@@ -169,7 +169,7 @@ const SellCut = async () => {
     await initialize();
     const amount = parseInt(document.getElementById("sellAmount").value);
     await contract.sellcut(amount);
-    alert("ZUM 판매 성공!");
+    alert("ZUM sales success!");
     location.reload();
   } catch (e) {
     alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
@@ -186,7 +186,7 @@ function extractRevertReason(error) {
   if (error?.message?.includes("execution reverted:")) {
     return error.message.split("execution reverted:")[1].trim();
   }
-  return "알 수 없는 오류가 발생했습니다.";
+  return "An unknown error occurred.";
 }
 
 // 초기 실행

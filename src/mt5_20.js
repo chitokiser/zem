@@ -85,32 +85,36 @@ let metaddr = {
               case 0:
                 purchasableStatus = 'NO';
                 break;
-                case 1:
-                    purchasableStatus = '보상신청';
-                    break;
-                case 2:
-                    purchasableStatus = '인출가능';
-                    break;
-                case 3:
-                    purchasableStatus = '인출완료';
-                    break;
+               case 1: 
+               purchasableStatus = 'Request for compensation'; 
+               break; 
+               case 2: 
+               purchasableStatus = 'Withdrawable'; 
+               break; 
+               case 3: 
+               purchasableStatus = 'Withdrawal complete'; 
+              break;
                  
                 default:
                     purchasableStatus = 'Unknown';
             }
               const isPurchasable = purchasableStatus;
 // 등록날짜 변환 (서버 시간 기준 보정)
-const serverOffsetHours = -6; // 서버가 한국보다 6시간 느림
+const serverOffsetHours = 3; // GMT+3
 const correctedTimestamp = (Number(metaInfo.info0) + serverOffsetHours * 3600) * 1000; // 밀리초 변환
 const dateObj = new Date(correctedTimestamp);
-const formattedDate = dateObj.toLocaleString("ko-KR", {
+
+// 영문 날짜 포맷 (예: 2025-07-24 13:45)
+const formattedDate = dateObj.toLocaleString("en-GB", {
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
   hour: "2-digit",
-  minute: "2-digit"
+  minute: "2-digit",
+  hour12: false // 24시간 형식
 });
 
+console.log(formattedDate);
 
           
  const infoHtml = ` 

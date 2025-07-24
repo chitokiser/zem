@@ -1,59 +1,59 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Puppy Battle Game</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<html lang="en">
+<head> 
+<meta charset="UTF-8" /> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+<title>Puppy Battle Game</title> 
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-pink-100 via-white to-blue-100 min-h-screen">
-<audio id="battleSound" src="/sounds/dogfight.mp3"></audio>
-  <!-- 타이틀 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-6 p-4">
-    <a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition">
-      🏠 Puppy Home
-    </a>
-    <h1 class="text-2xl font-bold text-blue-500">🐶 Puppy Battle Arena</h1>
-    <p class="text-sm text-gray-600 mt-1">챔피언&방어10회성공 상금: <span id="jackpotValue">-</span> GP</p>
-    
-  </div>
+<audio id="battleSound" src="/sounds/dogfight.mp3"></audio> 
+<!-- Title --> 
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-6 p-4"> 
+<a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition">
+🏠 Puppy Home
+</a>
+<h1 class="text-2xl font-bold text-blue-500">🐶 Puppy Battle Arena</h1>
+<p class="text-sm text-gray-600 mt-1">Champion & Defense 10 times Success Prize: <span id="jackpotValue">-</span> GP</p>
 
-  <!-- 배틀 강아지 리스트(슬롯) -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
-    <h2 class="text-lg font-semibold mb-2">🥇 top10</h2>
-   <div id="championList" class="flex flex-col gap-2"></div>
-
-  </div>
-
-  <!-- 도전 결과 / 내 강아지 정보 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
-    <h2 class="text-md font-semibold mb-2">🐕 나의 강아지</h2>
-    <div class="flex items-center justify-center gap-2">
-      <img id="myPuppyImg" src="/images/puppy/0.png" class="w-12 h-12 rounded" />
-      <div class="text-xs text-gray-500">
-        품종: <span id="myBreed" class="font-bold text-blue-500">?</span><br/>
-      </div>
-    </div>
-    <div class="mt-3 text-sm text-gray-700">
-     
-      <div>
-      <button onclick="randomBattle()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-semibold">
-  배틀 도전하기(-1GP)
-</button>
-
-      </div>
-    </div>
-    <div id="battleResult" class="mt-4 text-xs text-gray-600"></div>
-  </div>
-  <!-- 애니메이션 -->
-  <div id="dogAnimationLayer" class="fixed inset-0 flex items-center justify-center z-50" style="display:none;">
-  <img id="dogAniFrame" class="w-40 h-40" src="/images/puppy/0.png" alt="강아지" />
 </div>
-  <!-- 보상/로그 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
-    <h3 class="font-semibold text-md mb-2">📜 게임 이벤트 로그</h3>
-    <div id="log" class="text-left text-xs max-h-40 overflow-auto"></div>
-  </div>
+
+<!-- Battle Puppy List (Slot) -->
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
+<h2 class="text-lg font-semibold mb-2">🥇 top10</h2> 
+<div id="championList" class="flex flex-col gap-2"></div> 
+
+</div> 
+
+<!-- Challenge Results / My Dog Information --> 
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4"> 
+<h2 class="text-md font-semibold mb-2">🐕 my dog</h2> 
+<div class="flex items-center justify-center gap-2"> 
+<img id="myPuppyImg" src="/images/puppy/0.png" class="w-12 h-12 rounded" /> 
+<div class="text-xs text-gray-500"> 
+Breed: <span id="myBreed" class="font-bold text-blue-500">?</span><br/> 
+</div> 
+</div> 
+<div class="mt-3 text-sm text-gray-700"> 
+
+<div> 
+<button onclick="randomBattle()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-semibold"> 
+Random Battle (-1GP)
+</button> 
+
+</div> 
+</div> 
+<div id="battleResult" class="mt-4 text-xs text-gray-600"></div> 
+</div> 
+<!-- Animation --> 
+<div id="dogAnimationLayer" class="fixed inset-0 flex items-center justify-center z-50" style="display:none;"> 
+<img id="dogAniFrame" class="w-40 h-40" src="/images/puppy/0.png" alt="Puppy" />
+</div>
+<!-- Reward/Log -->
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
+<h3 class="font-semibold text-md mb-2">📜 Game Event Log</h3>
+<div id="log" class="text-left text-xs max-h-40 overflow-auto"></div>
+</div>
 
   <!-- 효과음 예시 -->
   <audio id="barkSound" src="/sounds/bark.mp3"></audio>

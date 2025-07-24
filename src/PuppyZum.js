@@ -67,14 +67,14 @@ async function mintPuppy() {
   const puppy = new ethers.Contract(pupaddr.puppy, pupabi.puppy, signer);
 
   const name = document.getElementById("puppyName").value.trim();
-  if (!name) return alert("강아지 이름을 입력하세요");
+  if (!name) return alert("Please enter your dog's name");
 
   try {
     document.getElementById("status").textContent = "⏳ Transaction pending…";
     const tx = await puppy.buyPuppy(name);
     document.getElementById("status").textContent =
       document.getElementById("status").textContent =
-    `⛓ 컨펌 대기 (${tx.hash.slice(0, 10)}…)`;
+    `⛓ Waiting for confirmation (${tx.hash.slice(0, 10)}…)`;
 
     await tx.wait();
     document.getElementById("status").textContent = "✅ Puppy creation complete!";
@@ -98,7 +98,7 @@ async function renderList() {
       const [breed, name, forSale, priceBN, , battleBN, owner] = pup;
       const price  = Number(priceBN.toString()) / 1e18;
       const battle = Number(battleBN.toString());
-
+     
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -106,11 +106,9 @@ async function renderList() {
         <h4>#${id} ${name}</h4>
        <div class="img-container"><img src="/images/puppy/${breed}.png" alt="breed ${breed}" class="puppy-img"></div>
              <div class="stats">
-          Basic Ability : ${breed}<br>
+          Breed : ${breed}<br>
           Owner : ${owner.slice(0,6)}…${owner.slice(-4)}<br>
-          For Sale : ${forSale}<br>
-          Price : ${price.toFixed(2)} GP<br>
-          BattleExp : ${battle}<br>
+  
          <div class="stat-bars">
       ${renderStatBar("INT", stats.intell, "#FF6F61")}
       ${renderStatBar("COU", stats.courage, "#6B5B95")}
@@ -153,7 +151,7 @@ async function loadMyPuppyInfo() {
     const mybreed = await contract.myPuppy(userAddress);
 
     if (pid === 0) {
-      document.getElementById("puppyName").innerText = "⚠️ 아직 강아지를 구매하지 않았습니다.";
+     document.getElementById("puppyName").innerText = "⚠️ I haven't purchased a puppy yet.";
       return;
     }
 
@@ -181,9 +179,8 @@ async function loadMyPuppyInfo() {
     infoEl.innerHTML = `
       <p><strong>Owner:</strong> ${owner.slice(0, 6)}…${owner.slice(-4)}</p>
       <p><strong>Breed:</strong> ${breed}</p>
-      <p><strong>For Sale:</strong> ${forSale}</p>
-      <p><strong>Price:</strong> ${price.toFixed(2)} GP</p>
-      <p><strong>BattleExp:</strong> ${battle}</p>
+      <p><strong>Name:</strong> ${name}</p>
+    
       <hr>
       <div class="stat-bars">
         ${renderStat("INT", stats.intell)}
@@ -197,7 +194,7 @@ async function loadMyPuppyInfo() {
   } catch (err) {
     console.error("내 강아지 불러오기 실패:", err);
     const nameEl = document.getElementById("puppyName");
-    if (nameEl) nameEl.innerText = "⚠️ 강아지가 없거나 지갑이 연결되지 않았습니다.";
+    if (nameEl) nameEl.innerText = "⚠️ No puppy or wallet connected.";
   }
 }
 
@@ -229,7 +226,7 @@ async function feedMyPuppy() {
     const pid = pidBN.toNumber();
 
     if (pid === 0) {
-      alert("⚠️ 아직 강아지를 구매하지 않았습니다.");  /*************** 첫번째 0번은 적용안됨***************/
+      alert("⚠️ I haven't purchased a puppy yet.");
       return;
     }
 
@@ -247,15 +244,15 @@ async function feedMyPuppy() {
 
     // 실행
     const tx = await contract[selectedFunction](pid);
-    document.getElementById("status").textContent = `⏳ 먹이주기 실행 중… (${selectedFunction})`;
+    document.getElementById("status").textContent = `⏳ Feeding in progress... (${selectedFunction})`;
     await tx.wait();
 
-    document.getElementById("status").textContent = `✅ ${selectedFunction} 성공!`;
-    await loadMyPuppyInfo(); // 업데이트된 능력치 반영
-  } catch (err) {
-    console.error("먹이주기 실패:", err);
-    alert("먹이주기 중 오류 발생");
-  }
+ document.getElementById("status").textContent = `✅ ${selectedFunction} success!`;
+await loadMyPuppyInfo(); // Reflect updated ability
+} catch (err) {
+console.error("Feeding failed:", err);
+alert("An error occurred while feeding");
+}
 }
 
 /*************** Error helper ***************/

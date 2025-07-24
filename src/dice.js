@@ -52,11 +52,11 @@ let fetchUserState = async () => {
         });
 
     } catch (e) {
-  handleContractError(e, "유저 정보를 불러올 수 없습니다. 연결을 확인하세요.");
+  handleContractError(e, "Unable to load user information. Please check your connection.");
 }
 };
 
-function handleContractError(e, fallback = "문제가 발생했습니다. 다시 시도해주세요.") {
+function handleContractError(e, fallback = "Something went wrong. Please try again.") {
   let msg = fallback;
 
   if (e?.error?.data?.message) {
@@ -69,7 +69,7 @@ function handleContractError(e, fallback = "문제가 발생했습니다. 다시
     msg = e.message;
   }
 
-  console.error("📛 스마트컨트랙트 오류:", e);
+  console.error("📛 Smart contract error:", e);
   alert(msg);
 }
 
@@ -124,32 +124,50 @@ let executePlayFunction = async (argument) => {
 
         await soccerContract.play(argument, selectedValue);
     } catch (e) {
-  handleContractError(e, "유저 정보를 불러올 수 없습니다. 연결을 확인하세요.");
+  handleContractError(e, "Unable to retrieve user information. Please check your connection.");
 }
 };
 
 function animateDiceImage(elementId, result) {
     const diceImg = document.getElementById(elementId);
-    const src = `/images/dice/dice${result}.png`;
 
-    // 🔊 주사위 사운드 재생
+    // 주사위 이미지 프레임 (1~6)
+    const frames = [
+        "/images/dice/dice1.png",
+        "/images/dice/dice2.png",
+        "/images/dice/dice3.png",
+        "/images/dice/dice4.png",
+        "/images/dice/dice5.png",
+        "/images/dice/dice6.png"
+    ];
+
+    // 주사위 사운드 재생
     try {
         diceSound.currentTime = 0;
         diceSound.play();
     } catch (e) {
-        console.warn("🔇 사운드 재생 실패:", e.message);
+        console.warn("🔇 Sound error:", e.message);
     }
 
-    // 애니메이션 클래스 재적용
-    diceImg.classList.remove("roll");
-    void diceImg.offsetWidth;
-    diceImg.classList.add("roll");
+    // 굴리는 애니메이션 (랜덤 프레임 순환)
+    let i = 0;
+    const interval = setInterval(() => {
+        diceImg.src = frames[i % frames.length];
+        i++;
+    }, 100); // 0.1초마다 이미지 변경
 
-    // 이미지 교체
+    // 2초 후 최종 결과로 멈춤
     setTimeout(() => {
-        diceImg.src = src;
-    }, 300);
+        clearInterval(interval);
+        diceImg.src = `/images/dice/dice${result}.png`;
+        diceImg.classList.remove("roll");
+        void diceImg.offsetWidth; // 리렌더링 강제
+        diceImg.classList.add("roll");
+    }, 2000);
 }
+
+
+
 
 // 버튼 연결
 document.getElementById("winButton").addEventListener("click", () => executePlayFunction(1));

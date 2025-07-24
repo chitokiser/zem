@@ -40,12 +40,13 @@
       🏠 Puppy Home
     </a>
     <h1 class="text-2xl font-bold text-pink-500">🐾Hi Puppy</h1>
-    <p class="text-sm text-gray-600 mt-1">강아지들을 호출하세요(GamePoint소모)</p>
+    <p class="text-sm text-gray-600 mt-1">Call the puppies (GamePoints consumed)</p>
+</div>
   </div>
 
   <!-- 슬롯 결과 -->
   <div class="card-body text-center bg-white shadow rounded-2xl max-w-md mx-auto mt-4 p-4">
-    <h2 class="text-lg font-semibold mb-2">🎰호출결과</h2>
+    <h2 class="text-lg font-semibold mb-2">🐶Call result</h2>
     <div id="dogRunContainer" class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-90" style="display: none;">
   <div class="relative w-full flex justify-center">
     <!-- 강아지 여러 마리 (최대 3~5마리) -->
@@ -86,14 +87,16 @@
       </div>
     </div>
   <div id="rateInfo" class="mt-3 text-xs text-gray-400">
-  나의 강아지와 같은 강아지가 호출되면 마리당 X <span id="rateValue"></span> 보상
+  When a puppy like my puppy is called, you get X <span id="rateValue"></span> rewards per puppy.
 </div>
-  <div id="" class="mt-3 text-xs text-gray-400">능력치 랜덤 보너스 추가 지급!</div>
+  <div id="" class="mt-3 text-xs text-gray-400">Additional random bonus to ability value!</div>
 
   <!-- 조작 박스 -->
   <div class="card-body text-center bg-white shadow rounded-2xl max-w-md mx-auto mt-4 p-4">
-    <label for="betAmount" class="block text-sm font-medium mb-1 text-left">GamePoint값 설정:</label>
-    <input type="number" id="betAmount" min="1" class="w-full border rounded-lg px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition" placeholder="예: 10" />
+   <label for="betAmount" class="block text-sm font-medium mb-1 text-left">GamePoint value setting:</label>
+   <input type="number" id="betAmount" min="1" value="1"
+  class="w-full border rounded-lg px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-pink-400 transition"
+  placeholder="ex: 10" />
 
     <button onclick="playSlot()" class="w-full bg-pink-500 text-white font-semibold py-2 rounded-lg hover:bg-pink-600 mb-2 transition">
       Puppy Call
@@ -108,15 +111,16 @@
         <span>My Puppy:</span>
         <img id="myBreedImg" src="/images/puppy/question.png" alt="" class="w-12 h-12 object-contain rounded-lg border" />
       </div>
-      <div>매칭수: <span id="matchCount" class="font-bold">0</span>GP</div>
-      <div>기본 보상 : <span id="rewardAmount" class="font-bold">0</span>GP</div>
-      <div>능력치 랜덤 보너스 : <span id="bonusAmount" class="font-bold text-blue-500">0</span></div>
+   <div>Matching Count: <span id="matchCount" class="font-bold">0</span>GP</div>
+<div>Base Reward: <span id="rewardAmount" class="font-bold">0</span>GP</div>
+<div>Random Ability Bonus: <span id="bonusAmount" class="font-bold text-blue-500">0</span></div>
+</div>
     </div>
   </div>
 
   <!-- 이벤트 로그 -->
   <div class="card-body text-center bg-white shadow rounded-2xl max-w-md mx-auto mt-4 p-4">
-    <h3 class="font-semibold text-md mb-2">📜 이벤트 로그</h3>
+    <h3 class="font-semibold text-md mb-2">📜 Event Log</h3>
     <div id="log" class="text-left text-sm space-y-1 break-words"></div>
   </div>
 

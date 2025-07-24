@@ -3,77 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Puppy Race | GP 경주</title>
+  <title>Puppy Race</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-900">
 
-  <!-- 타이틀 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-6 p-4">
-      <a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition">
-      🏠 Puppy Home
-    </a>
-    <h1 class="text-2xl font-bold text-pink-500">🐶 Puppy Race</h1>
-    <p class="text-sm text-gray-600 mt-1">1~8등 안에 들면 보상!</p>
-  </div>
+<!-- Title --> 
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-6 p-4"> 
+<a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition"> 
+🏠 Puppy Home 
+</a> 
+<h1 class="text-2xl font-bold text-pink-500">🐶 Puppy Race</h1> 
+<p class="text-sm text-gray-600 mt-1">Reward if you rank 1st to 8th out of 60!</p> 
+<p class="text-sm text-gray-600 mt-1">Based on 1 ticket</p> 
+</div> 
 
-  <!-- 잭팟/내 정보 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4 grid grid-cols-2 gap-4">
-    
-      <div class="text-xs text-gray-400">티켓 1장 기준 1등 상금 : <span id="jackpotValue">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 2등 상금 : <span id="jackpotValue2">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 3등 상금 : <span id="jackpotValue3">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 4등 상금 : <span id="jackpotValue4">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 5등 상금 : <span id="jackpotValue5">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 6등 상금 : <span id="jackpotValue6">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 7등 상금 : <span id="jackpotValue7">...</span> GP</div>
-      <div class="text-xs text-gray-400">티켓 1장 기준 8등 상금 : <span id="jackpotValue8">...</span> GP</div>
-   </div>
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4 flex flex-col items-center justify-center">
-  <img id="myPuppyImg" src="/images/puppy/0.png" class="w-16 h-16 mx-auto rounded-full bg-gray-200" />
-  <div class="mt-1 text-xs">나의 강아지 품종: <span id="myBreed" class="font-bold"></span></div>
+<!-- Jackpot/My Information -->
+<div class="card-body text-center bg-gradient-to-br from-pink-50 via-white to-blue-50 shadow-xl rounded-2xl max-w-md mx-auto mt-4 p-5 grid grid-cols-2 gap-3"> 
+
+<!-- 1st place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-yellow-400 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🥇 1st place</span> 
+<span id="jackpotValue" class="text-lg font-bold text-gray-800 mt-2">25.02 GP</span> 
+</div> 
+
+<!-- 2nd place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-gray-400 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🥈 2nd place</span> 
+<span id="jackpotValue2" class="text-lg font-bold text-gray-800 mt-2">15.00 GP</span> 
+</div> 
+
+<!-- 3rd place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-orange-400 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🥉 3rd place</span> 
+<span id="jackpotValue3" class="text-lg font-bold text-gray-800 mt-2">10.00 GP</span> 
+</div> 
+
+<!-- 4th place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-pink-300 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🐶 4th place</span> 
+<span id="jackpotValue4" class="text-lg font-bold text-gray-800 mt-2">8.00 GP</span> 
+</div> 
+
+<!-- 5th place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-green-300 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🐱 5th place</span> 
+<span id="jackpotValue5" class="text-lg font-bold text-gray-800 mt-2">6.00 GP</span> 
+</div> 
+
+<!-- 6th place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-blue-300 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🐰 6th place</span> 
+<span id="jackpotValue6" class="text-lg font-bold text-gray-800 mt-2">4.00 GP</span> 
+</div> 
+
+<!-- 7th place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-purple-300 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🐻 7th place</span> 
+<span id="jackpotValue7" class="text-lg font-bold text-gray-800 mt-2">3.00 GP</span> 
+</div> 
+
+<!-- 8th place prize --> 
+<div class="flex flex-col items-center p-3 bg-white rounded-xl border-2 border-red-300 shadow hover:scale-105 transition"> 
+<span class="text-xl font-extrabold">🦊 8th place</span> 
+<span id="jackpotValue8" class="text-lg font-bold text-gray-800 mt-2">2.00 GP</span> 
+</div>
+
+</div> 
+
+
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4 flex flex-col items-center justify-center"> 
+<img id="myPuppyImg" src="/images/puppy/0.png" class="w-16 h-16 mx-auto rounded-full bg-gray-200" /> 
+<div class="mt-1 text-xs">My dog breed: <span id="myBreed" class="font-bold"></span></div>
 </div>
 
 
-  <!-- 경주 입력 및 실행 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
-    <label class="block text-sm font-medium mb-2 text-left">티켓(1장당 1GP):</label>
-    <input type="number" id="betAmount" class="w-full border rounded px-3 py-2 mb-2 text-center" placeholder="예: 1" min="1" />
+ <!-- Enter and run a race --> 
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4"> 
+<label class="block text-sm font-medium mb-2 text-left">Tickets (1 GP per ticket):</label> 
+<input type="number" id="betAmount" class="w-full border rounded px-3 py-2 mb-2 text-center" placeholder="Example: 1" min="1" value="1"/> 
 
-    <button onclick="race()" class="w-full bg-pink-500 text-white font-semibold py-2 rounded hover:bg-pink-600 mb-2">
-      레이스 시작!
-    </button>
-    <div class="mt-2 text-xs text-gray-500">* 티켓 1장 = 1 GP</div>
+<button onclick="race()" class="w-full bg-pink-500 text-white font-semibold py-2 rounded hover:bg-pink-600 mb-2"> 
+Strat 
+</button>
+<div class="mt-2 text-xs text-gray-500">* 1 ticket = 1 GP</div>
 
-    <!-- 결과 표시 -->
-     <!-- 오버레이: 처음엔 숨김 -->
-<div id="raceAnimOverlay" style="display:none; z-index:9999;" class="fixed inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center">
-  <img id="animDogBig" src="/images/puppy/0.png" class="w-40 h-40 sm:w-64 sm:h-64 rounded-2xl shadow-2xl border-8 border-white" />
+<!-- Show results -->
+<!-- Overlay: initially hidden -->
+<div id="raceAnimOverlay" style="display:none; z-index:9999;" class="fixed inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center"> 
+<img id="animDogBig" src="/images/puppy/0.png" class="w-40 h-40 sm:w-64 sm:h-64 rounded-2xl shadow-2xl border-8 border-white" />
+</div> 
+<div class="mt-3"> 
+<div class="text-sm font-bold">🏁 Rank: <span id="raceRank" class="text-blue-600">-</span></div> 
+<div class="text-sm font-bold">Reward: <span id="rewardAmount" class="text-pink-500">0</span> GP</div> 
+<div class="text-sm font-bold">Bonus: <span id="bonusAmount" class="text-green-500">0</span> GP</div>
+</div><!-- Placed below the overlay (duplicate possible) -->
+<audio id="whistleSound" src="/sounds/whistle.mp3"></audio>
+<audio id="barkSound" src="/sounds/bark.mp3"></audio>
 </div>
-    <div class="mt-3">
-      <div class="text-sm font-bold">🏁 등수: <span id="raceRank" class="text-blue-600">-</span></div>
-      <div class="text-sm font-bold">보상: <span id="rewardAmount" class="text-pink-500">0</span> GP</div>
-      <div class="text-sm font-bold">보너스: <span id="bonusAmount" class="text-green-500">0</span> GP</div>
-    </div>
-  </div>
 
-  <!-- 승리자 리스트 -->
-  <div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
-    <h2 class="text-md font-bold text-blue-500 mb-1">🏆 최근 1등 승리자</h2>
-    <div id="winnerList" class="text-xs text-gray-600">
-      <!-- JS에서 자동 표시 -->
-    </div>
-  </div>
+<!-- Winners List -->
+<div class="card-body text-center bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
+<h2 class="text-md font-bold text-blue-500 mb-1">🏆Winners</h2>
+<div id="winnerList" class="text-xs text-gray-600">
+<!-- Automatic in JS Show -->
+</div>
+</div>
 
-  <!-- 게임 로그 -->
-  <div class="card-body text-left bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
-    <h3 class="font-semibold text-md mb-2">📜 게임 로그</h3>
-    <div id="log" class="text-xs text-gray-500 max-h-32 overflow-auto"></div>
-  </div>
+<!-- Game Log -->
+<div class="card-body text-left bg-white shadow rounded-xl max-w-md mx-auto mt-4 p-4">
+<h3 class="font-semibold text-md mb-2">📜 Game Log</h3>
+<div id="log" class="text-xs text-gray-500 max-h-32 overflow-auto"></div>
+</div>
 
   <!-- (옵션) 지갑 연결 -->
   <div class="text-center mt-6 mb-10">
-    <button onclick="connectWallet()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm px-4 py-2 rounded">지갑 연결</button>
+    <button onclick="connectWallet()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm px-4 py-2 rounded">connectWallet</button>
   </div>
 
   <!-- JS 라이브러리 (ethers 등) 및 메인 코드 -->

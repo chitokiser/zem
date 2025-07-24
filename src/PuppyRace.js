@@ -18,14 +18,14 @@ let contractRead = new ethers.Contract(PUPPYRACE_ADDR, ABI, providerRead);
 
 let signer, contractWrite;
 
-async function connectWallet() {
-  if (!window.ethereum) return alert("메타마스크를 설치하세요.");
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  await provider.send("eth_requestAccounts", []);
-  signer = provider.getSigner();
-  contractWrite = new ethers.Contract(PUPPYRACE_ADDR, ABI, signer);
-  logEvent("✅ 지갑 연결: " + await signer.getAddress());
-  await renderMyPuppy();
+async function connectWallet() { 
+if (!window.ethereum) return alert("Please install the wallet."); 
+const provider = new ethers.providers.Web3Provider(window.ethereum); 
+await provider.send("eth_requestAccounts", []); 
+signer = provider.getSigner(); 
+contractWrite = new ethers.Contract(PUPPYRACE_ADDR, ABI, signer); 
+logEvent("✅ Wallet connection: " + await signer.getAddress()); 
+await renderMyPuppy();
 }
 
 function logEvent(msg) {
@@ -72,79 +72,78 @@ async function renderMyPuppy() {
   }
 }
 
-// 최근 승리자 표시 (최대 5명)
+// Display recent winners (maximum 5)
 async function renderWinnerList() {
-  let html = "";
-  try {
-    // 최근 5개만 출력 (winner[] 배열 크기는 외부에서 알 수 없음, try~catch로 최대 10까지 루프)
-    for (let i = 0; i < 5; i++) {
-      try {
-        let addr = await contractRead.winner(i);
-        html += `<div>${addr.substring(0, 8)}...${addr.slice(-4)}</div>`;
-      } catch (e) { break; }
-    }
-    if (!html) html = "<span class='text-gray-400'>아직 없음</span>";
-  } catch (e) {
-    html = "<span class='text-red-400'>불러오기 실패</span>";
-  }
-  document.getElementById("winnerList").innerHTML = html;
+let html = "";
+try {
+// Print only the most recent 5 (the size of the winner[] array is unknown from the outside, loop up to 10 with try~catch)
+for (let i = 0; i < 5; i++) {
+try {
+let addr = await contractRead.winner(i);
+html += `<div>${addr.substring(0, 8)}...${addr.slice(-4)}</div>`;
+} catch (e) { break; }
+}
+if (!html) html = "<span class='text-gray-400'>Not yet</span>";
+} catch (e) {
+html = "<span class='text-red-400'>Loading failed</span>"; } 
+document.getElementById("winnerList").innerHTML = html;
 }
 
-// ===== 레이스 실행 =====
+// ===== Run the race =====
 async function race() {
-  if (!contractWrite) await connectWallet();
+if (! contractWrite) await connectWallet();
 
-  let ticket = Number(document.getElementById("betAmount").value);
-  if (!ticket || ticket <= 0) return alert("티켓(숫자)를 입력하세요.");
+let ticket = Number(document. getElementById("betAmount"). value);
+if (! ticket || ticket <= 0) return alert("Enter the ticket (number).");
 
-  document.getElementById("raceRank").textContent = "-";
-  document.getElementById("rewardAmount").textContent = "0";
-  document.getElementById("bonusAmount").textContent = "0";
-  document.getElementById("log").innerHTML = "";
+document. getElementById("raceRank"). textContent = "-";
+document. getElementById("rewardAmount"). textContent = "0";
+document. getElementById("bonusAmount"). textContent = "0";
+document. getElementById("log"). innerHTML = "";
 
-  try {
-    document.getElementById("log").innerHTML = `<div>⏳ 트랜잭션 전송 중...</div>`;
-    let tx = await contractWrite.Race(ticket);
-    logEvent("트랜잭션: " + tx.hash);
+try {
+document. getElementById("log"). innerHTML = `<div>⏳ Sending transaction...</div>`;
+let tx = await contractWrite.Race(ticket); 
+logEvent("Transaction: " + tx.hash); 
 
-    const receipt = await tx.wait();
-    logEvent("✅ 완료: " + tx.hash);
+const receipt = await tx.wait(); 
+logEvent("✅ Completed: " + tx.hash); 
 
-    let iface = new ethers.utils.Interface(ABI);
-    let found = false;
-      await showDogFrameAnimationBig(); 
-    for (const log of receipt.logs) {
-      try {
-        const parsed = iface.parseLog(log);
-        const { name, args } = parsed;
-        if (name === "RewardGiven") {
-          found = true;
-          document.getElementById("raceRank").textContent = args.myPower;
-          document.getElementById("rewardAmount").textContent = Number(ethers.utils.formatEther(args.amount)).toFixed(2);
-          logEvent(`🎉 보상: ${ethers.utils.formatEther(args.amount)} GP (등수 ${args.myPower})`);
-        }
-        if (name === "Bonus") {
-          document.getElementById("bonusAmount").textContent = Number(ethers.utils.formatEther(args.amount)).toFixed(2);
-          logEvent(`🎁 보너스: ${ethers.utils.formatEther(args.amount)} GP (능력치 ${args.reward})`);
-        }
-        if (name === "lost") {
-          found = true;
-          document.getElementById("raceRank").textContent = args.myPower;
-          logEvent(`😢 패배! GP 소멸 (등수 ${args.myPower})`);
-        }
-      } catch (e) { }
-    }
-    if (!found) logEvent("결과 없음(이벤트 미검출)");
-    await renderStatus();
-    await renderWinnerList();
-    await renderMyPuppy();
-  } catch (err) {
-    let msg = err.message;
-    if (msg.includes("No Puppy")) msg = "강아지가 없습니다!";
-    if (msg.includes("Not enough game points")) msg = "GP 부족!";
-    if (msg.includes("The amount is too large")) msg = "잭팟 부족!";
-    logEvent("❌ " + msg);
-  }
+let iface = new ethers.utils.Interface(ABI); 
+let found = false; 
+await showDogFrameAnimationBig(); 
+for (const log of receipt.logs) { 
+try { 
+const parsed = iface.parseLog(log); 
+const { name, args } = parsed; 
+if (name === "RewardGiven") { 
+found = true; 
+document.getElementById("raceRank").textContent = args.myPower; 
+document.getElementById("rewardAmount").textContent = Number(ethers.utils.formatEther(args.amount)).toFixed(2); 
+logEvent(`🎉 Reward: ${ethers.utils.formatEther(args.amount)} GP (rank ${args.myPower})`); 
+} 
+if (name === "Bonus") { 
+document.getElementById("bonusAmount").textContent = Number(ethers.utils.formatEther(args.amount)).toFixed(2); 
+logEvent(`🎁 Bonus: ${ethers.utils.formatEther(args.amount)} GP (stat ${args.reward})`); 
+} 
+if (name === "lost") { 
+found = true; 
+document.getElementById("raceRank").textContent = args.myPower;
+logEvent(`😢 Defeat! GP disappears (rank ${args.myPower})`);
+}
+} catch (e) { }
+}
+if (!found) logEvent("No result (Event not detected)");
+await renderStatus();
+await renderWinnerList();
+await renderMyPuppy();
+} catch (err) {
+let msg = err.message;
+if (msg.includes("No Puppy")) msg = "No Puppy!";
+if (msg.includes("Not enough game points")) msg = "GP not enough!";
+if (msg.includes("The amount is too large")) msg = "Jackpot not enough!";
+logEvent("❌ " + msg);
+}
 }
 
 
@@ -164,6 +163,16 @@ async function showDogFrameAnimationBig() {
   overlay.style.display = "flex";
   img.src = dogFrames[0];
 
+  // === 사운드 재생(한 번만) ===
+  try {
+    document.getElementById("whistleSound").currentTime = 0;
+    document.getElementById("whistleSound").play();
+    setTimeout(() => {
+      document.getElementById("barkSound").currentTime = 0;
+      document.getElementById("barkSound").play();
+    }, 350); // 0.35초 후 강아지 소리
+  } catch (e) { /* 모바일 정책: 첫 터치 필요 */ }
+
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       frame++;
@@ -172,12 +181,13 @@ async function showDogFrameAnimationBig() {
         clearInterval(interval);
         setTimeout(() => {
           overlay.style.display = "none";
-          resolve();  // 애니 끝나면 race 로직 이어감
-        }, 300); // 0.3초 후 사라짐(자연스러운 여유)
+          resolve();
+        }, 300);
       }
     }, 180);
   });
 }
+
 
 // ----------- 최초 로딩 시 ----------
 window.onload = async () => {

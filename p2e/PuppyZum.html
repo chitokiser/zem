@@ -125,19 +125,19 @@
     </div> 
   </div>
 
-  <!-- PuppyZum 설명 카드 -->
-  <div class="card mb-3 shadow-sm rounded">
-    <div class="card-header bg-light">
-      <h5 class="mb-0">PuppyZum (only game point)</h5>
-    </div>
-    <div class="card-body">
-      <p>나의 강아지를 생성하려면 <strong>10GP</strong>가 필요합니다</p>
-      <p>나의 강아지를 이용하여 <strong>GP</strong>를 획득할 수 있습니다</p>
-      <p>나의 강아지의 능력치를 향상시키면 게임에서 보너스GP를 추가로 받습니다</p>
-      <p>먹이주기를 하면 능력치가 랜덤으로 향상됩니다<strong>ZUM 토큰 -10 소모</strong></p>
-      <p>계약 잔고: <span id="Zumbal" class="fw-bold">...</span> ZUM</p>
-    </div>
-  </div>
+ <!-- PuppyZum Description Card -->
+<div class="card mb-3 shadow-sm rounded">
+<div class="card-header bg-light">
+<h5 class="mb-0">PuppyZum (only game point)</h5>
+</div>
+<div class="card-body">
+<p>You need <strong>10GP</strong> to create my puppy</p>
+<p>You can earn <strong>GP</strong> by using my puppy</p>
+<p>If you improve my puppy's stats, you will receive additional bonus GP in the game</p>
+<p>Feeding will randomly improve stats <strong>Consumes -10 ZUM tokens</strong></p>
+<p>Contract Balance: <span id="Zumbal" class="fw-bold">...</span> ZUM</p>
+</div>
+</div>
 
   <!-- My Puppy: Create & Feed -->
   <div class="card mb-4">
@@ -155,16 +155,14 @@
         <div class="mb-4">
           <label for="puppyName" class="form-label fw-bold">Enter Puppy Name</label>
           <input type="text" id="puppyName" class="form-control mb-3" placeholder="Enter your puppy name">
-          <button id="mintBtn" class="btn btn-primary w-100 mb-2">Create My Puppy</button>
+          <button id="mintBtn" class="btn btn-primary w-100 mb-2">Create My Puppy(-10GP)</button>
         </div>
 
-        <hr>
-        <div id="myPuppyImage" class="text-center mt-4">
-  <button onclick="loadMyPuppyImage()" class="btn btn-outline-info mt-2">내 강아지 보기</button>
+        <div id="myPuppyImage" class="text-center mt-4">   
+  <button onclick="loadMyPuppyImage()" class="btn btn-outline-info mt-2">MyPuppy</button>
   <div class="img-container">
     <img id="puppyImg" class="puppy-img" style="display: none;" src="" alt="My Puppy" />
   </div>
-
   <div id="puppyInfo"></div>
 </div>
 
@@ -173,20 +171,22 @@
         <div class="mb-3">
           <h6 class="fw-bold">Play</h6>
           <!-- 먹이주기 버튼 (동일 스타일 적용) -->
-  <div class="d-flex justify-content-between gap-2 flex-wrap mb-2">
-    <a href="#" onclick="feedMyPuppy()" class="btn btn-outline-success flex-fill">
-      🍖 먹이 주기(-10ZUM)
-    </a>
-  </div>
+ <div class="d-flex justify-content-between gap-2 flex-wrap mb-2">
+  <button type="button" onclick="feedMyPuppy()" class="btn btn-outline-success flex-fill">
+    🍖 Feeding(-10ZUM) "Randomly increase ability value"
+  </button>
+</div>
+
             <!-- 기능 버튼들 (한 줄 정렬) -->
-  <div class="d-flex justify-content-between gap-2 flex-wrap">
-    <a href="HiPuppy.html" class="btn btn-outline-primary flex-fill">🧬HiPuppy</a>
-   <a href="PuppyRace.html" class="btn btn-outline-warning flex-fill">🏁 레이스</a>
-<a href="PuppyBattle.html" class="btn btn-outline-danger flex-fill" >⚔️ Battle</a>
-<a href="hunt.html" class="btn btn-outline-dark flex-fill" onclick="alert('준비중입니다'); return false;">
-  🎯 사냥
-</a>
-  </div>
+<!-- 기능 버튼들 (한 줄 정렬) -->
+<div class="d-flex justify-content-between gap-2 flex-wrap">
+  <a href="HiPuppy.html"      class="btn btn-outline-primary flex-fill">🧬HiPuppy</a>
+  <a href="PuppyRace.html"    class="btn btn-outline-warning flex-fill">🏁 Race</a>
+  <a href="PuppyBattle.html"  class="btn btn-outline-danger flex-fill">⚔️ Battle</a>
+  <a href="PuppyHunt.html"    class="btn btn-outline-dark flex-fill">🎯 Hunt</a>
+  <a href="PuppyRescue.html"  class="btn btn-outline-success flex-fill">🐶 Rescue</a>
+</div>
+
           <div id="status" class="mt-3 text-center text-info small"></div>
         </div>
       </div>

@@ -66,13 +66,13 @@ window.onload = async () => {
   try {
     // 트랜잭션 제출(블록체인에 올라감)
     const tx = await contractWrite.playSlot(pay);
-    document.getElementById("log").innerHTML += `<p>⏳ 거래 전송 중... TX: ${tx.hash}</p>`;
+   document.getElementById("log").innerHTML += `<p>⏳ Sending transaction... TX: ${tx.hash}</p>`;
 
     // === [A] 트랜잭션 영수증(wait) 도착 전까지 UI는 그대로 ===
 
     const receipt = await tx.wait(); // 결과 확정(이벤트 발생)
 
-    document.getElementById("log").innerHTML += `<p>✅ 거래 완료: ${tx.hash}</p>`;
+document.getElementById("log").innerHTML += `<p>✅ Transaction Completed: ${tx.hash}</p>`;
 
     // === [B] 애니메이션 & 사운드는 여기서 실행! ===
     try {
@@ -106,40 +106,40 @@ window.onload = async () => {
             const [user, amount, matchCount] = args;
             document.getElementById("matchCount").textContent = matchCount.toString();
             document.getElementById("rewardAmount").textContent = ethers.utils.formatEther(amount);
-            document.getElementById("log").innerHTML += `<p>🎉 리워드 획득: ${ethers.utils.formatEther(amount)} GP, 매치 ${matchCount}개</p>`;
+           document.getElementById("log").innerHTML += `<p>🎉 Reward Earned: ${ethers.utils.formatEther(amount)} GP, ${matchCount} matches</p>`;
           }
-         if (name === "Bonus") {
-  const [user, amount, reward] = args;
-  document.getElementById("bonusAmount").textContent = `${ethers.utils.formatEther(amount)} GP (능력치 ${reward})`;
-  document.getElementById("log").innerHTML += `<p>🎁 보너스 획득: ${ethers.utils.formatEther(amount)} GP (능력치 ${reward})</p>`;
+      if (name === "Bonus") { 
+const [user, amount, reward] = args; 
+document.getElementById("bonusAmount").textContent = `${ethers.utils.formatEther(amount)} GP (stat ${reward})`; 
+document.getElementById("log").innerHTML += `<p>🎁 Obtain bonus: ${ethers.utils.formatEther(amount)} GP (stat ${reward})</p>`;
+} 
+if (name === "lost") { 
+const [amount] = args; 
+document.getElementById("log").innerHTML += `<p>😢 Failed: ${ethers.utils.formatEther(amount)} GP loss</p>`; 
 }
-          if (name === "lost") {
-            const [amount] = args;
-            document.getElementById("log").innerHTML += `<p>😢 실패: ${ethers.utils.formatEther(amount)} GP 손실</p>`;
-          }
-          if (name === "DebugBreed") {
-            const [myPuppy, matchCount, slots] = args;
-            // 내 강아지 이미지 표시
-            let imgPath = `/images/puppy/${myPuppy}.png`;
-            document.getElementById("myBreedImg").src = imgPath;
+if (name === "DebugBreed") {
+const [myPuppy, matchCount, slots] = args;
+// Show my puppy image
+let imgPath = `/images/puppy/${myPuppy}.png`;
+document.getElementById("myBreedImg").src = imgPath;
 
-            document.getElementById("matchCount").textContent = matchCount;
-            // 슬롯 결과 이미지
-            const slotDivs = document.querySelectorAll("#slotResult div");
-            for (let i = 0; i < 9; i++) {
-              let puppyIdx = parseInt(slots[i]);
-              let imgPath = `/images/puppy/${puppyIdx}.png`;
-              slotDivs[i].innerHTML = `<img class="slot-img w-12 h-12 object-contain mx-auto" src="${imgPath}" alt="puppy" />`;
-            }
-            document.getElementById("log").innerHTML += `<p>🎰 슬롯 결과: ${slots.join(", ")}</p>`;
-          }
-        } catch (e) {}
-      }
-    }, 1300);
+document.getElementById("matchCount").textContent = matchCount;
+// Slot result image
+const slotDivs = document.querySelectorAll("#slotResult div");
+for (let i = 0; i < 9; i++) {
+let puppyIdx = parseInt(slots[i]);
+let imgPath = `/images/puppy/${puppyIdx}.png`;
+slotDivs[i].innerHTML = `<img class="slot-img w-12 h-12 object-contain mx-auto" src="${imgPath}" alt="puppy" />`; 
+} 
+document.getElementById("log").innerHTML += `<p>🎰 slots result: ${slots.join(", ")}</p>`; 
+} 
+} catch (e) {} 
+} 
+}, 1300);
 
   } catch (err) {
     console.error(err);
-    document.getElementById("log").innerHTML += `<p class="text-red-500">❌ 오류 발생: ${err.message}</p>`;
+    document.getElementById("log").innerHTML += `<p class="text-red-500">❌ error: ${err.message}</p>`;
   }
 }
 

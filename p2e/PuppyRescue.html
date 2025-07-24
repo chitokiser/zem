@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PuppyRescue</title>
+  
+  <style>
+    body {
+      background: #cce7ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+    #scoreboard {
+      margin: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    canvas {
+      background: #aadd88;
+      border: 3px solid #555;
+    }
+    #startBtn, #restartBtn {
+      margin: 10px;
+      padding: 10px 20px;
+      background: #ff7f50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #skinSelect {
+      margin: 10px;
+      padding: 5px;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 60px 60px 60px;
+      grid-template-rows: 60px 60px;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btn {
+      background: #555;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn:active { background: #777; }
+    .up { grid-column: 2; grid-row: 1; }
+    .left { grid-column: 1; grid-row: 2; }
+    .down { grid-column: 2; grid-row: 2; }
+    .right { grid-column: 3; grid-row: 2; }
+    #flashOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <a href="PuppyZum.html" class="block w-full bg-gray-200 text-gray-700 text-center font-medium py-2 rounded-lg hover:bg-gray-300 transition"> 
+🏠 Puppy Home 
+</a> 
+  <div id="scoreboard">구한 강아지 수: 0</div>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+  <select id="skinSelect">
+    <option value="1">강아지 1</option>
+    <option value="2">강아지 2</option>
+    <option value="3">강아지 3</option>
+  </select>
+
+  <button id="startBtn">구조 작전 시작!</button>
+  <button id="restartBtn" style="display:none;">게임 다시 시작</button>
+
+  <div class="controls">
+    <button class="btn up" onclick="setDirection('UP')">↑</button>
+    <button class="btn left" onclick="setDirection('LEFT')">←</button>
+    <button class="btn down" onclick="setDirection('DOWN')">↓</button>
+    <button class="btn right" onclick="setDirection('RIGHT')">→</button>
+  </div>
+
+  <div id="flashOverlay"></div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const box = 20;
+
+    let score = 0;
+    let snake = [{ x: 9 * box, y: 9 * box }];
+    let direction = null;
+    let food;
+    let gameInterval;
+    const MAX_SCORE = 15; // 구조 완료 시점
+
+    let selectedSkin = localStorage.getItem("dogSkin") || "1";
+    document.getElementById("skinSelect").value = selectedSkin;
+
+    const dogHead = new Image();
+    const rescueDog = new Image();
+    const dogBodies = [];
+
+    function loadHeadImage() {
+      dogHead.src = `/images/dogs/${selectedSkin}.png`;
+    }
+
+    function loadImages(callback) {
+      loadHeadImage();
+      rescueDog.src = `/images/dogs/rescue.png`;
+      dogBodies.length = 0;
+      for (let i = 1; i <= 5; i++) {
+        const img = new Image();
+        img.src = `/images/dogs/body_${i}.png`;
+        dogBodies.push(img);
+      }
+      setTimeout(callback, 200);
+    }
+
+    document.getElementById("skinSelect").addEventListener("change", e => {
+      selectedSkin = e.target.value;
+      localStorage.setItem("dogSkin", selectedSkin);
+      loadHeadImage();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+      else if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+      else if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+      else if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+    });
+
+    function setDirection(dir) {
+      if (dir === "LEFT" && direction !== "RIGHT") direction = "LEFT";
+      else if (dir === "UP" && direction !== "DOWN") direction = "UP";
+      else if (dir === "RIGHT" && direction !== "LEFT") direction = "RIGHT";
+      else if (dir === "DOWN" && direction !== "UP") direction = "DOWN";
+    }
+
+    function startGame() {
+      score = 0;
+      snake = [{ x: 9 * box, y: 9 * box }];
+      direction = null;
+      placeFood();
+
+      document.getElementById("scoreboard").textContent = `구한 강아지 수: 0`;
+      document.getElementById("restartBtn").style.display = "none";
+
+      clearInterval(gameInterval);
+      gameInterval = setInterval(draw, 120);
+      draw();
+    }
+
+    function placeFood() {
+      let valid = false;
+      while (!valid) {
+        const newFood = {
+          x: Math.floor(Math.random() * 20) * box,
+          y: Math.floor(Math.random() * 20) * box
+        };
+        if (!snake.some(seg => seg.x === newFood.x && seg.y === newFood.y)) {
+          food = newFood;
+          valid = true;
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(dogHead, snake[0].x, snake[0].y, box, box);
+      for (let i = 1; i < snake.length; i++) {
+        ctx.drawImage(dogBodies[i % dogBodies.length], snake[i].x, snake[i].y, box, box);
+      }
+      ctx.drawImage(rescueDog, food.x, food.y, box, box);
+
+      if (!direction) return;
+
+      let nx = snake[0].x + (direction === "LEFT" ? -box : direction === "RIGHT" ? box : 0);
+      let ny = snake[0].y + (direction === "UP" ? -box : direction === "DOWN" ? box : 0);
+
+      if (nx < 0 || ny < 0 || nx >= canvas.width || ny >= canvas.height || collision({ x: nx, y: ny }, snake)) {
+        endGame(`벽이나 몸에 부딪힘! 총 ${score}마리 구조`);
+        return;
+      }
+
+      if (nx === food.x && ny === food.y) {
+        score++;
+        document.getElementById("scoreboard").textContent = `구한 강아지 수: ${score}`;
+        playBarkSound();
+        flashEffect();
+        if (score >= MAX_SCORE) {
+          endGame(`축하합니다! ${MAX_SCORE}마리 모두 구조!`);
+          return;
+        }
+        placeFood();
+      } else {
+        snake.pop();
+      }
+      snake.unshift({ x: nx, y: ny });
+    }
+
+    function collision(head, array) {
+      return array.some(seg => seg.x === head.x && seg.y === head.y);
+    }
+
+    function endGame(message) {
+      clearInterval(gameInterval);
+      alert(message);
+      document.getElementById("restartBtn").style.display = "block";
+    }
+
+    function playBarkSound() {
+      const bark = new Audio('/sounds/bark.mp3');
+      bark.play();
+    }
+
+    function flashEffect() {
+      const flash = document.getElementById('flashOverlay');
+      flash.style.display = 'block';
+      flash.style.opacity = 0.8;
+      setTimeout(() => {
+        flash.style.opacity = 0;
+        setTimeout(() => { flash.style.display = 'none'; }, 200);
+      }, 100);
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => loadImages(startGame));
+    document.getElementById("restartBtn").addEventListener("click", () => loadImages(startGame));
+
+    loadImages(() => {});
+  </script>
+</body>
+</html>

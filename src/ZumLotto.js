@@ -71,13 +71,13 @@ async function CreateGame() {
     ];
 
     if (nums.some(n => isNaN(n) || n < 1 || n > 45)) {
-      alert("1~45 범위의 숫자만 입력 가능합니다.");
+      alert("Only numbers between 1 and 45 can be entered.");
       return;
     }
 
     const unique = new Set(nums);
     if (unique.size !== 5) {
-      alert("숫자는 중복 없이 5개여야 합니다.");
+      alert("The number must be 5 without duplicates.");
       return;
     }
 
@@ -91,12 +91,12 @@ async function CreateGame() {
     );
 
     const tx = await contract.createGame(nums);
-    alert("⏳ 트래전션 전송 중... 잠시 기다려 주세요.");
+    alert("⏳ Sending transaction... Please wait.");
     await tx.wait();
-    alert("✅ 게임 생성 성공!");
+    alert("✅ Game creation success!");
   } catch (err) {
     console.error("❌ CreateGame Error:", err);
-    alert("게임 생성 실패: " + (err.reason || err.message));
+    alert("Game creation failed: " + (err.reason || err.message));
   }
 }
 
@@ -166,7 +166,7 @@ async function submitAnswer(gameId) {
     // 6. 카드에 메시지 표시
     const resultDiv = document.createElement("div");
     resultDiv.className = "alert alert-success mt-2 fw-bold";
-    resultDiv.textContent = `🎉 ${tries}번째 시도! 정답 ${matched ?? '?'}개 맞춤!`;
+    resultDiv.textContent = `🎉 ${tries}th attempt! ${matched ?? '?'} correct!`;
     resultDiv.style.transition = "opacity 0.5s ease-in-out";
     resultDiv.style.opacity = "1";
 
@@ -185,16 +185,16 @@ async function submitAnswer(gameId) {
     }
 
   } catch (error) {
-    console.error("❌ 정답 제출 실패:", error);
+    console.error("❌ Failed to submit answer:", error);
 
     if (error.code === 4001) {
-      alert("사용자가 Metamask 서명을 거부했습니다.");
+      alert("User rejected Metamask signing.");
     } else if (error.reason) {
-      alert("실패 사유: " + error.reason);
-    } else if (error.data && error.data.message) {
-      alert("실패 메시지: " + error.data.message);
-    } else {
-      alert("정답 제출 중 알 수 없는 오류 발생");
+      alert("Failure reason: " + error.reason);
+} else if (error.data && error.data.message) {
+alert("Failure message: " + error.data.message);
+} else {
+alert("An unknown error occurred while submitting the answer");
     }
   }
 }
@@ -207,7 +207,7 @@ async function submitAnswer(gameId) {
  *************************************/
 async function renderAllGames() {
   const container = document.getElementById("gameList");
-  container.innerHTML = "⏳ 게임 목록 불러오는 중...";
+  container.innerHTML = "⏳ Loading game list...";
 
   try {
     const provider = new ethers.providers.JsonRpcProvider(RPC);
@@ -223,39 +223,38 @@ async function renderAllGames() {
     for (let i = 0; i < wid; i++) {
       const [solved, winner] = await contract.getGameInfo(i);
 
-      const inputHTML = !solved
-        ? `
-          <div class="mt-3">
-            <div class="d-flex justify-content-center gap-2 flex-wrap mb-2">
-              ${[0,1,2,3,4].map(n => `
-                <input type="number" min="1" max="45" maxlength="2" id="answer-${i}-${n}" 
-                       class="form-control text-center" 
-                       placeholder="${n + 1}" 
-                       style="width: 50px;" />
-              `).join('')}
-            </div>
-            <div class="d-flex justify-content-center">
-              <button class="btn btn-outline-primary btn-sm px-4" onclick="submitAnswer(${i})">정답 제출</button>
-            </div>
-          </div>
-        `
-        : "";
-     
-    const shortWinner = solved
-  ? `${winner.slice(0, 6)}...${winner.slice(-4)}`
-  : "아직 없음";
+      const inputHTML = !solved ? ` 
+<div class="mt-3"> 
+<div class="d-flex justify-content-center gap-2 flex-wrap mb-2"> 
+${[0,1,2,3,4].map(n => ` 
+<input type="number" min="1" max="45" maxlength="2" id="answer-${i}-${n}" 
+class="form-control text-center" 
+placeholder="${n + 1}" 
+style="width: 50px;" /> 
+`).join('')} 
+</div> 
+<div class="d-flex justify-content-center"> 
+<button class="btn btn-outline-primary btn-sm px-4" onclick="submitAnswer(${i})">Submit answer</button> 
+</div> 
+</div> 
+` 
+: ""; 
 
-const cardHTML = `
-  <div class="card mb-3 border-${solved ? "success" : "secondary"}">
-    <div class="card-body text-center">
-      <h5 class="card-title">🎯 Game #${i}</h5>
-      <p class="card-text">
-        상태: <strong>${solved ? "✅ 완료" : "⏳ 진행 중"}</strong><br>
-        당첨자: <br><small class="text-muted">${shortWinner}</small>
-      </p>
-      ${inputHTML}
-    </div>
-  </div>
+const shortWinner = solved 
+? `${winner.slice(0, 6)}...${winner.slice(-4)}` 
+: "Not yet";
+
+const cardHTML = ` 
+<div class="card mb-3 border-${solved ? "success" : "secondary"}"> 
+<div class="card-body text-center"> 
+<h5 class="card-title">🎯 Game #${i}</h5> 
+<p class="card-text"> 
+Status: <strong>${solved ? "✅ Completed" : "⏳ In Progress"}</strong><br> 
+Winner: <br><small class="text-muted">${shortWinner}</small> 
+</p> 
+${inputHTML} 
+</div> 
+</div>
 `;
 
 
