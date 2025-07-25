@@ -7,21 +7,29 @@
   <style>
     body { background: #cce7ff; display: flex; flex-direction: column; align-items: center; font-family: Arial, sans-serif; margin: 0; }
     #scoreboard { margin: 10px; font-size: 18px; font-weight: bold; }
-    canvas { background: #aadd88; border: 3px solid #555; width: 90vw; max-width: 400px; touch-action: none; }
+   canvas {
+  background: #aadd88;
+  border: 3px solid #555;
+  width: 90vw;
+  max-width: 400px;
+  /* touch-action: none; 삭제 */
+}
+
     #startBtn, #restartBtn { margin: 10px; padding: 10px 20px; background: #ff7f50; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
     #skinSelect { margin: 10px; padding: 5px; }
 
     /* 컨트롤러 디자인 개선 - 게임 화면 밑에 배치 */
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(3, 60px);
-      grid-template-rows: repeat(2, 60px);
-      gap: 12px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 40px;
-      margin-top: 20px;
-    }
+ .controls {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-template-rows: repeat(2, 60px);
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 40px;
+  margin-top: 20px;
+  /* touch-action: none; 삭제 */
+}
     .controls .btn {
       width: 60px;
       height: 60px;
@@ -66,12 +74,11 @@
 
  
    <!-- 개선된 컨트롤러: 게임 화면 바로 아래에 표시 -->
-  <div class="controls">
-    <button class="btn up" onclick="setDirection('UP')">&#9650;</button>
-    <button class="btn left" onclick="setDirection('LEFT')">&#9664;</button>
-    <button class="btn down" onclick="setDirection('DOWN')">&#9660;</button>
-    <button class="btn right" onclick="setDirection('RIGHT')">&#9654;</button>
-  </div>
+<button class="btn up"    onclick="setDirection('UP')"    ontouchstart="setDirection('UP')">▲</button>
+<button class="btn left"  onclick="setDirection('LEFT')"  ontouchstart="setDirection('LEFT')">◄</button>
+<button class="btn down"  onclick="setDirection('DOWN')"  ontouchstart="setDirection('DOWN')">▼</button>
+<button class="btn right" onclick="setDirection('RIGHT')" ontouchstart="setDirection('RIGHT')">►</button>
+
 
   <div id="flashOverlay"></div>
  
@@ -259,6 +266,18 @@
     document.getElementById("startBtn").addEventListener("click", () => loadImages(startGame));
     document.getElementById("restartBtn").addEventListener("click", () => loadImages(startGame));
     loadImages(() => {});
+
+    document.querySelectorAll('.controls .btn').forEach(btn => {
+  btn.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const dir = btn.classList.contains('up')    ? 'UP'
+              : btn.classList.contains('left')  ? 'LEFT'
+              : btn.classList.contains('down')  ? 'DOWN'
+              : 'RIGHT';
+    setDirection(dir);
+  });
+});
+
   </script>
 </body>
 </html>
