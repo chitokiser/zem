@@ -93,12 +93,7 @@
       <button class="btn btn-primary" onclick="sellCya()">Swap to BNB</button>
     </div>
 
-    <!-- Current Price Display -->
-    <div class="mt-3">
-      <span class="badge bg-info text-dark">
-        Current Price: <span id="currentPrice">Loading...</span> ZEM per BNB
-      </span>
-    </div>
+   
 
   </div>
 </div>
@@ -107,32 +102,31 @@
  <!-- 가격 보기 및 설정 UI -->
 
  <button class="btn btn-outline-secondary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#priceManageSection" aria-expanded="false" aria-controls="priceManageSection">
-  🔧 BNB Price 관리 (Staff Only)
+  🔧 BNB Price (Staff Only)
 </button>
 
 <div class="collapse" id="priceManageSection">
   <div class="card mb-4 shadow-sm">
     <div class="card-header text-center bg-light">
-      <strong>
-        BNB Price 관리 (staff only)
-        <p>계약잔고: <span id="Zembalan">Loading...</span> ZEM</p>
-      </strong>
-    </div>
-    <div class="card-body text-center">
-      <p>📊 현재 설정된 가격: <span id="currentPrice">Loading...</span></p>
+    <strong>
+BNB Price Management (staff only)
+<p>Contract Balance: <span id="Zembalan">Loading...</span> ZEM</p>
+</strong>
+</div>
+<div class="card-body text-center">
+<p>📊 Current Price: <span id="currentPrice">Loading...</span></p>
 
-      <div class="input-group mb-3 w-100">
-        <input type="text" class="form-control" id="newPriceInput" placeholder="새 가격 입력 (only staff)">
-        <button class="btn btn-primary" onclick="Priceup()">✅ 가격 설정</button>
-      </div>
+<div class="input-group mb-3 w-100">
+<input type="text" class="form-control" id="newPriceInput" placeholder="Enter New Price (only staff)">
+<button class="btn btn-primary" onclick="Priceup()">✅ Set Price</button>
+</div>
     </div>
   </div>
 </div>
 
   </div>
 
-       
-
+  
  
  <!--Start footer -->
   

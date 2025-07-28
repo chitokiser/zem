@@ -71,6 +71,27 @@ return;
   contract = new ethers.Contract(contractAddress.cutbank, cutbankAbi, signer);
 };
 
+
+function getRevertReason(error) {
+  try {
+    // 1. ethers v5: error.data.message 또는 error.error.message
+    if (error?.data?.message) return error.data.message.split('execution reverted: ')[1] || error.data.message;
+    if (error?.error?.message) return error.error.message.split('execution reverted: ')[1] || error.error.message;
+
+    // 2. ethers v6: error.shortMessage
+    if (error?.shortMessage) return error.shortMessage.split('execution reverted: ')[1] || error.shortMessage;
+
+    // 3. 일반 message 필드
+    if (error?.message) return error.message.split('execution reverted: ')[1] || error.message;
+
+    // 4. JSON 형태일 경우 파싱
+    return JSON.stringify(error);
+  } catch (e) {
+    return "Unknown error";
+  }
+}
+
+
 const MemberLogin = async () => {
   await initialize();
   const userAddress = await signer.getAddress();
@@ -103,8 +124,9 @@ await tx. wait();
 alert("Levelup success!");
 location. reload();
 } catch (e) {
-alert("Levelup failure: " + extractRevertReason(e));
+  alert(shortErrorMessage(e));
 }
+
 };
 
 const Bonuswithdraw = async () => {
@@ -113,9 +135,11 @@ const Bonuswithdraw = async () => {
     await contract.withdraw();
     alert("Bonus withdrawal completed");
     location.reload();
-  } catch (e) {
-    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
-  }
+  } catch (error) {
+  console.error("Error voting:", error);
+  alert(getRevertReason(error));  // 스마트컨트랙트에서 설정한 메세지만 출력
+}
+
 };
 
 const Buff = async () => {
@@ -123,9 +147,11 @@ const Buff = async () => {
     await initialize();
     await contract.buffing();
     alert("Buff success!");
-  } catch (e) {
-    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
-  }
+  } catch (error) {
+  console.error("Error voting:", error);
+  alert(getRevertReason(error));  // 스마트컨트랙트에서 설정한 메세지만 출력
+}
+
 };
 
 const fetchAddresses = async () => {
@@ -147,9 +173,11 @@ const fetchAddresses = async () => {
       li.textContent = "There are no menty.";
       addressList.appendChild(li);
     }
-  } catch (e) {
-    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
-  }
+  } catch (error) {
+  console.error("Error voting:", error);
+  alert(getRevertReason(error));  // 스마트컨트랙트에서 설정한 메세지만 출력
+}
+
 };
 
 const BuyZum = async () => {
@@ -159,9 +187,11 @@ const BuyZum = async () => {
     await contract.buyzum(amount);
     alert("ZUM 구매 성공!");
     location.reload();
-  } catch (e) {
-    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
-  }
+  } catch (error) {
+  console.error("Error voting:", error);
+  alert(getRevertReason(error));  // 스마트컨트랙트에서 설정한 메세지만 출력
+}
+
 };
 
 const SellCut = async () => {
@@ -171,9 +201,11 @@ const SellCut = async () => {
     await contract.sellcut(amount);
     alert("ZUM sales success!");
     location.reload();
-  } catch (e) {
-    alert(e?.data?.message?.replace("execution reverted: ", "") || e.message);
-  }
+  } catch (error) {
+  console.error("Error voting:", error);
+  alert(getRevertReason(error));  // 스마트컨트랙트에서 설정한 메세지만 출력
+}
+
 };
 
 function extractRevertReason(error) {

@@ -22,6 +22,8 @@
     ]
   };
 
+
+
   let Ntopdate = async () => {
     try {
         const provider = new ethers.providers.JsonRpcProvider("https://1rpc.io/opbnb");
@@ -35,12 +37,40 @@
             // Process the winnum array as needed and update the HTML
             updateLottoResults(winnum);
         });
-    } catch (error) {
-        console.error("Error in Ltopdate:", error);
-    }
+    }catch (e) {
+  alert(shortErrorMessage(e));
+}
+
   };
   Ntopdate();
   
+
+function shortErrorMessage(error) {
+  let msg = "";
+
+  // 1. data.message 형식
+  if (error?.data?.message) {
+    msg = error.data.message;
+  }
+  // 2. error.message 직접
+  else if (error?.message) {
+    msg = error.message;
+  }
+  // 3. 기타 JSON.stringify
+  else {
+    msg = JSON.stringify(error);
+  }
+
+  // 4. 공통 접두사 제거
+  msg = msg.replace("execution reverted: ", "").replace("VM Exception while processing transaction: reverted with reason string ", "");
+
+  // 5. 너무 길면 앞 60글자만 표시
+  if (msg.length > 60) msg = msg.substring(0, 60) + "...";
+
+  return msg;
+}
+
+
   // Utility function to truncate addresses
 const truncateAddress = (address) => {
     if (address.length > 10) {
@@ -71,55 +101,56 @@ const truncateAddress = (address) => {
         noticeDiv.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
         noticeDiv.style.borderRadius = "8px";
 
-        noticeDiv.innerHTML = `
-          <div class="row g-3 align-items-center">
-            <div class="col-md-12">
-              <h5 class="card-title">제안 ID: ${notice.id}</h5>
-              <p><strong>작성자:</strong> ${truncateAddress(notice.author)}</p>
-              <p><strong>제안내용:</strong> ${notice.content}</p>
-              <p><strong>작성시간:</strong> ${new Date(notice.timestamp * 1000).toLocaleString('en-GB', { timeZone: 'Etc/GMT-3' })}</p>
-              <p><strong>투표내용:</strong> approval (${notice.agreeWeight}), opposition(${notice.disagreeVotes})</p>
-              <div class="d-flex justify-content-between my-3">
-                <button class="btn btn-success w-25" onclick="vote(${notice.id}, 1)">approval</button>
-                <button class="btn btn-danger w-25" onclick="vote(${notice.id}, 2)">opposition</button>
-              </div>
-            
-            </div>
-           
-             
-            </div>
-          </div>
-        `;
+       noticeDiv.innerHTML = ` 
+<div class="row g-3 align-items-center"> 
+<div class="col-md-12"> 
+<h5 class="card-title">Offer ID: ${notice.id}</h5> 
+<p><strong>Author:</strong> ${truncateAddress(notice.author)}</p> 
+<p><strong>Suggestion:</strong> ${notice.content}</p> 
+<p><strong>Creation time:</strong> ${new Date(notice.timestamp * 1000).toLocaleString('en-GB', { timeZone: 'Etc/GMT-3' })}</p> 
+<p><strong>Voting content:</strong> approval (${notice.agreeWeight}), opposition(${notice.disagreeVotes})</p> 
+<div class="d-flex justify-content-between my-3"> 
+<button class="btn btn-success w-25" onclick="vote(${notice.id}, 1)">approval</button> 
+<button class="btn btn-danger w-25" onclick="vote(${notice.id}, 2)">opposition</button> 
+</div> 
+
+</div> 
+
+
+</div> 
+</div> 
+`;
 
         noticesContainer.appendChild(noticeDiv);
 
-        // 댓글 목록 로드
-        const commentIds = await contract.getCommentIDs(notice.id);
-        const commentsList = document.getElementById(`comments-${notice.id}`);
+ // load comment list 
+const commentIds = await contract.getCommentIDs(notice.id); 
+const commentsList = document.getElementById(`comments-${notice.id}`); 
 
-        for (const commentId of commentIds) {
-          try {
-            const comment = await contract.comments(commentId);
+for (const commentId of commentIds) { 
+try { 
+const comment = await contract.comments(commentId); 
 
-            const commentItem = document.createElement("li");
-            commentItem.classList.add("list-group-item");
-            commentItem.innerHTML = `
-              <strong>${truncateAddress(comment.commenter)}</strong>: ${comment.content}<br>
-              <small>${new Date(comment.timestamp * 1000).toLocaleString('en-GB', { timeZone: 'Etc/GMT-3' })}</small>
-            `;
-            commentsList.appendChild(commentItem);
-          } catch (err) {
-            console.warn(`댓글 ${commentId} 로드 실패`, err);
-          }
-        }
-      } catch (e) {
-        console.warn(`notice ${i} 로드 실패`, e);
-        continue; // 다음 notice로 진행
-      }
-    }
-  } catch (error) {
-    console.error("전체 notice 불러오기 실패:", error);
-  }
+const commentItem = document.createElement("li"); 
+commentItem.classList.add("list-group-item"); 
+commentItem.innerHTML = ` 
+<strong>${truncateAddress(comment.commenter)}</strong>: ${comment.content}<br> 
+<small>${new Date(comment.timestamp * 1000).toLocaleString('en-GB', { timeZone: 'Etc/GMT-3' })}</small> 
+`; 
+commentsList.appendChild(commentItem);
+} catch (err) {
+console.warn(`Failed to load comment ${commentId}`, err);
+}
+}
+} catch (e) {
+console.warn(`Failed to load notice ${i}`, e);
+continue; // Go to next notice
+}
+}
+}catch (e) {
+  alert(shortErrorMessage(e));
+}
+
 }
 
   async function addComment(noticeId) {
@@ -152,10 +183,10 @@ const truncateAddress = (address) => {
       // Clear the input field
       inputField.value = "";
       alert("Comment added successfully!");
-    } catch (error) {
-      console.error("Error adding comment:", error);
-      alert("Failed to add comment. Please try again.");
-    }
+    } catch (e) {
+  alert(shortErrorMessage(e));
+}
+
   }
 
 async function vote(noticeId, option) {
@@ -169,10 +200,10 @@ async function vote(noticeId, option) {
     await contract.vote(noticeId, agree);
     alert(agree ? "Voted Agree!" : "Voted Disagree!");
     location.reload(); // Reload to update the vote count
-  } catch (error) {
-    console.error("Error voting:", error);
-    alert("Failed to cast your vote:\n" + (error?.data?.message || error.message));
-  }
+  } catch (e) {
+  alert(shortErrorMessage(e));
+}
+
 }
 
 
@@ -198,29 +229,29 @@ async function postNotice() {
 
   const fee = ethers.utils.parseUnits("100", 18); // 소수점 없는 100 ZUM
 
-  const content = document.getElementById("post-content").value;
-  if (!content.trim()) {
-    alert("내용을 입력해주세요.");
-    return;
-  }
+ const content = document.getElementById("post-content").value;
+if (!content.trim()) {
+alert("Please enter content.");
+return;
+}
 
-  try {
-    // 1단계: 토큰 승인
-    const approveTx = await zumToken.approve(noticeAddress.noticeAddr, fee);
-    alert("ZUM 승인 진행 중...");
-    await approveTx.wait();
+try {
+// Step 1: Token approval
+const approveTx = await zumToken.approve(noticeAddress.noticeAddr, fee);
+alert("ZUM approval in progress...");
+await approveTx.wait();
 
-    // 2단계: 게시글 작성
-    const tx = await contract.postNotice(content);
-    alert("게시글 작성 중입니다...");
-    await tx.wait();
+// Step 2: Posting
+const tx = await contract.postNotice(content);
+alert("Writing post...");
+await tx.wait();
 
-    alert("게시글이 성공적으로 등록되었습니다!");
-    location.reload();
-  } catch (err) {
-    console.error("Error posting notice:", err);
-    alert("게시글 등록 실패:\n" + (err?.data?.message || err.message));
-  }
+alert("Post successfully registered!");
+location.reload();
+} catch (e) {
+  alert(shortErrorMessage(e));
+}
+
 }
 
 
@@ -244,10 +275,10 @@ async function claimNoticeReward(noticeId) {
       await tx.wait();
       alert("Notice reward claimed successfully!");
       location.reload(); // 페이지 새로고침
-    } catch (error) {
-      console.error("Error claiming notice reward:", error);
-      alert("Failed to claim notice reward. Please try again.");
-    }
+    } catch (e) {
+  alert(shortErrorMessage(e));
+}
+
   }
   
 
@@ -272,16 +303,18 @@ async function claimNoticeReward(noticeId) {
       alert("Comment reward claimed successfully!");
       location.reload(); // 페이지 새로고침
     } catch (e) {
-        alert(e.data?.message.replace('execution reverted: ', '') || e.message);
-    }
+  alert(shortErrorMessage(e));
+}
+
   }
   
-  window.onload = async () => {
-    if (typeof window.ethereum === "undefined") {
-      alert("MetaMask가 설치되어 있지 않습니다. MetaMask 설치 후 이용하세요.");
-    }
-    
-    // MetaMask가 설치된 경우 공지사항을 불러옴
-    fetchNotices();
+window.onload = async () => {
+if (typeof window.ethereum === "undefined") {
+alert("MetaMask is not installed. Please install MetaMask and use it.");
+}
+
+
+// If MetaMask is installed, load the notices
+fetchNotices();
   };
   

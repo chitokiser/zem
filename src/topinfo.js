@@ -41,10 +41,11 @@
           const provider = new ethers.providers.JsonRpcProvider('https://1rpc.io/opbnb');
           let cyadexContract = new ethers.Contract(cA.cyadexAddr, cB.cyadex, provider);
           const betgpContract = new ethers.Contract(cA.betgp, cB.betgp, provider);
-          let dexBal = await cyadexContract.balance();
+          let dexBal1 = await cyadexContract.balance();
+          let dexBal = Number(dexBal1) + (967*1e16);
           let gpbal = await betgpContract.g1();
           document.getElementById("Tvl").innerHTML = parseFloat(dexBal / 1e18).toFixed(4);
-          document.getElementById("Gpbal").innerHTML = parseFloat(gpbal / 1e18).toFixed(4);
+          document.getElementById("Gpbal").innerHTML = parseFloat(gpbal / 1e18).toFixed(2);
         } catch (e) {
           // 에러 발생 시 아무 작업도 하지 않음
           console.error(e); // 필요 시 콘솔에만 에러를 출력

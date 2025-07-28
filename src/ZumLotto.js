@@ -109,7 +109,7 @@ async function submitAnswer(gameId) {
   for (let i = 0; i < 5; i++) {
     const val = document.getElementById(`answer-${gameId}-${i}`).value.trim();
     if (!val || isNaN(val) || +val < 1 || +val > 45) {
-      alert(`${i + 1}번 칸에 1~45 숫자를 입력해주세요.`);
+      alert(`Please enter a number between 1 and 45 in box ${i + 1}.`);
       return;
     }
     inputs.push(+val);
@@ -117,7 +117,7 @@ async function submitAnswer(gameId) {
 
   const unique = new Set(inputs);
   if (unique.size !== 5) {
-    alert("중복 없이 5개의 숫자를 입력해주세요.");
+    alert("Please enter 5 numbers without duplicates.");
     return;
   }
 
