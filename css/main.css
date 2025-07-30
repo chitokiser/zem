@@ -265,8 +265,8 @@ ul.list {
 .buy-btn:hover {
   background-color: #0056b3;
 }
-
-.free-badge {
+/* 텍스트 및 강조 스타일 */ 
+.free-badge {   
   display: inline-block;
   margin-left: 8px;
   padding: 4px 10px;
