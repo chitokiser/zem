@@ -71,11 +71,15 @@
       <input id="bnbInput" type="number" class="form-control" placeholder="Enter BNB amount" />
     </div>
 
-    <!-- Output: To -->
-    <div class="input-group mb-3">
-      <input id="bnbOutput" type="text" class="form-control" placeholder="Estimated ZEM amount" readonly />
-      <button class="btn btn-success" onclick="buyCya()">Swap to ZEM</button>
-    </div>
+   <div class="input-group mb-3">
+  <div id="bnbOutput"
+       class="form-control bg-light text-center fw-bold"
+       style="height: 48px; display: flex; align-items: center; justify-content: center;">
+    Estimated ZEM amount
+  </div>
+  <button class="btn btn-success" onclick="buyCya()">Swap to ZEM</button>
+</div>
+
 
    
 
@@ -87,11 +91,16 @@
       <input id="cyaInput" type="number" class="form-control" placeholder="Enter ZEM amount" />
     </div>
 
-    <!-- Output: To BNB -->
-    <div class="input-group mb-3">
-      <input id="cyaOutput" type="text" class="form-control" placeholder="Estimated BNB amount" readonly />
-      <button class="btn btn-primary" onclick="sellCya()">Swap to BNB</button>
-    </div>
+  <!-- Output: To BNB -->
+<div class="input-group mb-3">
+  <div id="cyaOutput"
+       class="form-control bg-light text-center fw-bold"
+       style="height: 48px; display:flex; align-items:center; justify-content:center;">
+    Estimated BNB amount
+  </div>
+  <button class="btn btn-primary" onclick="sellCya()">Swap to BNB</button>
+</div>
+
 
    
 
