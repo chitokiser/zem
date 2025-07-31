@@ -3,7 +3,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
   
-  interface Izem{
+  interface Izum{
   function balanceOf(address account) external view returns (uint256);
   function allowance(address owner, address spender) external view returns (uint256);
   function transfer(address recipient, uint256 amount) external returns (bool);
@@ -27,9 +27,9 @@ pragma solidity >=0.7.0 <0.9.0;
   }  
     
  
-contract Mt5_10{   //10000usd 1/10
+contract Mt5_free{   //10000usd 1/10
   
-  Izem zem;
+  Izum zum;
   Izumbank zumbank;
   address public admin; 
   address public tbank; 
@@ -41,11 +41,11 @@ contract Mt5_10{   //10000usd 1/10
 
   mapping(address => uint8)public staff;
   mapping(uint256 => meta)public metainfo;  
-
+  mapping(address => bool)public tiket;  
       
       
-   constructor(address _zem, address _zumbank) {
-    zem = Izem(_zem);
+   constructor(address _zum, address _zumbank) {
+    zum = Izum(_zum);
     zumbank = Izumbank(_zumbank);
     tbank = _zumbank;
     admin = msg.sender;
@@ -75,17 +75,10 @@ contract Mt5_10{   //10000usd 1/10
 
 
 
-function registration(uint256 _metanum,string memory  _invest)public {   //참여 데모계좌등록
-    require(zem.balanceOf(msg.sender) >= fee,"no zem");    
-    require(zumbank.getlevel(msg.sender) >= 2,"no member"); 
-    zem.approve(msg.sender, fee); 
-    uint256 allowance = zem.allowance(msg.sender, address(this));
-    require(allowance >= fee, "Check the token allowance");
-    zem.transferFrom(msg.sender, address(this), fee);  
-    address _mento =  zumbank.getmento(msg.sender);
-    zumbank.depoup(_mento,fee*10/100);  //멘토 수당
-    zumbank.expup(msg.sender,fee*1/1E16);  //경험치
-    tax += fee*1/100;
+function registration(uint256 _metanum,string memory  _invest)public {   //이벤트 데모계좌등록
+    require(tiket[msg.sender]  == false,"You have already registered an event account.");    
+    require(zumbank.getlevel(msg.sender) >= 1,"no member"); 
+    tiket[msg.sender] = true;
     metainfo[mid].time = block.timestamp;
     metainfo[mid].mid = mid;
     metainfo[mid].metanum = _metanum;
@@ -131,33 +124,25 @@ function  withdrw(uint256 _mid)public {   //인출
     require( metainfo[_mid].owner == msg.sender,"no owner");   
     require( metainfo[_mid].act == 2,"Processing");  
     require(g1() >= pay,"no zum"); 
-    address _mento =  zumbank.getmento(msg.sender);
-    zumbank.depoup(_mento,pay* 3/100);  //멘토 수당
+  
     metainfo[_mid].act = 3; //인출완료
-    zem.transfer(msg.sender,pay* 97/100);
-    taxtran();
+    zum.transfer(msg.sender,pay);
+
 
 } 
 
-function  taxtran()public{
-  zem.transfer(tbank,tax);
-  tax = 0;
+function  taxtran(uint _tax)public{
+  require(staff[msg.sender] >= 5, "no staff");
+  zum.transfer(tbank,_tax*1e18);
 }
     
-    function feeup(uint256 _fee) public {  //기본값 1000e18
-      require(staff[msg.sender] >= 5,"no staff");
-      fee = _fee*1e18;
-    }
-    
-  
- 
-  
+   
   function g1() public view virtual returns(uint256){  
-  return zem.balanceOf(address(this));
+  return zum.balanceOf(address(this));
   }
 
   function g2(address user) public view virtual returns(uint256){  
-  return zem.balanceOf(user);
+  return zum.balanceOf(user);
   }
 
 }

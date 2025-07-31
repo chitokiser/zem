@@ -1,5 +1,5 @@
 let metaddr = {  
-    metmarket: "0xb0223b04Bba0F0c600Bc9960b17e8e9Ae4a2c8F7" //zem mt5_free
+    metmarket: "0x7aB415fC8aAF88AAbaf3B86F8FdD7885eb81951E" //zum mt5_free
 
   };
   
@@ -27,10 +27,10 @@ let metaddr = {
   
     
   
-    let ibal = await meta5Contract.g1();  //계약보유BET
+    let ibal = await meta5Contract.g1();  //계약보유ZUM
     let ifee = await meta5Contract.fee();  //계약보유BET
-    document.getElementById("Ibal").innerHTML= (ibal/1e18).toFixed(2);  // 
-    document.getElementById("Fee").innerHTML= (ifee/1e18).toFixed(2);  // 
+    document.getElementById("Ibal").innerHTML= (ibal);  // 
+
     }
   
   
@@ -101,7 +101,10 @@ let metaddr = {
               const isPurchasable = purchasableStatus;
 // 등록날짜 변환 (서버 시간 기준 보정)
 const serverOffsetHours = 3; // GMT+3
-const correctedTimestamp = (Number(metaInfo.info0) + serverOffsetHours * 3600) * 1000; // 밀리초 변환
+
+// 9시간 늦게 표시 → 9시간(=32400초) 추가로 빼기
+const correctedTimestamp = (Number(metaInfo.info0) + serverOffsetHours * 3600 - 9 * 3600) * 1000; 
+
 const dateObj = new Date(correctedTimestamp);
 
 // 영문 날짜 포맷 (예: 2025-07-24 13:45)
