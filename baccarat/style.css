@@ -111,8 +111,8 @@ body {
 
 .bet:nth-child(2) { background: #f4a261; }
 .bet:nth-child(3) { background: #e63946; }
-.bet:nth-child(4) { background: #909d45; }
-.bet:nth-child(5) { background: #457b9d; }
+.bet:nth-child(4){ background: #457b9d; }
+.bet:nth-child(5) { background: #eb6207; }
 
 .bet.active {
   background: #ffd60a;
@@ -245,12 +245,12 @@ body {
 
 /* Banker 라벨 - 파란 계열 */
 .banker-label {
-  background: rgba(69, 123, 157, 0.8);
+  background: rgba(16, 16, 16, 0.8);
 }
 
 /* Player 라벨 - 빨강 계열 */
 .player-label {
-  background: rgba(230, 57, 70, 0.8);
+  background: rgba(31, 30, 30, 0.8);
 }
 
 /* 슈박스 전체 */
