@@ -99,23 +99,26 @@ let metaddr = {
                     purchasableStatus = 'Unknown';
             }
               const isPurchasable = purchasableStatus;
-// 등록날짜 변환 (서버 시간 기준 보정)
-const serverOffsetHours = 3; // GMT+3
-const correctedTimestamp = (Number(metaInfo.info0) + serverOffsetHours * 3600) * 1000; // 밀리초 변환
+              
+              
+                 // 등록날짜 변환 (UTC 기준 고정)
+const gmtOffsetHours = 3; // GMT 기준 +6시간
+
+// metaInfo.info0은 UTC timestamp(초 단위)라고 가정
+const correctedTimestamp = (Number(metaInfo.info0) + gmtOffsetHours * 3600) * 1000;
+
 const dateObj = new Date(correctedTimestamp);
 
-// 영문 날짜 포맷 (예: 2025-07-24 13:45)
+// GMT+6 기준으로 고정된 표시
 const formattedDate = dateObj.toLocaleString("en-GB", {
+  timeZone: "UTC",   // 항상 GMT(UTC) 기준으로 처리
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
   hour: "2-digit",
   minute: "2-digit",
-  hour12: false // 24시간 형식
+  hour12: false
 });
-
-console.log(formattedDate);
-
 
           
          const infoHtml = ` 

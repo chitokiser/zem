@@ -1,128 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JS 룰렛 게임</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: #f0f0f0;
-      font-family: Arial, sans-serif;
-    }
-    .roulette-container {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      margin-bottom: 20px;
-    }
-    .roulette-wheel {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 10px solid #333;
-      position: relative;
-      overflow: hidden;
-      transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
-    }
-    /* 섹션 6개 (60도 간격) */
-    .roulette-wheel div {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      background: #ff7675;
-      transform-origin: 100% 100%;
-      border: 1px solid #fff;
-      color: #fff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .roulette-wheel div:nth-child(2) { transform: rotate(60deg); background: #74b9ff; }
-    .roulette-wheel div:nth-child(3) { transform: rotate(120deg); background: #55efc4; }
-    .roulette-wheel div:nth-child(4) { transform: rotate(180deg); background: #ffeaa7; color:#333; }
-    .roulette-wheel div:nth-child(5) { transform: rotate(240deg); background: #a29bfe; }
-    .roulette-wheel div:nth-child(6) { transform: rotate(300deg); background: #fd79a8; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roulette with Dozen Bets</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  .roulette-container {
+    position: relative;
+    width: 90vw;
+    max-width: 400px;
+    aspect-ratio: 1/1;
+    margin: 20px auto;
+  }
+  .roulette-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 25px solid yellow;
+    z-index: 10;
+  }
+  .result {
+    font-size: 5vw;
+    margin-top: 15px;
+    font-weight: bold;
+  }
 
-    /* 화살표 */
-    .pointer {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-bottom: 30px solid #e84118;
-    }
+  /* 배팅판 */
+  .betting-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 4px;
+    margin: 10px auto;
+    padding: 8px;
+    background: #222;
+    border-radius: 6px;
+    width: 95%;
+    max-width: 600px;
+  }
+  .bet-cell {
+    height: 45px;
+    border: 1px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 3.5vw;
+    position: relative;
+    user-select: none;
+    border-radius: 4px;
+  }
+  .bet-cell.red { background: #c0392b; }
+  .bet-cell.black { background: #2c3e50; }
+  .bet-cell.green { background: #27ae60; }
 
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #0984e3;
-      color: #fff;
-    }
-    button:hover {
-      background: #74b9ff;
-    }
+  /* 칩 스택 */
+  .chip {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: gold;
+    border: 1px solid #333;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .chip:nth-child(2) { bottom: 6px; }
+  .chip:nth-child(3) { bottom: 10px; }
+  .chip:nth-child(4) { bottom: 14px; }
 
-    .result {
-      font-size: 20px;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-  </style>
+  /* 추가 베팅 영역 (홀짝, 색상) */
+  .extra-bets, .dozen-bets {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .extra-bet, .dozen-bet {
+    flex: 1 1 30%;
+    max-width: 120px;
+    padding: 8px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #444;
+    position: relative;
+    font-size: 3.5vw;
+  }
+  .extra-bet.red { background: #c0392b; }
+  .extra-bet.black { background: #2c3e50; }
+  .extra-bet.odd { background: #8e44ad; }
+  .extra-bet.even { background: #2980b9; }
+  .extra-bet.active,
+  .dozen-bet.active {
+    outline: 3px solid yellow;
+  }
+
+  /* 반응형 */
+  @media (max-width: 600px) {
+    .bet-cell { height: 35px; font-size: 4vw; }
+    .chip { width: 12px; height: 12px; }
+    .extra-bet, .dozen-bet { font-size: 4vw; padding: 6px; }
+    .result { font-size: 5vw; }
+  }
+
+  .btn {
+    padding: 10px 20px;
+    background: #e84118;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 4vw;
+  }
+  .btn:hover { background: #ff6b6b; }
+</style>
 </head>
 <body>
-  <div class="roulette-container">
-    <div class="pointer"></div>
-    <div id="wheel" class="roulette-wheel">
-      <div>100</div>
-      <div>200</div>
-      <div>300</div>
-      <div>400</div>
-      <div>500</div>
-      <div>LOSE</div>
-    </div>
-  </div>
-  <button onclick="spin()">Spin!</button>
-  <div class="result" id="resultText"></div>
 
-  <script>
-    let currentRotation = 0;
+<h2>Roulette with Dozen Bets</h2>
+<div class="roulette-container">
+  <div class="pointer"></div>
+  <img id="rouletteImage" src="../images/roul/r1.png" alt="Roulette">
+</div>
 
-    function spin() {
-      const wheel = document.getElementById('wheel');
-      const resultText = document.getElementById('resultText');
+<!-- 번호 배팅판 -->
+<div class="betting-board" id="betBoard"></div>
 
-      // 6개 섹션 랜덤
-      const segmentCount = 6;
-      const randomSegment = Math.floor(Math.random() * segmentCount);
-      const degreesPerSegment = 360 / segmentCount;
+<!-- 홀짝/색상 -->
+<div class="extra-bets">
+  <div class="extra-bet red" data-type="red">Red</div>
+  <div class="extra-bet black" data-type="black">Black</div>
+  <div class="extra-bet odd" data-type="odd">Odd</div>
+  <div class="extra-bet even" data-type="even">Even</div>
+</div>
 
-      // 여러 바퀴 + 랜덤 세그먼트 맞추기
-      const spins = 3; // 최소 회전 바퀴 수
-      const finalRotation = spins * 360 + (randomSegment * degreesPerSegment) + degreesPerSegment / 2;
+<!-- Dozen 영역 -->
+<div class="dozen-bets">
+  <div class="dozen-bet" data-type="d1">1-12</div>
+  <div class="dozen-bet" data-type="d2">13-24</div>
+  <div class="dozen-bet" data-type="d3">25-36</div>
+</div>
 
-      currentRotation += finalRotation;
-      wheel.style.transform = `rotate(${currentRotation}deg)`;
+<button class="btn" onclick="spin()">Spin</button>
+<div class="result" id="resultText">Place your bets!</div>
 
-      // 결과 표시
-      setTimeout(() => {
-        const prizes = ["100", "200", "300", "400", "500", "LOSE"];
-        resultText.innerText = `결과: ${prizes[randomSegment]}`;
-      }, 4000);
-    }
-  </script>
+<script>
+const rouletteImage = document.getElementById('rouletteImage');
+const resultText = document.getElementById('resultText');
+const betBoard = document.getElementById('betBoard');
+
+// 룰렛 번호와 색상
+const numbers = [
+  { num: 0, color: 'green' },
+  { num: 32, color: 'red' }, { num: 15, color: 'black' },
+  { num: 19, color: 'red' }, { num: 4, color: 'black' },
+  { num: 21, color: 'red' }, { num: 2, color: 'black' },
+  { num: 25, color: 'red' }, { num: 17, color: 'black' },
+  { num: 34, color: 'red' }, { num: 6, color: 'black' },
+  { num: 27, color: 'red' }, { num: 13, color: 'black' },
+  { num: 36, color: 'red' }, { num: 11, color: 'black' },
+  { num: 30, color: 'red' }, { num: 8, color: 'black' },
+  { num: 23, color: 'red' }, { num: 10, color: 'black' },
+  { num: 5, color: 'red' }, { num: 24, color: 'black' },
+  { num: 16, color: 'red' }, { num: 33, color: 'black' },
+  { num: 1, color: 'red' }, { num: 20, color: 'black' },
+  { num: 14, color: 'red' }, { num: 31, color: 'black' },
+  { num: 9, color: 'red' }, { num: 22, color: 'black' },
+  { num: 18, color: 'red' }, { num: 29, color: 'black' },
+  { num: 7, color: 'red' }, { num: 28, color: 'black' },
+  { num: 12, color: 'red' }, { num: 35, color: 'black' },
+  { num: 3, color: 'red' }, { num: 26, color: 'black' }
+];
+
+const bets = {};
+const extraBets = {};
+const dozenBets = {};
+
+// 칩 그리기 함수
+function drawChips(container, count) {
+  container.querySelectorAll('.chip').forEach(chip => chip.remove());
+  for (let i = 0; i < count; i++) {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    container.appendChild(chip);
+  }
+}
+
+// 번호 배팅판 생성
+function createBetBoard() {
+  numbers.forEach(item => {
+    const cell = document.createElement('div');
+    cell.classList.add('bet-cell', item.color);
+    cell.textContent = item.num;
+    cell.dataset.number = item.num;
+
+    cell.addEventListener('click', () => {
+      bets[item.num] = (bets[item.num] || 0) + 1;
+      drawChips(cell, bets[item.num]);
+    });
+
+    betBoard.appendChild(cell);
+  });
+}
+createBetBoard();
+
+// 홀짝/색상
+document.querySelectorAll('.extra-bet').forEach(el => {
+  el.addEventListener('click', () => {
+    const type = el.dataset.type;
+    extraBets[type] = (extraBets[type] || 0) + 1;
+    drawChips(el, extraBets[type]);
+  });
+});
+
+// Dozen 베팅
+document.querySelectorAll('.dozen-bet').forEach(el => {
+  el.addEventListener('click', () => {
+    const type = el.dataset.type;
+    dozenBets[type] = (dozenBets[type] || 0) + 1;
+    drawChips(el, dozenBets[type]);
+  });
+});
+
+let animationInterval;
+
+function spin() {
+  const winningIndex = Math.floor(Math.random() * numbers.length);
+  const winningNumber = numbers[winningIndex];
+
+  let frame = 1;
+  clearInterval(animationInterval);
+  animationInterval = setInterval(() => {
+    rouletteImage.src = `../images/roul/r${frame}.png`;
+    frame++;
+    if (frame > 14) frame = 1;
+  }, 100);
+
+  setTimeout(() => {
+    clearInterval(animationInterval);
+    rouletteImage.src = `../images/roul/${winningNumber.num}.png`;
+    checkResult(winningNumber);
+  }, 3000);
+}
+
+function checkResult(winningNumber) {
+  let payout = 0;
+
+  // 번호 베팅 35배
+  Object.keys(bets).forEach(num => {
+    if (parseInt(num) === winningNumber.num) payout += bets[num] * 35;
+  });
+
+  // 홀짝, 색상 2배
+  if (extraBets.red && winningNumber.color === 'red') payout += extraBets.red * 2;
+  if (extraBets.black && winningNumber.color === 'black') payout += extraBets.black * 2;
+  if (extraBets.odd && winningNumber.num % 2 === 1) payout += extraBets.odd * 2;
+  if (extraBets.even && winningNumber.num % 2 === 0 && winningNumber.num !== 0) payout += extraBets.even * 2;
+
+  // Dozen 2배
+  const num = winningNumber.num;
+  if (dozenBets.d1 && num >= 1 && num <= 12) payout += dozenBets.d1 * 2;
+  if (dozenBets.d2 && num >= 13 && num <= 24) payout += dozenBets.d2 * 2;
+  if (dozenBets.d3 && num >= 25 && num <= 36) payout += dozenBets.d3 * 2;
+
+  resultText.innerHTML = `
+    Winning Number: <b style="color:${winningNumber.color}">${winningNumber.num}</b><br>
+    You ${payout > 0 ? 'Win' : 'Lose'}! Payout: ${payout} GP
+  `;
+
+  resetBets();
+}
+
+function resetBets() {
+  Object.keys(bets).forEach(num => delete bets[num]);
+  Object.keys(extraBets).forEach(type => delete extraBets[type]);
+  Object.keys(dozenBets).forEach(type => delete dozenBets[type]);
+  document.querySelectorAll('.bet-cell, .extra-bet, .dozen-bet').forEach(cell => {
+    cell.querySelectorAll('.chip').forEach(chip => chip.remove());
+  });
+}
+</script>
 </body>
 </html>

@@ -1,0 +1,217 @@
+body {
+  margin: 0;
+  background: #121212;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.baccarat-container {
+  width: 90vw;
+  max-width: 480px;
+  aspect-ratio: 9/16;
+  background: #1b4332;
+  border-radius: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* 잔액 */
+.balance {
+  color: #fff;
+  font-size: 3vw;
+  margin-bottom: 2%;
+}
+
+/* 슈박스 */
+#card-shoe {
+  width: 15%;
+  aspect-ratio: 4/3;
+  background: #8d6e63;
+  border-radius: 1vw;
+  margin-bottom: 2%;
+}
+
+/* 결과 */
+.result {
+  color: #ffd60a;
+  font-size: 3.5vw;
+  margin-bottom: 2%;
+}
+
+/* 카드 영역 */
+.cards {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 3% auto;
+}
+
+.hand img {
+  width: 25%;
+  border-radius: 6px;
+  background: #fff;
+  padding: 2px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+/* 승패 라벨 */
+.win-label {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5vw;
+  font-weight: bold;
+  color: #ffd60a;
+  background: rgba(0,0,0,0.6);
+  padding: 1vw 2vw;
+  border-radius: 1vw;
+  opacity: 0;
+  animation: fadeInOut 1.5s forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  20% { opacity: 1; transform: translate(-50%, 0); }
+  80% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+/* 베팅 버튼 영역 */
+.bet-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4%;
+  width: 55%;
+  margin-bottom: 3%;
+}
+
+.bet {
+  flex: 1 1 45%;
+  padding: 4px 0;
+  font-size: 2.5vw;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  background: #2d6a4f;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.bet:nth-child(2) { background: #f4a261; }
+.bet:nth-child(3) { background: #e63946; }
+.bet:nth-child(4),
+.bet:nth-child(5) { background: #457b9d; }
+
+.bet.active {
+  background: #ffd60a;
+  color: #1b4332;
+}
+
+.bet:active {
+  transform: scale(0.95);
+}
+
+/* 칩 스택 */
+.chip-stack {
+  position: absolute;
+  bottom: 6%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.chip-stack img {
+  width: 14%;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+/* 칩 선택 영역 */
+.chips {
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
+  margin-bottom: 2%;
+}
+
+.chip {
+  width: 10%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.chip:active {
+  transform: translateY(-8px) scale(1.1);
+  box-shadow: 0 0 10px #ffd60a;
+}
+
+/* 하단 버튼 */
+.actions {
+  display: flex;
+  justify-content: space-around;
+  width: 55%;
+  margin-top: 2%;
+}
+
+.actions button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 1vh 0;
+  font-size: 2.8vw;
+  border: none;
+  border-radius: 1vw;
+  background: #ffd60a;
+  color: #1b4332;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.actions button:active {
+  background: #e0b800;
+  transform: scale(0.96);
+}
+
+/* 반응형 - 가로 모드 */
+@media (orientation: landscape) {
+  .baccarat-container {
+    max-width: 80vh;
+    aspect-ratio: 16/9;
+  }
+  .cards {
+    width: 70%;
+  }
+  .hand img {
+    width: 20%;
+  }
+  .bet-area, .chips, .actions {
+    width: 50%;
+  }
+}
+
+/* 반응형 - PC */
+@media (min-width: 768px) {
+  .baccarat-container {
+    max-width: 500px;
+  }
+  .hand img {
+    width: 20%;
+  }
+  .bet {
+    font-size: 1.5vw;
+  }
+  .actions button {
+    font-size: 1.2vw;
+  }
+}
