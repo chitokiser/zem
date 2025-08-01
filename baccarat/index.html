@@ -10,18 +10,27 @@
   <div class="baccarat-container">
     <!-- 잔액 -->
     <div class="balance">잔액: <span id="balance">1000</span></div>
-
-    <!-- 슈박스 -->
-    <div id="card-shoe"></div>
-
+   <!-- 슈박스 -->
+    <div class="card-shoe">
+  <div class="card-stack"></div> <!-- 카드 더미 -->
+  <div class="slot"></div>       <!-- 카드 나오는 슬롯 -->
+</div>
+  
     <!-- 결과 -->
     <div class="result" id="result"></div>
+    
 
     <!-- 카드 영역 -->
-    <div class="cards">
-      <div class="hand" id="player-hand"></div>
-      <div class="hand" id="banker-hand"></div>
-    </div>
+   <div class="cards">
+  <div class="hand" id="banker-hand"></div>
+  <div class="hand" id="player-hand"></div>
+</div>
+
+<!-- 카드 하단 라벨 -->
+<div class="card-labels">
+  <div class="label banker-label">Banker</div>
+  <div class="label player-label">Player</div>
+</div>
 
     <!-- 베팅 버튼 -->
     <div class="bet-area">
