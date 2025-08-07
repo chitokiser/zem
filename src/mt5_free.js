@@ -1,5 +1,5 @@
 let metaddr = {  
-    metmarket: "0x7aB415fC8aAF88AAbaf3B86F8FdD7885eb81951E" //zum mt5_free
+    metmarket: "0xD30CD21B8bE226123d5E1B57c7E276aF4efa5Db0" //zum mt5_free
 
   };
   
@@ -150,7 +150,7 @@ const formattedDate = dateObj.toLocaleString("en-GB", {
       <strong>Registrant:</strong><br>${metaInfo.info6.slice(0, 4)}…${metaInfo.info6.slice(-4)}
     </div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Compensation Amount:</strong><br>${(metaInfo.info1 / 1e18).toFixed(2)} ZEM
+      <strong>Compensation Amount:</strong><br>${(metaInfo.info1 / 1e18).toFixed(2)} ZUM
     </div>
 
     <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">
@@ -161,7 +161,7 @@ const formattedDate = dateObj.toLocaleString("en-GB", {
     </div>
 
     <div id="auditForm-${i}" class="mt-3" style="display:none;">
-      <input type="number" class="form-control form-control-sm mb-2" placeholder="Reward amount (ZEM)" id="rewardInput-${i}"> 
+      <input type="number" class="form-control form-control-sm mb-2" placeholder="Reward amount (ZUM)" id="rewardInput-${i}"> 
       <button type="button" class="btn btn-success btn-sm w-100" onclick="auditReward(${i})">Confirm Reward</button> 
     </div>
 

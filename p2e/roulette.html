@@ -205,12 +205,18 @@ const dozenBets = {};
 // 칩 그리기 함수
 function drawChips(container, count) {
   container.querySelectorAll('.chip').forEach(chip => chip.remove());
+
   for (let i = 0; i < count; i++) {
-    const chip = document.createElement('div');
+    const chip = document.createElement('img');
     chip.className = 'chip';
+
+    // 베팅 단위에 맞는 칩 이미지 (예: 10 GP 기준)
+    chip.src = "../baccarat/images/chip_500.png";
+
     container.appendChild(chip);
   }
 }
+
 
 // 번호 배팅판 생성
 function createBetBoard() {
