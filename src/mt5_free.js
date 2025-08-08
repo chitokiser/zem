@@ -33,7 +33,7 @@ let metaddr = {
 
     }
   
-  
+
   // ABI 함수 호출하여 정보 가져오는 함수
   async function getMetaInfoByNum(contract, _num) {
   try {
@@ -150,7 +150,7 @@ const formattedDate = dateObj.toLocaleString("en-GB", {
       <strong>Registrant:</strong><br>${metaInfo.info6.slice(0, 4)}…${metaInfo.info6.slice(-4)}
     </div>
     <div class="mb-2 p-2 border rounded bg-light">
-      <strong>Compensation Amount:</strong><br>${(metaInfo.info1 / 1e18).toFixed(2)} ZUM
+      <strong>Compensation Amount:</strong><br>${metaInfo.info1} ZUM
     </div>
 
     <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">
